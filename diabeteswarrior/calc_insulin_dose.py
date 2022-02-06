@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
 """Calculates the insulin dose."""
 
 # pylint: disable=too-many-arguments

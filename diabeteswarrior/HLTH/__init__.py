@@ -12,7 +12,6 @@ from pathlib import Path as P
 from shutil import copyfile
 
 import arrow as A
-from sympy import hyper
 
 MODULE_ROOT = P(__file__).parent
 DATA_FILE = MODULE_ROOT.joinpath(F"{__cryptonym__}.csv")
@@ -22,8 +21,11 @@ LOG_FILE = MODULE_ROOT.joinpath(F"{__cryptonym__}.log")
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 if not DATA_FILE.exists():
+    header_line = '"ts","po_pulse","spox","weight","fat","pulse","systolic","diastolic","ihb","hypertension","temperature"'
     DATA_FILE.touch(mode=0o666,exist_ok=True)
     logging.info('%s has been created.',DATA_FILE)
+    with DATA_FILE.open('a', encoding='utf8') as new_data_file:
+        new_data_file.write(F'{header_line}\n')
 
 if not BACK_UP_FILE.exists():
     BACK_UP_FILE.touch(mode=0o666,exist_ok=True)
@@ -46,7 +48,8 @@ MODULE_HELP = {
     'diastolic':'The diastolic pressure in mm/mg from the WGNBPW-720 blood pressure cuff (Sphygmomanometer).',
     'ihb':'The irregular heart beat indicator from the WGNBPW-720 blood pressure cuff (Sphygmomanometer) 1 for true, 0 is the default.',
     'hypertension':'Hypertension stage from the WGNBPW-720 blood pressure cuff (Sphygmomanometer). 0=No indicator, 1=Pre indicator, 2=Stage I indicator, 3=Stage II indicator',
-    'temperature':'Body temperature, any thermometer will do.'
+    'temperature':'Body temperature, any thermometer will do.',
+    't_s': 'Timestamp of the record.'
 }
 
 

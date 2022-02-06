@@ -1,13 +1,8 @@
 """Calculates the insulin dose."""
 
-def main(
-     weight:float = 129.5,
-     meal:int = 0,
-     act_bs:int = 1,
-     tgt_bs:int = 100,
-     cor_fac_wgt:float = 0.5,
-     fg_bias:float = 0.6
-    )->object:
+# pylint: disable=too-many-arguments
+# pylint: disable=line-too-long
+def main(weight:float = 129.5, meal:int = 0, act_bs:int = 1, tgt_bs:int = 100, cor_fac_wgt:float = 0.5, fg_bias:float = 0.6)->object:
     """Calculate the bolus & basal insulin dose to cover a meal and or correct your blood sugar."""
     # todo write this help.
     # todo write the unit tests
@@ -23,4 +18,4 @@ def main(
     return F"Bolus dose: {bolus}, Basal dose: {basal}, Total dose: {tmd}"
 
 if __name__ == '__main__':
-    print(main(act_bs=274))
+    print(main(act_bs=135, meal=29))

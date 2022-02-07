@@ -20,4 +20,4 @@ def main(weight:float = 129.5, meal:int = 0, act_bs:int = 1, tgt_bs:int = 100, c
     return F"Bolus dose: {bolus}, Basal dose: {basal}, Total dose: {tmd}"
 
 if __name__ == '__main__':
-    print(main(act_bs=135, meal=29))
+    print(main(act_bs=218, meal=0))

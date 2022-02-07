@@ -21,11 +21,11 @@ LOG_FILE = MODULE_ROOT.joinpath(F"{__cryptonym__}.log")
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 if not DATA_FILE.exists():
-    header_line = '"ts","po_pulse","spox","weight","fat","pulse","systolic","diastolic","ihb","hypertension","temperature"'
+    HEADER_LINE = '"ts","po_pulse","spox","weight","fat","pulse","systolic","diastolic","ihb","hypertension","temperature"'
     DATA_FILE.touch(mode=0o666,exist_ok=True)
     logging.info('%s has been created.',DATA_FILE)
     with DATA_FILE.open('a', encoding='utf8') as new_data_file:
-        new_data_file.write(F'{header_line}\n')
+        new_data_file.write(F'{HEADER_LINE}\n')
 
 if not BACK_UP_FILE.exists():
     BACK_UP_FILE.touch(mode=0o666,exist_ok=True)

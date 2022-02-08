@@ -8,8 +8,6 @@ from dataclasses import asdict, astuple, dataclass, fields
 from pathlib import Path as P
 from shutil import copyfile
 
-import arrow as A
-
 MODULE_ROOT = P(__file__).parent
 DATA_FILE = MODULE_ROOT.joinpath(f"{__cryptonym__}.csv")
 BACK_UP_FILE = MODULE_ROOT.joinpath(f"{__cryptonym__}.csv.backup")
@@ -26,7 +24,6 @@ MODULE_HELP = {
     'glucose': 'Blood sugar in milligrams per deciliter.',
     'trend': 'Indicates direction and velocity of change for your glucose level. Values are -2 if the arrow is pointing down, -1 if it down and right, 0 if it is pointing to the right, 1 for up and right and 2 for up.'
 }
-
 BGL_RANGES = {
     'chart': {'min': 40, 'max': 400},
     'limit': {'min': 55,'max': 250},
@@ -106,7 +103,7 @@ class Records:
 
     def record_add(self) -> int:
         """Write new record to database."""
-        record = F'{A.now().format("YYYY-MM-DD HH: mm")},{self.message},"{self.notes}",{self.bolus},{self.bolus_u},{self.basal},{self.basal_u},{self.food},{self.carbohydrate},{self.exercise},{self.medication},{self.glucose},{self.trend},{self.lower_limit},{self.upper_limit}'
+        record = F'{self.t_s},{self.message},"{self.notes}",{self.bolus},{self.bolus_u},{self.basal},{self.basal_u},{self.food},{self.carbohydrate},{self.exercise},{self.medication},{self.glucose},{self.trend},{self.lower_limit},{self.upper_limit}'
 
         with DATA_FILE.open('a',encoding='utf-8') as data_file:
             hr_data = data_file.write(F"{record}\n")

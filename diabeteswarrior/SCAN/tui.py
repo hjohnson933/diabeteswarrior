@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 """Text User Interface for SCAN records."""
 
-import __init__ as Scan
-from prompt_toolkit.formatted_text import HTML, FormattedText
-from prompt_toolkit.shortcuts import button_dialog,input_dialog,radiolist_dialog,yes_no_dialog
 import arrow as A
+from prompt_toolkit.formatted_text import HTML, FormattedText
+from prompt_toolkit.shortcuts import button_dialog, input_dialog, radiolist_dialog, yes_no_dialog
+
+import __init__ as Scan
+
 
 def main():
     r_s = "Something went wrong, please check the data and backup files then try again."
@@ -68,10 +70,9 @@ def main():
     formatted_text = FormattedText([("italic",F"Message: {message}\n"),("italic",F"Notes: {notes}\n"),("italic",F"Bolus Insulin: {bolus_u}\n"),
         ("italic",F"Basal Insulin: {basal_u}\n"),("italic",F"Carbohydrates: {carbohydrate}\n"),("italic",F"Exercise: {exercise}\n"),
         ("italic",F"Medication {medication}\n"),("italic",F"Glucose {glucose}\n"),("italic",F"Trend {trend}\n")])
-    correct = yes_no_dialog(title=HTML("Is this correct?"),text=formatted_text).run()
 
-    if correct:
-        commit_rollback = "_"  # pylint: disable=invalid-name
+    if correct := yes_no_dialog(title=HTML("Is this correct?"),text=formatted_text).run():
+        commit_rollback = "_"
         h_r = Scan.Records(**record).record_add()
         if h_r > 0:
             commit_rollback = button_dialog(title=HTML("Commit or Delete the new record."),text=HTML("Click on <u>Commit</u> and the data will be stored and backed up, <u>Rollback</u> to delete the last record or <u>exit</u> to leave the data without backing up the database."),buttons=[("Commit","commit"),("Rollback","rollback"),("Exit","_")]).run()
@@ -85,15 +86,3 @@ def main():
 
 if __name__ == '__main__':
     print(main())
-
-
-# Fira Code
-# fixedsys
-# hasklig
-# losevka
-# JetBrains Mono
-# JuliaMono
-# Lilex
-# Lotion
-# Monoid
-# Victor Mono

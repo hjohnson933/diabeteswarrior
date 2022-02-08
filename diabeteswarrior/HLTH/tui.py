@@ -1,14 +1,13 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Text user interface for health records."""
-# pylint: disable=import-error
-# pylint: disable=line-too-long
+
 import __init__ as Health
 from prompt_toolkit.formatted_text import HTML, FormattedText
 from prompt_toolkit.shortcuts import button_dialog,input_dialog,radiolist_dialog,yes_no_dialog
 import arrow as A
 
-def main() ->str:
+def main() -> str:
     """For isolation"""
     r_s = "Something went wrong, please check the data and backup files then try again."
     po_pulse = int(input_dialog(title=HTML("Pulseoximeter Pulse"), text=Health.MODULE_HELP['po']).run())
@@ -37,10 +36,9 @@ def main() ->str:
     }
 
     formatted_text = FormattedText([("italic",f"Pulse:{po_pulse}\n"),("italic",f"SPoX:{spox}\n"),("italic",f"Weight:{weight}\n"),("italic",f"Fat:{fat}\n"),("italic",f"Pulse: {pulse}\n"),("italic",f"Systolic:{systolic}\n"),("italic",f"Diastolic:{diastolic}\n"),("italic",f"IHB:{ihb}\n"),("italic",f"Hypertension:{hypertension}\n"),("italic", f"temperature:{temperature}\n")])
-    correct = yes_no_dialog(title=HTML("Is this correct?"),text=formatted_text).run()
 
-    if correct:
-        commit_rollback = "_"  # pylint: disable=invalid-name
+    if _ := yes_no_dialog(title=HTML("Is this correct?"), text=formatted_text).run():
+        commit_rollback = "_"
         h_r = Health.Records(**record).record_add()
         if h_r > 0:
             commit_rollback = button_dialog(title=HTML("Commit or Delete the new record."),text=HTML("Click on <u>Commit</u> and the data will be stored and backed up, <u>Rollback</u> to delete the last record or <u>exit</u> to leave the data without backing up the database."),buttons=[("Commit","commit"),("Rollback","rollback"),("Exit","_")]).run()

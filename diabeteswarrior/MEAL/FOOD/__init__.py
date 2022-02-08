@@ -47,6 +47,7 @@ def enable_record_archive() -> bool:
     return df_hash == bf_hash
 
 
+@dataclass
 class Records:
     """Food Record"""
     domain: str
@@ -60,10 +61,6 @@ class Records:
     carbohydrate: int
     protein: int
     t_s: str
-
-    def __post_init__(self):
-        # todo store only the first letter of the `unit` field with proper capitalization.
-        ...
 
     @staticmethod
     def records_backup_restore(opcode) -> str:

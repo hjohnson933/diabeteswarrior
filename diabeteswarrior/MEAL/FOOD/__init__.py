@@ -76,7 +76,6 @@ class Records:
 
     def record_add(self) -> int:
         """Write new record to database."""
-        # todo Modify the record to match the class.
         record = F'{self.t_s},"{self.domain}","{self.name}","{self.portion}","{self.unit}",{self.calories},{self.fat},{self.cholesterol},{self.sodium},{self.carbohydrate},{self.protein}'
 
         with DATA_FILE.open('a',encoding='utf-8') as data_file:

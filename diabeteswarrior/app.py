@@ -5,6 +5,7 @@ from wtforms import PasswordField, StringField
 from wtforms.validators import Email, Length
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "this is a secret, don't do this!"
 Bootstrap(app)
 
 
@@ -23,9 +24,23 @@ class RegisterForm(FlaskForm):
 def index():
     return render_template('index.html')
 
-@app.route('/login')
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-    return render_template('login.html')
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        return "It's valid."
+
+    return render_template('login.html',form=form)
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        return "It's valid."
+
+    return render_template('register.html',form=form)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

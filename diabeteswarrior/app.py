@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
 from wtforms.validators import Email, Length
@@ -7,6 +9,13 @@ from wtforms.validators import Email, Length
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "this is a secret, don't do this!"
 Bootstrap(app)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+
+class User(db.Model):
+    email = db.Column(db.String(128), primary_key=True)
+    password = db.Column(db.String(128))
 
 
 class LoginForm(FlaskForm):

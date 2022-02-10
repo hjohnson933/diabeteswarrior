@@ -7,9 +7,12 @@
         "astuple",
         "cdir",
         "diabeteswarrior",
+        "dwarrior",
         "HLTH",
+        "pyfile",
         "spox",
         "Tanita",
+        "werkzeug",
         "WGNBPW",
         "wtforms"
     ],

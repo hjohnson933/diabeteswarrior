@@ -12,5 +12,18 @@
         "Tanita",
         "WGNBPW",
         "wtforms"
-    ]
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "git",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "mattermost",
+            "database": "mattermost",
+            "username": "mattermost",
+            "password": "$$44^plane^CONGO^position^13$$"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
 }

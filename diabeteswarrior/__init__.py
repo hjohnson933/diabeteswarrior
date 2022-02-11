@@ -7,7 +7,7 @@ def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
     # ? a default secret that should be overridden by instance config
-    app.config.from_mapping(SECRET_KEY="dev", DATABASE=os.path.join(app.instance_path, "flaskr.sqlite"),)
+    app.config.from_mapping(SECRET_KEY="dev", DATABASE=os.path.join(app.instance_path, "diabeteswarrior.sqlite"),)
 
     # ? load the instance config, if it exists, when not testing load the test config if passed in then in the try block ensure the instance folder exists
     if test_config is None:
@@ -24,12 +24,12 @@ def create_app(test_config=None):
         return "Hello, World!"
 
     # ? register the database commands
-    from flaskr import db
+    from diabeteswarrior import db
 
     db.init_app(app)
 
     # ? apply the blueprints to the app
-    from flaskr import auth, blog
+    from diabeteswarrior import auth, blog
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(blog.bp)

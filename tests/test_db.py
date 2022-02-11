@@ -1,7 +1,8 @@
 import sqlite3
 
 import pytest
-from diabeteswarrior.db import get_db
+
+from flaskr.db import get_db
 
 
 def test_get_close_db(app):
@@ -10,18 +11,19 @@ def test_get_close_db(app):
         assert db is get_db()
 
     with pytest.raises(sqlite3.ProgrammingError) as e:
-        db.execute('SELECT 1')
+        db.execute("SELECT 1")
 
-    assert 'closed' in str(e.value)
+    assert "closed" in str(e.value)
+
 
 def test_init_db_command(runner, monkeypatch):
-    class Recorder(object):
+    class Recorder:
         called = False
 
     def fake_init_db():
         Recorder.called = True
 
-    monkeypatch.setattr('flaskr.db.init_db', fake_init_db)
-    result = runner.invoke(args=['init-db'])
-    assert 'Initialized' in result.output
+    monkeypatch.setattr("flaskr.db.init_db", fake_init_db)
+    result = runner.invoke(args=["init-db"])
+    assert "Initialized" in result.output
     assert Recorder.called

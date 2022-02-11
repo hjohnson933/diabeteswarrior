@@ -28,6 +28,7 @@ six = "^1.16.0"
 SQLAlchemy = "^1.4.31"
 Werkzeug = "^2.0.3"
 WTForms = "^3.0.1"
+python-dotenv = {extras = ["cli"], version = "^0.19.2"}
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"

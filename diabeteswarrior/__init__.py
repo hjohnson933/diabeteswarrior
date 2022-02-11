@@ -1,3 +1,6 @@
+"""Diabetes Management Application"""
+__version__:str = '0.1.0'
+
 import os
 
 from flask import Flask

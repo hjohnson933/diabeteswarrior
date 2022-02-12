@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS scan;
 DROP TABLE IF EXISTS health;
 DROP TABLE IF EXISTS meal;
 DROP TABLE IF EXISTS food;
+DROP TABLE IF EXISTS bgl;
 
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -90,5 +91,23 @@ CREATE TABLE food (
   sodium INTEGER,
   carbohydrate INTEGER,
   protein INTEGER,
+  FOREIGN KEY (author_id) REFERENCES user (id)
+);
+
+CREATE TABLE bgl (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author_id INTEGER NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  chart_min INTEGER,
+  chart_max INTEGER,
+  limit_min INTEGER,
+  limit_max INTEGER,
+  target_min INTEGER,
+  target_max  INTEGER,
+  my_min INTEGER,
+  my_max INTEGER,
+  meal_ideal INTEGER,
+  meal_good INTEGER,
+  meal_bad INTEGER,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );

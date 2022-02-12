@@ -1,28 +1,23 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Posts{% endblock %}</h1>
-  {% if g.user %}
-    <a class="action" href="{{ url_for('dwarrior.create') }}">New</a>
-  {% endif %}
-{% endblock %}
+<h1>{% block title %}Posts{% endblock title %}</h1>
+{% if g.user %}
+<a class="action" href="{{ url_for('dwarrior.create') }}">New</a>
+{% endif %}
+{% endblock header %}
 
 {% block content %}
-  {% for post in posts %}
-    <article class="post">
-      <header>
-        <div>
-          <h1>{{ post['title'] }}</h1>
-          <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }}</div>
-        </div>
-        {% if g.user['id'] == post['author_id'] %}
-          <a class="action" href="{{ url_for('dwarrior.update', id=post['id']) }}">Edit</a>
-        {% endif %}
-      </header>
-      <p class="body">{{ post['body'] }}</p>
-    </article>
-    {% if not loop.last %}
-      <hr>
-    {% endif %}
-  {% endfor %}
-{% endblock %}
+{% for post in posts %}
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="#">{{ post.username }}</a>
+      <small class="text-muted">{{ post.created.strftime('%Y-%m-%d %H:%M') }}</small>
+    </div>
+    <h2><a class="article-title">{{ post.title }}</a></h2>
+    <p class="article-content">{{ post.body }}</p>
+  </div>
+</article>
+{% endfor %}
+{% endblock content %}

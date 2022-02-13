@@ -40,7 +40,7 @@ CREATE TABLE scan (
   carbohydrate INTEGER,
   food INTEGER,
   notes text,
-  exercises INTEGER,
+  exercise INTEGER,
   medication INTEGER,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );

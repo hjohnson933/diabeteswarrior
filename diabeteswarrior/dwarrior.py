@@ -5,6 +5,7 @@ from diabeteswarrior.auth import login_required
 from diabeteswarrior.db import get_db
 
 bp = Blueprint("dwarrior", __name__)
+bp.config['SECRET_KEY'] = '@@23=SIDE=monday=WIFE=86@@'
 
 @bp.route("/")
 def index():

@@ -17,17 +17,15 @@ def login_required(view):
         return view(**kwargs)
     return wrapped_view
 
-
 @bp.before_app_request
 def load_logged_in_user():
-    """If a user id is stored in the session, load the user object from the database into ``g.user``."""
+    """If a user id is stored in the session, load the user object from the database into g.user."""
 
     user_id = session.get("user_id")
     if user_id is None:
         g.user = None
     else:
         g.user = (get_db().execute("SELECT * FROM user WHERE id = ?", (user_id,)).fetchone())
-
 
 @bp.route("/register", methods=("GET", "POST"))
 def register():
@@ -44,7 +42,6 @@ def register():
         elif not password:
             error = "Password is required."
 
-        # ? The username was already taken, which caused the commit to fail. Show a validation error. Upon Success, go to the login page.
         if error is None:
             try:
                 db.execute("INSERT INTO user (username, password) VALUES (?, ?)", (username, generate_password_hash(password)),)
@@ -55,7 +52,6 @@ def register():
                 return redirect(url_for("auth.login"))
 
         flash(error)
-
     return render_template("auth/register.html")
 
 
@@ -81,7 +77,6 @@ def login():
             return redirect(url_for("index"))
 
         flash(error)
-
     return render_template("auth/login.html")
 
 

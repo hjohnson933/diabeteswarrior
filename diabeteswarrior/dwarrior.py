@@ -31,4 +31,8 @@ def register():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     form = Login()
+    if form.validate_on_submit():
+        flash(F"Account registered for {form.username.data} has been logged in.", "success")
+        return redirect(url_for('index'))
+    flash(F"Login failed for {form.username.data}, check your user info and tray again.", "danger")
     return render_template('login.html', title='Login', form=form)

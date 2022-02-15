@@ -17,6 +17,8 @@
         "itsdangerous",
         "pycparser",
         "pyfile",
+        "pylint",
+        "pyproject",
         "pytest",
         "spox",
         "Tanita",

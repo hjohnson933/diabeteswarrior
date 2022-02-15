@@ -27,12 +27,14 @@ six = "^1.16.0"
 SQLAlchemy = "^1.4.31"
 Werkzeug = "^2.0.3"
 WTForms = "^3.0.1"
+python-dotenv = "^0.19.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
 isort = "^5.10.1"
 pytest = "^7.0.1"
 coverage = "^6.3.1"
+pylint = "^2.12.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

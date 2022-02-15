@@ -1,2 +1,5 @@
+2022-02-15 00:58 added the templates and moved the home and about pages into the templates directory.
+2022-02-14 23:09 Added pylint support
+2022-02-14 23:01 Added the application to the package
 2022-02-14 22:56 Installed dependencies into the virtual environment
 2022-02-14 22:24 Initialized poetery

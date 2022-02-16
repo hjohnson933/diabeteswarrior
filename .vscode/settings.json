@@ -11,7 +11,7 @@
         "cffi",
         "diabeteswarrior",
         "dotenv",
-        "dwarrior",
+        "flaskblog",
         "HLTH",
         "isort",
         "itsdangerous",
@@ -33,7 +33,7 @@
             "port": 5432,
             "driver": "PostgreSQL",
             "name": "mattermost",
-            "database": "mattermost",
+            "datalayout": "mattermost",
             "username": "mattermost",
             "password": "$$44^plane^CONGO^position^13$$"
         }

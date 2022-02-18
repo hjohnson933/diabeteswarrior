@@ -4,7 +4,7 @@ from flask import current_app
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
-from flaskblog import db, login_manager
+from diabeteswarrior import db, login_manager
 
 
 @login_manager.user_loader
@@ -27,7 +27,7 @@ class User(db.Model, UserMixin):
     @staticmethod
     def verify_reset_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
-        #pylint: disable=bare-exception
+        #pylint: disable=bare-except
         try:
             user_id = s.loads(token)['user_id']
         except:

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Diabeteswarrior Runtime"""
 
-from flaskblog import create_app
+from diabeteswarrior import create_app
 
 app = create_app()
 

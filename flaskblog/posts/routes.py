@@ -18,14 +18,14 @@ def new_post():
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.home'))
-    return render_template('create_post.html', title='New Post', form=form, legend='New Post')
+    return render_template('posts/create_post.html', title='New Post', form=form, legend='New Post')
 
 
 @posts.route("/post/<int:post_id>")
 def post(post_id):
     # pylint: disable=redefined-outer-name
     post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post)
+    return render_template('posts/post.html', title=post.title, post=post)
 
 
 @posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
@@ -45,7 +45,7 @@ def update_post(post_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
+    return render_template('posts/create_post.html', title='Update Post', form=form, legend='Update Post')
 
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])

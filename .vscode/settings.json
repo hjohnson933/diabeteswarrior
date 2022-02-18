@@ -5,6 +5,7 @@
     "cSpell.words": [
         "asdict",
         "astuple",
+        "autopep",
         "bgls",
         "cdir",
         "certifi",
@@ -15,6 +16,7 @@
         "HLTH",
         "isort",
         "itsdangerous",
+        "Managment",
         "pycparser",
         "pyfile",
         "pylint",

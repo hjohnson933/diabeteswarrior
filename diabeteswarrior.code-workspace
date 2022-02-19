@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+    ],
+    "settings": {
+        "sqltools.connections": [
+            {
+                "previewLimit": 50,
+                "server": "git",
+                "port": 5432,
+                "driver": "PostgreSQL",
+                "name": "mattermost",
+                "datalayout": "mattermost",
+                "username": "mattermost",
+                "password": "$$44^plane^CONGO^position^13$$"
+            }
+        ],
+        "sqltools.useNodeRuntime": true
+    }
+}

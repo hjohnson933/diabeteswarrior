@@ -56,7 +56,7 @@ class Post(db.Model):
 
 class Health(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_posted = db.Column(db.DateTime, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     po_pulse = db.Column(db.Integer)
     po_ox = db.Column(db.Integer)
@@ -72,7 +72,7 @@ class Health(db.Model):
 
 class Scan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_posted = db.Column(db.DateTime, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     message = db.Column(db.Integer)
     glucose_id = db.Column(db.Integer)
@@ -90,7 +90,7 @@ class Scan(db.Model):
 
 class Meal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_posted = db.Column(db.DateTime, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     servings = db.Column(db.Text)
     indices = db.Column(db.Text)
@@ -98,7 +98,7 @@ class Meal(db.Model):
 
 class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_posted = db.Column(db.DateTime, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     domain = db.Column(db.String(120))
     name = db.Column(db.String(120))
@@ -114,7 +114,7 @@ class Food(db.Model):
 
 class CGM(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_posted = db.Column(db.DateTime, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     Device = db.Column(db.String(120))
     Number = db.Column(db.String(120))

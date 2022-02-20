@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <article class="media content-section">
+    <img class="rounded-circle article-img " src="{{ url_for('static', filename='profile_pics' + health.author.image_file)">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="{{ url_for('users.user_healths', username=health.author.username) }}">{{ health.author.username }}</a>
+        <small class="text-muted">{{ health.date_posted.strftime('%Y-%m-%d') }}</small>
+        {% if health.author == current_user %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('healths.update_health', health_id=health.id) }}">Update</a>
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+          </div>
+        {% endif %}
+      </div>
+      <h2 class="article-title">{{ health.date_posted.strftime('%Y-%m-%d') }}</h2>
+      <p class="article-content">
+        Pulse: {{ health.po_pulse }}</br>
+        Oxygen: {{ health.po_ox }}</br>
+        Weight: {{ health.weight }}</br>
+        Fat: {{ health.fat }}</br>
+        Pulse: {{ health.bp_pulse }}</br>
+        Systolic: {{ health.bp_systolic }}</br>
+        Diastolic: {{ health.bp_diastolic }}</br>
+        Irregular Heart Beat: {{ health.bp_ihb }}</br>
+        Hypertension Stage: {{ health.bp_hypertension }}</br>
+        Body Temperature: {{ health.temperature }}</br>
+      </p>
+    </div>
+  </article>
+  <div class="modal fade" id="deleteModa" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Health Record?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('healths.delete_health', health_id=health.id) }}" method="POST">
+            <input class="'btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

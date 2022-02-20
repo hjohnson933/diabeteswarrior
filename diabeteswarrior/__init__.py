@@ -16,7 +16,7 @@ mail = Mail()
 
 #pylint: disable=import-outside-toplevel
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(Config)
 
     db.init_app(app)

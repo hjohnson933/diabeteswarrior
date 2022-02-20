@@ -19,6 +19,11 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
+    healths = db.relationship('Health', backref='author', lazy=True)
+    scans = db.relationship('Scan', backref='author', lazy=True)
+    meals = db.relationship('Meal', backref='author', lazy=True)
+    food = db.relationship('Food', backref='author', lazy=True)
+    cgms = db.relationship('CGM', backref='author', lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)

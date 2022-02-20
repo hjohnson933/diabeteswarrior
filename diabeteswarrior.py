@@ -1,5 +1,3 @@
-#!/usr/bin/env python3.9
-# -*- coding: utf-8 -*-
 """Diabeteswarrior Runtime"""
 
 from diabeteswarrior import create_app

@@ -1,0 +1,177 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <div class="content-section">
+    <form method="POST" action="">
+      {{ from.hidden_tag() }}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">{{ legend }}</legend>
+        <div class="form-group">
+          {{ form.title.label(class="form-control-label") }}
+          {% if form.title.errors %}
+            {{ form.title(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.title.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.title(class="form-control form-control-lg")}}
+          {% endif %}
+        </div>
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.po_pulse.label(class=form-control-label) }}
+          {% if form.po_pulse.errors %}
+            {{ form.po_pulse(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.po_pulse.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.po_pulse(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.po_ox.label(class=form-control-label) }}
+          {% if form.po_ox.errors %}
+            {{ form.po_ox(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.po_ox.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.po_ox(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.weight.label(class=form-control-label) }}
+          {% if form.weight.errors %}
+            {{ form.weight(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.weight.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.weight(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.fat.label(class=form-control-label) }}
+          {% if form.fat.errors %}
+            {{ form.fat(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.fat.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.fat(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.bp_pulse.label(class=form-control-label) }}
+          {% if form.bp_pulse.errors %}
+            {{ form.bp_pulse(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.bp_pulse.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.bp_pulse(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.bp_systolic.label(class=form-control-label) }}
+          {% if form.bp_systolic.errors %}
+            {{ form.bp_systolic(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.bp_systolic.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.bp_systolic(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.bp_diastolic.label(class=form-control-label) }}
+          {% if form.bp_diastolic.errors %}
+            {{ form.bp_diastolic(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.bp_diastolic.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.bp_diastolic(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.bp_ihb.label(class=form-control-label) }}
+          {% if form.bp_ihb.errors %}
+            {{ form.bp_ihb(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.bp_ihb.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.bp_ihb(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.bp_hypertension.label(class=form-control-label) }}
+          {% if form.bp_hypertension.errors %}
+            {{ form.bp_hypertension(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.bp_hypertension.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.bp_hypertension(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+        <!-- from here -->
+        <div class="form-group">
+          {{ form.temperature.label(class=form-control-label) }}
+          {% if form.temperature.errors %}
+            {{ form.temperature(class="form-control form-control-lg is-invlaid") }}
+            <div class="invalid-feedback">
+              {% for error in form.temperature.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.temperature(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <!-- to here   -->
+      </fieldset>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-outline-inf") }}
+      </div>
+    </form>
+  </div>
+{% endblock %}

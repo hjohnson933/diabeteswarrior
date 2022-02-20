@@ -10,6 +10,7 @@
         "cdir",
         "certifi",
         "cffi",
+        "cgms",
         "diabeteswarrior",
         "dotenv",
         "flaskblog",

@@ -81,11 +81,13 @@ class Scan(db.Model):
     bolus = db.Column(db.Boolean)
     bolus_u = db.Column(db.Integer)
     basal = db.Column(db.Boolean)
-    basal = db.Column(db.Integer)
+    basal_u = db.Column(db.Integer)
     food = db.Column(db.Boolean)
     food_u = db.Column(db.Integer)
     medication = db.Column(db.Boolean)
     exercise = db.Column(db.Boolean)
+    lower_limit = db.Column(db.Integer,default=-1)
+    upper_limit = db.Column(db.Integer,default=1)
 
 
 class Meal(db.Model):

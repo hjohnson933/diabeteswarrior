@@ -75,7 +75,7 @@ class Scan(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     message = db.Column(db.Integer)
-    glucose_id = db.Column(db.Integer)
+    glucose = db.Column(db.Integer)
     trend = db.Column(db.Integer)
     notes = db.Column(db.Text)
     bolus = db.Column(db.Boolean)

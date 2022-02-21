@@ -6,6 +6,10 @@ from diabeteswarrior.scans.forms import ScanForm
 
 scans = Blueprint('scans', __name__)
 
+@scans.route("/scan")
+def home():
+    return render_template('scans/home.html')
+
 @scans.route('/scan/new', methods=['GET', 'POST'])
 @login_required
 def new_scan():
@@ -17,8 +21,7 @@ def new_scan():
         db.session.add(scan)
         db.session.commit()
         flash('Your scan record has been created.', 'success')
-        # todo return to a scan page
-        return redirect(url_for('main.home'))
+        return redirect(url_for('scans.home'))
     return render_template('scans/create_scan.html', title=title, form=form, legend=title)
 
 @scans.route('/scan/<int:scan_id>')
@@ -82,5 +85,4 @@ def delete_scan(scan_id):
     db.session.delete(scan)
     db.session.commit()
     flash('Yourscan record has been deleted!', 'success')
-    # todo return to a scan records page
-    return redirect(url_for('main.home'))
+    return redirect(url_for('scans.home'))

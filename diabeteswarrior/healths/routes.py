@@ -6,6 +6,10 @@ from diabeteswarrior.healths.forms import HealthForm
 
 healths = Blueprint('healths', __name__)
 
+@healths.route("/health")
+def home():
+    return render_template('healths/home.html')
+
 @healths.route('/health/new', methods=['GET', 'POST'])
 @login_required
 def new_health():
@@ -16,8 +20,7 @@ def new_health():
         db.session.add(health)
         db.session.commit()
         flash('Your health record has been created!', 'success')
-        # todo return to a health records page.
-        return redirect(url_for('main.home'))
+        return redirect(url_for('healths.home'))
     return render_template('healths/create_health.html', title='New Health Record', form=form, legend='New Health Record')
 
 @healths.route('/health/<int:health_id>')
@@ -72,5 +75,4 @@ def delete_health(health_id):
     db.session.delete(health)
     db.session.commit()
     flash('You health record has been deleted!', 'success')
-    # todo return to a health records page
-    return redirect(url_for('main.home'))
+    return redirect(url_for('healths.home'))

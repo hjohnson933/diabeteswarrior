@@ -18,6 +18,7 @@
         "isort",
         "itsdangerous",
         "Managment",
+        "numpy",
         "pycparser",
         "pyfile",
         "pylint",

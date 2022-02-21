@@ -24,10 +24,12 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     mail.init_app(app)
 
+    from diabeteswarrior.healths.routes import healths
     from diabeteswarrior.users.routes import users
     from diabeteswarrior.posts.routes import posts
     from diabeteswarrior.main.routes import main
     from diabeteswarrior.errors.handlers import errors
+    app.register_blueprint(healths)
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)

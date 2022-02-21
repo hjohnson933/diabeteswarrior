@@ -1,7 +1,6 @@
 import arrow as Arrow
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, IntegerField, DecimalField, BooleanField, SelectField
-from wtforms.validators import DataRequired
+from wtforms import BooleanField, DecimalField, IntegerField, SelectField, StringField, SubmitField
 
 
 class HealthForm(FlaskForm):

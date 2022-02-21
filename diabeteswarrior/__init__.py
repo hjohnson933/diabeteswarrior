@@ -16,13 +16,13 @@ mail = Mail()
 
 #pylint: disable=import-outside-toplevel
 def create_app(config_class=Config):
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object(Config)
+    server = Flask(__name__, instance_relative_config=True)
+    server.config.from_object(Config)
 
-    db.init_app(app)
-    bcrypt.init_app(app)
-    login_manager.init_app(app)
-    mail.init_app(app)
+    db.init_app(server)
+    bcrypt.init_app(server)
+    login_manager.init_app(server)
+    mail.init_app(server)
 
     from diabeteswarrior.scans.routes import scans
     from diabeteswarrior.healths.routes import healths
@@ -30,11 +30,11 @@ def create_app(config_class=Config):
     from diabeteswarrior.posts.routes import posts
     from diabeteswarrior.main.routes import main
     from diabeteswarrior.errors.handlers import errors
-    app.register_blueprint(scans)
-    app.register_blueprint(healths)
-    app.register_blueprint(users)
-    app.register_blueprint(posts)
-    app.register_blueprint(main)
-    app.register_blueprint(errors)
+    server.register_blueprint(scans)
+    server.register_blueprint(healths)
+    server.register_blueprint(users)
+    server.register_blueprint(posts)
+    server.register_blueprint(main)
+    server.register_blueprint(errors)
 
-    return app
+    return server

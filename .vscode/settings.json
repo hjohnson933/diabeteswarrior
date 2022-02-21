@@ -19,6 +19,7 @@
         "itsdangerous",
         "Managment",
         "numpy",
+        "plotly",
         "pycparser",
         "pyfile",
         "pylint",

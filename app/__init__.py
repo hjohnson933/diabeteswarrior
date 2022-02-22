@@ -10,33 +10,37 @@ def create_app():
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
 
-    register_dashapps(server)
+    from app.health.layout import layout as layout1
+    from app.health.callbacks import register_callbacks as register_callbacks1
+    register_dashapps(server, 'Health', 'health', layout1, register_callbacks1)
+
+    from app.scan.layout import layout as layout2
+    from app.scan.callbacks import register_callbacks as register_callbacks2
+    register_dashapps(server, 'Scan', 'scan', layout2, register_callbacks2)
+
     register_extensions(server)
     register_blueprints(server)
 
     return server
 
 
-def register_dashapps(app):
-    from app.dashapp1.layout import layout
-    from app.dashapp1.callbacks import register_callbacks
-
+def register_dashapps(app, title, base_pathname, layout, register_callbacks_fun):
     meta_viewport = {
         "name": "viewport",
         "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
 
-    dashapp1 = dash.Dash(__name__,
-                         server=app,
-                         url_base_pathname='/dashboard/',
-                         assets_folder=get_root_path(__name__) + '/dashboard/assets/',
-                         meta_tags=[meta_viewport])
+    my_dashapp = dash.Dash(__name__,
+                           server=app,
+                           url_base_pathname=F'/{base_pathname}/',
+                           assets_folder=get_root_path(__name__) + F'/{base_pathname}/assets/',
+                           meta_tags=[meta_viewport])
 
     with app.app_context():
-        dashapp1.title = 'Dashapp 1'
-        dashapp1.layout = layout
-        register_callbacks(dashapp1)
+        my_dashapp.title = title
+        my_dashapp.layout = layout
+        register_callbacks_fun(my_dashapp)
 
-        _project_dashviews(dashapp1)
+        _project_dashviews(my_dashapp)
 
 
 def _project_dashviews(dashapp):

@@ -3,6 +3,7 @@
     "python.linting.pylintEnabled": false,
     "python.linting.enabled": true,
     "cSpell.words": [
+        "asarray",
         "asdict",
         "astuple",
         "autopep",

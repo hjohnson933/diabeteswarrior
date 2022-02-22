@@ -59,4 +59,4 @@ def register_extensions(server):
 def register_blueprints(server):
     from app.webapp import server_bp
 
-    server.register_blueprints(server_bp)
+    server.register_blueprint(server_bp)

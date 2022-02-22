@@ -1,3 +1,4 @@
+2022-02-22 12:36 fixed a typo in app/__init__.py
 2022-02-22 12:33 Fixed a typo in dashapp1 callbacks.py
 2022-02-22 11:46 Built deom dash app
 2022-02-22 10:53 Built the flask application

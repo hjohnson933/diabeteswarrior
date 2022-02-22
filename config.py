@@ -1,5 +1,6 @@
 import os
 
+
 def get_sqlite_uri():
     basedir = os.path.abspath(os.path.dirname(__file__))
     db_name = os.environ['DATABASE_URL'].split('/')[-1]

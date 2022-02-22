@@ -8,12 +8,14 @@ from app.models import User
 
 server_bp = Blueprint('main', __name__)
 
+
 @server_bp.route('/')
-def index() ->str:
+def index() -> str:
     return render_template('index.html', title='Home Page')
 
+
 @server_bp.route('/login/', methods=['GET', 'POST'])
-def login() ->str:
+def login() -> str:
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 
@@ -32,15 +34,17 @@ def login() ->str:
 
     return render_template('login,html', title='Sign In', form=form)
 
+
 @server_bp.route('/logout/')
 @login_required
-def logout() ->str:
+def logout() -> str:
     logout_user()
 
     return redirect(url_for('main.index'))
 
+
 @server_bp.route('/register/', methods=['GET', 'POST'])
-def register() ->str:
+def register() -> str:
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 

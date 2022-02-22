@@ -1,6 +1,6 @@
 {
-    "python.linting.flake8Enabled": false,
-    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false,
     "python.linting.enabled": true,
     "cSpell.words": [
         "asdict",
@@ -13,7 +13,6 @@
         "cgms",
         "diabeteswarrior",
         "dotenv",
-        "diabeteswarrior",
         "HLTH",
         "isort",
         "itsdangerous",
@@ -27,6 +26,7 @@
         "pytest",
         "spox",
         "Tanita",
+        "TSLA",
         "werkzeug",
         "WGNBPW",
         "wtforms"

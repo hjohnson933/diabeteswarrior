@@ -1,3 +1,5 @@
+2022-02-22 12:33 Fixed a typo in dashapp1 callbacks.py
+2022-02-22 11:46 Built deom dash app
 2022-02-22 10:53 Built the flask application
 2022-02-22 07:46 Installed dependencies into the virtual environment
 2022-02-22 07:46 Initialized poetery

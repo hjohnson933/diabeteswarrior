@@ -17,6 +17,7 @@ pandas-datareader = "^0.10.0"
 gunicorn = "^20.1.0"
 python-dotenv = "^0.19.2"
 arrow = "^1.2.2"
+prompt-toolkit = "^3.0.28"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"

@@ -10,13 +10,17 @@ def create_app():
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
 
-    from app.health.layout import layout as layout1
-    from app.health.callbacks import register_callbacks as register_callbacks1
-    register_dashapps(server, 'Health', 'health', layout1, register_callbacks1)
+    from app.health.layout import layout
+    from app.health.callbacks import register_callbacks
+    register_dashapps(server, 'Health', 'health', layout, register_callbacks)
 
-    from app.scan.layout import layout as layout2
-    from app.scan.callbacks import register_callbacks as register_callbacks2
-    register_dashapps(server, 'Scan', 'scan', layout2, register_callbacks2)
+    from app.scan.layout import layout
+    from app.scan.callbacks import register_callbacks
+    register_dashapps(server, 'Scan', 'scan', layout, register_callbacks)
+
+    from app.food.layout import layout
+    from app.food.callbacks import register_callbacks
+    register_dashapps(server, 'Food', 'food', layout, register_callbacks)
 
     register_extensions(server)
     register_blueprints(server)

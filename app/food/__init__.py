@@ -1,11 +1,9 @@
-"""Health Records"""
-
-__cryptonym__ = 'health'
-__version__ = '0.1.0'
+"""Meal Records"""
+__cryptonym__ = "meal"
+__version__ = "0.1.0"
 
 import hashlib
 from dataclasses import dataclass
-from decimal import Decimal
 from pathlib import Path as Pth
 from shutil import copyfile as Cpf
 
@@ -16,7 +14,8 @@ DATA_FILE = MODULE_ROOT.joinpath(F"{__cryptonym__}.csv")
 BACKUP_FILE = MODULE_ROOT.joinpath(F"{__cryptonym__}.csv.backup")
 
 if not DATA_FILE.exists():
-    HEADER_LINE = '"ts","po_pulse","spox","weight","fat","pulse","systolic","diastolic","ihb","hypertension","temperature"'
+    HEADER_LINE = '"ts","message","notes","bolus","bolus_u","basal","basal_u","food","carbohydrate","exercise","medication","glucose",\
+        "trend","lower_limit","upper_limit"'
     DATA_FILE.touch(mode=0o666, exist_ok=True)
     with DATA_FILE.open('a', encoding='utf-8') as new_data_file:
         new_data_file.write(F'{HEADER_LINE}\n')
@@ -34,25 +33,14 @@ def enable_record_archive() -> bool:
 @dataclass
 class Records:
     ts: str
-    po_pulse: int
-    spox: int
-    weight: Decimal
-    fat: Decimal
-    pulse: int
-    systolic: int
-    diastolic: int
-    ihb: bool
-    hypertension: int
-    temperature: Decimal
-
-    def __post_init__(self) -> None:
-        for _ in [self.po_pulse, self.spox, self.pulse, self.systolic, self.diastolic, self.hypertension]:
-            if _ < 0:
-                raise ValueError(F'{_} must be a positive integer!')
-
-            for _ in [self.weight, self.fat, self.temperature]:
-                if _ < 0:
-                    raise ValueError(F'{_} must be a positive decimal number!')
+    calories: int
+    fat: int
+    cholesterol: int
+    sodium: int
+    carbohydrate: int
+    protein: int
+    servings: list[float]
+    indices: list[int]
 
     @staticmethod
     def records_backup_restore(opcode) -> str:
@@ -68,9 +56,8 @@ class Records:
             return 'Incorrect opecode given, send "c" or "d".'
 
     def record_add(self) -> int:
-        """"Write new record to the database and return the number of bytes written."""
-        record = F'{Arw.now().format("YYYY-MM-DD HH:mm")},{self.po_pulse},{self.spox},{self.weight},{self.fat},{self.pulse},\
-            {self.systolic},{self.diastolic},{self.ihb},{self.hypertension},{self.temperature}'
-        with DATA_FILE.open('a', encoding='utf-8') as data_file:
-            hr_data = data_file.write(F"{record}\n")
+        """Write this record to file."""
+        with DATA_FILE.open("a") as data_file:
+            hr_data = data_file.write(f'{Arw.now().format("YYYY-MM-DD HH:mm")},{self.calories},{self.fat},{self.cholesterol},{self.sodium},\
+                {self.carbohydrate},{self.protein},"{self.servings}","{self.indices}"\n')
             return hr_data

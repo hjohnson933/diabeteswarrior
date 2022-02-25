@@ -39,6 +39,7 @@ def register_dashapps(app, title, base_pathname, layout, register_callbacks_fun)
                            assets_folder=get_root_path(__name__) + F'/{base_pathname}/assets/',
                            meta_tags=[meta_viewport],
                            external_stylesheets=[dbc.themes.BOOTSTRAP])
+    my_dashapp.enable_dev_tools()
 
     with app.app_context():
         my_dashapp.title = title

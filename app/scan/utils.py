@@ -1,9 +1,9 @@
-"""If opcode equals c copy the DATA_FILE to the BACKUP_FILE. If opcode equals d copy the BACKUP_FILE to DATA_FILE. Any other opcode return a value error."""
-
-from dataclasses import dataclass
 import hashlib
-from shutil import copyfile as Cpf
+from dataclasses import dataclass
 from pathlib import Path as Pth
+from shutil import copyfile as Cpf
+
+import arrow as Arw
 
 MODULE_ROOT = Pth(__file__).parent
 SCAN_DATA_FILE = MODULE_ROOT.joinpath("food.csv")
@@ -57,5 +57,44 @@ def backup_restore(opcode, data_file, backup_file) -> str:
 
 
 @dataclass
-class Records:
-    ...
+class ScanRecords:
+    ts: str
+    message: int
+    notes: str
+    glucose: int
+    trend: int
+    bolus: bool
+    bolus_u: int
+    basal: bool
+    basal_u: int
+    food: bool
+    carbohydrate: int
+    medication: bool
+    exercise: bool
+    lower_limit: int
+    upper_limit: int
+
+    def __post_init__(self):
+        if self.message not in range(-3, 4):
+            raise ValueError("Message must be in the range of -3 to 3.")
+        if self.trend not in range(-2, 3):
+            raise ValueError("Trend must be in the range of -2 to 2.")
+        if self.glucose < 1:
+            raise ValueError("Glucose must be a positive integer.")
+
+    @staticmethod
+    def records_backup_restore(opcode) -> str:
+        if not archived_status(SCAN_DATA_FILE, SCAN_BACKUP_FILE):
+            if opcode == 'c':
+                Cpf(SCAN_DATA_FILE, SCAN_BACKUP_FILE)
+                return 'The data file was successfully backed up.'
+            elif opcode == 'd':
+                Cpf(SCAN_BACKUP_FILE, SCAN_DATA_FILE)
+                return 'The data file was restored successfully.'
+            return 'Incorrect opecode given, send "c" or "d".'
+
+    def record_add(self) -> int:
+        with SCAN_DATA_FILE.open("a") as data_file:
+            hr_data = data_file.write(f'{Arw.now().format("YYYY-MM-DD HH:mm")},{self.calories},{self.fat},{self.cholesterol},{self.sodium},\
+                {self.carbohydrate},{self.protein},"{self.servings}","{self.indices}"\n')
+            return hr_data

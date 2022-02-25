@@ -1,25 +1,25 @@
 import dash
+import dash_bootstrap_components as dbc
+from config import BaseConfig
 from flask import Flask
 from flask.helpers import get_root_path
 from flask_login import login_required
-
-from config import BaseConfig
 
 
 def create_app():
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
 
-    from app.health.layout import layout
     from app.health.callbacks import register_callbacks
+    from app.health.layout import layout
     register_dashapps(server, 'Health', 'health', layout, register_callbacks)
 
-    from app.scan.layout import layout
     from app.scan.callbacks import register_callbacks
+    from app.scan.layout import layout
     register_dashapps(server, 'Scan', 'scan', layout, register_callbacks)
 
-    from app.food.layout import layout
     from app.food.callbacks import register_callbacks
+    from app.food.layout import layout
     register_dashapps(server, 'Food', 'food', layout, register_callbacks)
 
     register_extensions(server)
@@ -37,7 +37,8 @@ def register_dashapps(app, title, base_pathname, layout, register_callbacks_fun)
                            server=app,
                            url_base_pathname=F'/{base_pathname}/',
                            assets_folder=get_root_path(__name__) + F'/{base_pathname}/assets/',
-                           meta_tags=[meta_viewport])
+                           meta_tags=[meta_viewport],
+                           external_stylesheets=[dbc.themes.BOOTSTRAP])
 
     with app.app_context():
         my_dashapp.title = title
@@ -54,9 +55,7 @@ def _project_dashviews(dashapp):
 
 
 def register_extensions(server):
-    from app.extensions import db
-    from app.extensions import login
-    from app.extensions import migrate
+    from app.extensions import db, login, migrate
 
     db.init_app(server)
     login.init_app(server)

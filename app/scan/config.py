@@ -6,8 +6,6 @@ DATA_ROOT = MODULE_ROOT.joinpath('data')
 
 BASE_FILE_NAME = 'scan'
 
-SCAN_BACKUP_FILE = MODULE_ROOT.joinpath("food.csv.backup")
-
 DATA_FILE_HEADER = ["ts", "message", "notes", "bolus", "bolus_u", "basal", "basal_u", "food", "carbohydrate", "exercise", "medication", "glucose", "trend", "lower_limit", "upper_limit"]
 
 MODULE_HELP = {

@@ -43,15 +43,6 @@ def backup_restore(opcode, data_file, backup_file) -> str:
 
 
 def register_callbacks(dashapp):
-    # @dashapp.callback(
-    #     Output('my-graph', 'figure'),
-    #     Input('data-scope', 'value'),
-    #     State('user-store', 'data')
-    # )
-    # def update_graph(selected_dropdown_value, data) -> dict:
-    #     df = pdr.get_data_yahoo(selected_dropdown_value, start=dt(2017, 1, 1), end=dt.now())
-    #     return {'data': [{'x': df.index, 'y': df.Close}], 'layout': {'margin': {'l': 40, 'r': 0, 't': 20, 'b': 30}}}
-
     @dashapp.callback(
         Output('user-store', 'data'),
         Input('scope-dropdown-menu', 'value')
@@ -88,9 +79,25 @@ def register_callbacks(dashapp):
         """Disable submit button till there is a glucose value entered.
         Disable the restore and backup buttons if the data and backup files are the same."""
 
+        test_archive = 'No'
+        DATA_FILE = P(user_store['data_file'])
+        BACKUP_FILE = P(user_store['backup_file'])
+        (_ := archived_status(DATA_FILE, BACKUP_FILE))
+        if _:
+            test_archive = 'Yes'
+
         if glucose_input is None:
             submit_enabled = 'disabled'
         else:
             submit_enabled = None
 
-        return str(user_store), submit_enabled
+        return str(test_archive), submit_enabled
+
+    # @dashapp.callback(
+    #     Output('my-graph', 'figure'),
+    #     Input('data-scope', 'value'),
+    #     State('user-store', 'data')
+    # )
+    # def update_graph(selected_dropdown_value, data) -> dict:
+    #     df = pdr.get_data_yahoo(selected_dropdown_value, start=dt(2017, 1, 1), end=dt.now())
+    #     return {'data': [{'x': df.index, 'y': df.Close}], 'layout': {'margin': {'l': 40, 'r': 0, 't': 20, 'b': 30}}}

@@ -82,16 +82,16 @@ layout = html.Div(id='main',
                                        'notes', 'input', 'text', 'Additional notes.', False, None)]),
                                    html.Br(),
                                    dbc.Row(id='button-row', children=[
-                                       dbc.Col(
-                                           id='button-row-left'),
-                                       dbc.Col(
-                                           id='button-row-center', children=[
-                                               form_buttons('submit', 'button', 'Submit'),
-                                               form_buttons('restore', 'button', 'Restore'),
-                                               form_buttons('backup', 'button', 'Backup')
+                                       dbc.Col(id='button-row-left'),
+                                       dbc.Col(id='button-row-center', children=[
+                                               form_buttons(
+                                                   'submit', 'button', 'Submit'),
+                                               form_buttons(
+                                                   'restore', 'button', 'Restore'),
+                                               form_buttons(
+                                                   'backup', 'button', 'Backup')
                                                ]),
-                                       dbc.Col(
-                                           id='button-row-right')
+                                       dbc.Col(id='button-row-right')
                                    ]),
                                    html.Hr(),
                                    html.P(id='button-feedback')

@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.urls import url_parse
 
-from app.extensions import db
+from app.extensions import authenticate
 from app.forms import LoginForm, RegistrationForm
 from app.models import User
 
@@ -52,8 +52,8 @@ def register() -> str:
     if form.validate_on_submit():
         user = User(username=form.username.data)
         user.set_password(password=form.password.data)
-        db.session.add(user)
-        db.session.commit()
+        authenticate.session.add(user)
+        authenticate.session.commit()
 
         return redirect(url_for('main.login'))
 

@@ -1,5 +1,3 @@
-import json
-
 import arrow as Arw
 import dash
 from dash.dependencies import Input, Output
@@ -36,20 +34,26 @@ def register_callbacks(dashapp):
             return F"Interface for User: {data['username']}"
 
     @dashapp.callback(
-        Output('confirm-scan-output', 'children'),
-        Input('user-store', 'data'),
+        Output('submit-button', 'n_clicks'),
+        Output('event-dropdown-menu', 'value'),
+        Output('message-dropdown-menu', 'value'),
+        Output('trend-dropdown-menu', 'value'),
+        Output('glucose-input', 'value'),
+        Output('bolus_unit-input', 'value'),
+        Output('basal_unit-input', 'value'),
+        Output('carbohydrate-input', 'value'),
+        Output('notes-input', 'value'),
+        Input('event-dropdown-menu', 'value'),
         Input('message-dropdown-menu', 'value'),
         Input('trend-dropdown-menu', 'value'),
         Input('glucose-input', 'value'),
         Input('bolus_unit-input', 'value'),
         Input('basal_unit-input', 'value'),
         Input('carbohydrate-input', 'value'),
-        Input('event-dropdown-menu', 'value'),
         Input('notes-input', 'value'),
-        Input('submit-button', 'n_clicks'),
-        Input('confirm-scan-input', 'submit_n_clicks')
+        Input('submit-button', 'n_clicks')
     )
-    def submit_restore_backup(user_store, message, trend, glucose, bolus_u, basal_u, carbohydrate, event, notes, submit_button, confirm):
+    def submit_restore_backup(event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes, submit_button):
         """Disable submit button till there is a glucose value entered.
         Disable the restore and backup buttons if the data and backup files are the same."""
 
@@ -63,18 +67,18 @@ def register_callbacks(dashapp):
         exercise = False
         lower_limit = -1
         upper_limit = 1
-        trend = trend_dict[trend]
+        trend_n = trend_dict[trend]
 
-        if trend == -2:
+        if trend_n == -2:
             lower_limit = -12
             upper_limit = -2
-        elif trend == -1:
+        elif trend_n == -1:
             lower_limit = -2
             upper_limit = -1
-        elif trend == 1:
+        elif trend_n == 1:
             lower_limit = 1
             upper_limit = 2
-        elif trend == 2:
+        elif trend_n == 2:
             lower_limit = 2
             upper_limit = 12
 
@@ -98,7 +102,7 @@ def register_callbacks(dashapp):
             message=message_dict[message],
             notes=notes,
             glucose=glucose,
-            trend=trend,
+            trend=trend_n,
             bolus=bolus,
             bolus_u=bolus_u,
             basal=basal,
@@ -111,10 +115,14 @@ def register_callbacks(dashapp):
             upper_limit=upper_limit
             )
 
-        
-        # session.add(scan)
-        # print(session.commit())
-        return "Test"
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        if button_id == 'submit-button' and glucose is not None:
+            session.add(scan)
+            if submit_button > 0:
+                session.commit()
+                return 0, 'No Special Event', 'No alarm', 'Pointing right', None, None, None, None, None
+        else:
+            return submit_button, event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes
 
     # @dashapp.callback(
     #     Output('my-graph', 'figure'),

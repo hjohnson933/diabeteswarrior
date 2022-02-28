@@ -49,8 +49,6 @@ layout = html.Div(
     id='main',
     className='container-xl',
     children=[
-        dcc.ConfirmDialog(id='confirm-scan-input', message='OK to save this scan or Cancel to make a change.'),
-        html.Div(id='confirm-scan-output'),
         dcc.Store(id='user-store'),
         html.H1(id='username', className='card-title'),
         html.H1(id='bgl', className='card-header', children='Glucose Level Scan'),

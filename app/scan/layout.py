@@ -1,3 +1,5 @@
+from typing import Dict, List, Optional, Set, Tuple
+
 import arrow as Arw
 import dash_bootstrap_components as dbc
 from dash import dcc, html
@@ -24,7 +26,7 @@ def dropdown_input(name: str, className: str, value: str) -> object:
     )
 
 
-def scan_input(name: str, className: str, type: str, placeholder: str, required: bool, value: str) -> object:
+def scan_input(name: str, className: str, type: str, placeholder: str, required: bool, value: Optional[str]) -> object:
     return html.Div(
         id=f'{name}-{className}-div',
         children=[

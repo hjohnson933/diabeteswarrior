@@ -21,7 +21,9 @@ def register_callbacks(dashapp):
     )
     def cur_user(children) -> str:
         if current_user.is_authenticated:
-            return {'username': current_user.username}
+            name = {'username': current_user.username}
+            return str(name)
+        return ''
 
     @dashapp.callback(
         Output('username', 'children'),

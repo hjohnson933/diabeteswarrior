@@ -1,9 +1,12 @@
 from dataclasses import dataclass
-from sqlalchemy import BigInteger, create_engine, Column, DateTime, Numeric, Text, Boolean
+from typing import Any
+
+from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Numeric, Text,
+                        create_engine)
 from sqlalchemy.orm import declarative_base
 
 Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
-Base = declarative_base()
+Base: Any = declarative_base()
 
 BTN_DICT = {
     'scope': [('Last 24 hours', 24), ('Last 14 days', 336), ('Last 90 days', 2160)],

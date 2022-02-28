@@ -18,3 +18,5 @@ app/scan/data/
 hjohnson933.session.sql
 out/linecounter.json
 out/linecounter.txt
+
+out/

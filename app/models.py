@@ -14,7 +14,7 @@ class User(UserMixin, authenticate.Model):
     username: str = authenticate.Column(authenticate.String(64), index=True, unique=True)
     password_hash: str = authenticate.Column(authenticate.String(128))
 
-    def set_password(self, password) -> str:
+    def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password) -> bool:

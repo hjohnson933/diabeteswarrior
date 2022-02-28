@@ -15,7 +15,7 @@ def index() -> str:
 
 
 @server_bp.route('/login/', methods=['GET', 'POST'])
-def login() -> str:
+def login() -> object:
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 
@@ -37,14 +37,14 @@ def login() -> str:
 
 @server_bp.route('/logout/')
 @login_required
-def logout() -> str:
+def logout() -> object:
     logout_user()
 
     return redirect(url_for('main.index'))
 
 
 @server_bp.route('/register/', methods=['GET', 'POST'])
-def register() -> str:
+def register() -> object:
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 

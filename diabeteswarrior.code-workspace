@@ -8,15 +8,20 @@
         "sqltools.connections": [
             {
                 "previewLimit": 50,
-                "server": "git",
+                "server": "git.house.lan",
                 "port": 5432,
                 "driver": "PostgreSQL",
-                "name": "mattermost",
-                "datalayout": "mattermost",
-                "username": "mattermost",
-                "password": "$$44^plane^CONGO^position^13$$"
+                "name": "hjohnson933",
+                "database": "hjohnson933",
+                "username": "hjohnson933",
+                "password": "__46_LITTLE_barbados_LATE_76__"
             }
         ],
-        "sqltools.useNodeRuntime": true
+        "sqltools.useNodeRuntime": true,
+        "cSpell.words": [
+            "hjohnson",
+            "ifaces",
+            "psycopg"
+        ]
     }
 }

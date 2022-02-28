@@ -15,3 +15,4 @@ build/
 
 .env
 app/scan/data/
+hjohnson933.session.sql

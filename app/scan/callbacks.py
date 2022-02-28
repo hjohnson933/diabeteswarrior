@@ -53,9 +53,8 @@ def register_callbacks(dashapp):
         Input('notes-input', 'value'),
         Input('submit-button', 'n_clicks')
     )
-    def submit_restore_backup(event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes, submit_button):
-        """Disable submit button till there is a glucose value entered.
-        Disable the restore and backup buttons if the data and backup files are the same."""
+    def submit_scan_record(event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes, submit_button):
+        """Hold session data till the submit button is pressed. It then writes the data to the database and reset the form. If the submint button is pressed before you have valid glucose data then session is held until the blood sugar data is entered. Blood glucose level is the only required data."""
 
         session = Session()
         ctx = dash.callback_context

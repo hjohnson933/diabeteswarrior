@@ -1,8 +1,7 @@
 """Scan Data Interfaces"""
 from typing import Any
 
-from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Numeric, Text,
-                        create_engine)
+from sqlalchemy import BigInteger, Boolean, Column, DateTime, Numeric, Text, REAL, create_engine
 from sqlalchemy.orm import declarative_base
 
 Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
@@ -40,10 +39,10 @@ class Record:
         return hr_data
 
 
-class Records(Base):
+class Scan(Base):
     __tablename__ = 'scan'
 
-    id = Column(BigInteger, primary_key=True)
+    index = Column(BigInteger, primary_key=True)
     ts = Column(DateTime)
     message = Column(BigInteger)
     notes = Column(Text)
@@ -57,8 +56,9 @@ class Records(Base):
     carbohydrate = Column(BigInteger)
     medication = Column(Boolean)
     exercise = Column(Boolean)
-    lower_limit = Column(BigInteger)
-    upper_limit = Column(BigInteger)
+    lower_limit = Column(REAL)
+    upper_limit = Column(REAL)
+    level_0 = Column(BigInteger)
 
 
 class Config(Base):

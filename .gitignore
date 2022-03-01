@@ -20,3 +20,4 @@ out/linecounter.json
 out/linecounter.txt
 
 out/
+app/scan/learning.py

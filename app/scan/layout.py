@@ -1,3 +1,4 @@
+"""Dash Application Layout Scan Data"""
 from typing import Dict, List, Optional, Set, Tuple
 
 import arrow as Arw

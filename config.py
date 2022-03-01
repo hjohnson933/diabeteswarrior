@@ -1,3 +1,4 @@
+"""Reflection of OS environment variables."""
 import os
 
 

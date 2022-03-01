@@ -1,3 +1,4 @@
+"""Blueprint for Flask routes."""
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.urls import url_parse

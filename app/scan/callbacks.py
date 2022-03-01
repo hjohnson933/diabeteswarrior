@@ -1,3 +1,4 @@
+"""Dash Application Callbacks"""
 import arrow as Arw
 import dash
 from dash.dependencies import Input, Output

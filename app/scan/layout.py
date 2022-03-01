@@ -67,7 +67,7 @@ layout = html.Div(
                 ]),
             html.Br(),
             dbc.Row(id='scan-form-middle-row', children=[
-                dbc.Col(id='scan-form-middle-row-left', children=scan_input('Timetamp', 'input', 'text', 'Date & Time.', False, arrow.now().format("YYYY-MM-DD HH:mm"))),
+                dbc.Col(id='scan-form-middle-row-left', children=scan_input('timetamp', 'input', 'text', 'Date & Time.', False, arrow.now().format("YYYY-MM-DD HH:mm"))),
                 dbc.Col(id='scan-form-middle-row-center-left', children=scan_input('bolus_unit', 'input', 'number', 'Bolus Insulin (meal)', False, None)),
                 dbc.Col(id='scan-form-middle-row-center-right', children=scan_input('basal_unit', 'input', 'text', 'Basal Insulin (background)', False, None)),
                 dbc.Col(id='scan-form-middle-row-right', children=scan_input('carbohydrate', 'input', 'number', 'Carbohydrates consumed', False, None))

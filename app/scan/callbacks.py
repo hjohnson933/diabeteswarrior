@@ -1,4 +1,5 @@
 """Dash Application Callbacks"""
+
 import arrow
 import dash
 import pandas as pd
@@ -43,6 +44,7 @@ def register_callbacks(dashapp):
         Output('basal_unit-input', 'value'),
         Output('carbohydrate-input', 'value'),
         Output('notes-input', 'value'),
+        Output('timetamp-input', 'value'),
         Input('event-dropdown-menu', 'value'),
         Input('message-dropdown-menu', 'value'),
         Input('trend-dropdown-menu', 'value'),
@@ -51,9 +53,10 @@ def register_callbacks(dashapp):
         Input('basal_unit-input', 'value'),
         Input('carbohydrate-input', 'value'),
         Input('notes-input', 'value'),
+        Input('timetamp-input', 'value'),
         Input('submit-button', 'n_clicks')
     )
-    def submit_scan_record(event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes, submit_button):
+    def submit_scan_record(event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes, timestamp, submit_button):
         """Hold session data till the submit button is pressed. It then writes the data to the database and reset the form. If the submint button is pressed before you have valid glucose data then session is held until the blood sugar data is entered. Blood glucose level is the only required data."""
 
         ctx = dash.callback_context
@@ -106,9 +109,9 @@ def register_callbacks(dashapp):
         if button_id == 'submit-button' and glucose is not None and submit_button > 0:
             with Engine.begin() as connection:
                 df.to_sql('scan', con=connection, if_exists='append')
-            return 0, 'No Special Event', 'No alarm', 'Pointing right', None, None, None, None, None
+            return 0, 'No Special Event', 'No alarm', 'Pointing right', None, None, None, None, '', arrow.now().format("YYYY-MM-DD HH:mm")
         else:
-            return submit_button, event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes
+            return submit_button, event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes, arrow.now().format("YYYY-MM-DD HH:mm")
 
     # @dashapp.callback(
     #     Output('my-graph', 'figure'),

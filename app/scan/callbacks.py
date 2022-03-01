@@ -1,5 +1,5 @@
 """Dash Application Callbacks"""
-import arrow as Arw
+import arrow
 import dash
 from dash.dependencies import Input, Output
 from flask_login import current_user
@@ -23,7 +23,7 @@ def register_callbacks(dashapp):
     def cur_user(children) -> str:
         if current_user.is_authenticated:
             name = {'username': current_user.username}
-            return str(name)
+            return name
         return ''
 
     @dashapp.callback(
@@ -100,7 +100,7 @@ def register_callbacks(dashapp):
             exercise = True
 
         scan = Records(
-            ts=Arw.now().format("YYYY-MM-DD HH:mm"),
+            ts=arrow.now().format("YYYY-MM-DD HH:mm"),
             message=message_dict[message],
             notes=notes,
             glucose=glucose,

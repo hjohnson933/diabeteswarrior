@@ -1,5 +1,4 @@
 """Scan Data Interfaces"""
-from dataclasses import dataclass
 from typing import Any
 
 from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Numeric, Text,
@@ -9,15 +8,7 @@ from sqlalchemy.orm import declarative_base
 Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
 Base: Any = declarative_base()
 
-BTN_DICT = {
-    'scope': [('Last 24 hours', 24), ('Last 14 days', 336), ('Last 90 days', 2160)],
-    'event': [('No Special Event', None), ('Bolus Insulin', None), ('Basal Insulin', None), ('Meal', None), ('Medication', None), ('Execrise', None)],
-    'message': [('Is high', 3), ('Is going high', 2), ('My high alarm', 1), ('No alarm', 0), ('My low alarm', -1), ('Is going low', -2), ('Is low', -3)],
-    'trend': [('Pointing up', 2), ('Pointing up and right', 1), ('Pointing right', 0), ('Pointing down and right', -1), ('Pointing down', -2)]
-    }
 
-
-@dataclass
 class Record:
     ts: str
     message: int

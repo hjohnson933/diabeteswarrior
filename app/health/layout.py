@@ -7,7 +7,7 @@ from dash import dcc, html
 
 BTN_DICT = {
     'scope': ['Last 24 hours', 'Last 14 days', 'Last 90 days'],
-    'ihb': ['Irregular Heart Beat'],
+    'ihb': ['Regular Heart Beat', 'Irregular Heart Beat'],
     'stage': ['No Hypertension', 'Pre-Hypertension', 'Stage I Hypertension', 'Stage II Hypertension']
 }
 
@@ -203,19 +203,19 @@ layout = html.Div(
                     id='sphygmomanometer-bottom',
                     children=[
                         dbc.Col(
-                            id='bpc-ihb',
-                            children=form_checkbox(
-                                name='bpc_ihb',
-                                className='checklist',
-                                options='ihb'
+                            id='bpc-heartbeat',
+                            children=dropdown_input(
+                                name='ihb',
+                                className='dropdown',
+                                value='Regular Heart Beat'
                             )
                         ),
                         dbc.Col(
                             id='bpc-hypertension',
                             children=dropdown_input(
                                 name='stage',
-                                className='input',
-                                value=None
+                                className='dropdown',
+                                value='No Hypertension'
                             )
                         ),
                         dbc.Col(

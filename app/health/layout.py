@@ -7,7 +7,8 @@ from dash import dcc, html
 
 BTN_DICT = {
     'scope': ['Last 24 hours', 'Last 14 days', 'Last 90 days'],
-    'ihb': ['Irregular Heart Beat']
+    'ihb': ['Irregular Heart Beat'],
+    'stage': ['No Hypertension', 'Pre-Hypertension', 'Stage I Hypertension', 'Stage II Hypertension']
 }
 
 
@@ -209,7 +210,25 @@ layout = html.Div(
                                 options='ihb'
                             )
                         ),
-                        dbc.Col()
+                        dbc.Col(
+                            id='bpc-hypertension',
+                            children=dropdown_input(
+                                name='stage',
+                                className='input',
+                                value=None
+                            )
+                        ),
+                        dbc.Col(
+                            id='thermometer',
+                            children=user_input(
+                                name='temperature',
+                                className='input',
+                                type='number',
+                                placeholder='Temperature',
+                                required=True,
+                                value=None
+                            )
+                        ),
                     ]
                 ),
                 html.Br(),

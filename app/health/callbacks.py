@@ -76,7 +76,13 @@ def register_callbacks(dashapp):
 
         if form_valid and button_id == 'submit-button' and submit_button > 0:
             health = {'index': [index + 1], 'ts': timestamp, 'po_pulse': po_pulse, 'po_ox': po_ox, 'weight': weight, 'fat': fat, 'bpc_pulse': bpc_pulse, 'bpc_systolic': bpc_systolic, 'bpc_diastolic': bpc_diastolic, 'bpc_hypertension': stage_dict[stage], 'bpc_ihb': ihb_dict[bpc_ihb], 'temperature': temperature}
-            print(health)
+
+            df = pd.DataFrame(data=health)
+            df.set_index('index')
+
+            with Engine.begin() as connection:
+                df.to_sql('health', con=connection, if_exists='append')
+
             return 0, timestamp, None, None, None, None, None, None, None, 'Regular Heart Beat', 'No Hypertension', None
 
         return submit_button, timestamp, po_pulse, po_ox, weight, fat, bpc_pulse, bpc_systolic, bpc_diastolic, bpc_ihb, stage, temperature

@@ -79,7 +79,7 @@ layout = html.Div(
         html.H1(
             id='bgl',
             className='card-header',
-            children='Glucose Level Scan'
+            children='General Health Information'
         ),
         html.Div(
             id='data-scope',

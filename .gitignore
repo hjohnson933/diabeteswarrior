@@ -20,4 +20,5 @@ out/linecounter.json
 out/linecounter.txt
 
 out/
-app/scan/learning.py
+app/health/data/health.csv
+learn*.py

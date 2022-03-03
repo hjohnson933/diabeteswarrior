@@ -1,5 +1,7 @@
 """Blueprint for Flask routes."""
-from flask import Blueprint, redirect, render_template, request, url_for
+import os
+
+from flask import Blueprint, redirect, render_template, request, url_for, send_from_directory
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.urls import url_parse
 
@@ -59,3 +61,8 @@ def register() -> object:
         return redirect(url_for('main.login'))
 
     return render_template('register.html', title='Register', form=form)
+
+
+@server_bp.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'favicon.icon', mime='image/vnd.microsoft.icon')

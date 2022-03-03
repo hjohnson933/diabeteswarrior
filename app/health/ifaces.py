@@ -1,33 +1,29 @@
-"""Scan Data Interfaces"""
+"""Health Data Interfaces"""
 from typing import Any
 
-from sqlalchemy import BigInteger, Boolean, Column, DateTime, Numeric, Text, REAL, create_engine
+from sqlalchemy import BigInteger, Boolean, Column, DateTime, Numeric, REAL, create_engine
 from sqlalchemy.orm import declarative_base
 
 Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
 Base: Any = declarative_base()
 
 
-class Scan(Base):
-    __tablename__ = 'scan'
+class Health(Base):
+    __tablename__ = 'health'
 
     index = Column(BigInteger, primary_key=True)
     ts = Column(DateTime)
-    message = Column(BigInteger)
-    notes = Column(Text)
-    glucose = Column(BigInteger)
-    trend = Column(BigInteger)
-    bolus = Column(Boolean)
-    bolus_u = Column(BigInteger)
-    basal = Column(Boolean)
-    basal_u = Column(BigInteger)
-    food = Column(Boolean)
-    carbohydrate = Column(BigInteger)
-    medication = Column(Boolean)
-    exercise = Column(Boolean)
-    lower_limit = Column(REAL)
-    upper_limit = Column(REAL)
     level_0 = Column(BigInteger)
+    po_pulse = Column(BigInteger)
+    po_ox = Column(BigInteger)
+    weight = Column(REAL)
+    fat = Column(REAL)
+    bpc_pulse = Column(BigInteger)
+    bpc_systolic = Column(BigInteger)
+    bpc_diastolic = Column(BigInteger)
+    bpc_ihb = Column(Boolean)
+    bpc_hypertension = Column(BigInteger, default=0)
+    temperature = Column(REAL)
 
 
 class Config(Base):

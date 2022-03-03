@@ -11,13 +11,13 @@ def create_app():
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
 
-    # from app.health.callbacks import register_callbacks
-    # from app.health.layout import layout
-    # register_dashapps(server, 'Health', 'health', layout, register_callbacks)
-
     # from app.food.callbacks import register_callbacks
     # from app.food.layout import layout
     # register_dashapps(server, 'Food', 'food', layout, register_callbacks)
+
+    from app.health.callbacks import register_callbacks
+    from app.health.layout import layout
+    register_dashapps(server, 'Health', 'health', layout, register_callbacks)
 
     from app.scan.callbacks import register_callbacks
     from app.scan.layout import layout
@@ -30,9 +30,7 @@ def create_app():
 
 
 def register_dashapps(app, title, base_pathname, layout, register_callbacks_func):
-    meta_viewport = {
-        "name": "viewport",
-        "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
+    meta_viewport = {"name": "viewport", "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
 
     my_dashapp = dash.Dash(__name__,
                            server=app,

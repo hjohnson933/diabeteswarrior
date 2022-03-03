@@ -22,3 +22,5 @@ out/linecounter.txt
 out/
 app/health/data/health.csv
 learn*.py
+app/meal/data/food.csv
+app/meal/data/meal.csv

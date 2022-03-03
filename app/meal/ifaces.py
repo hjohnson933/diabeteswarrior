@@ -1,29 +1,35 @@
-"""Health Data Interfaces"""
+"""Meal Data Interfaces"""
 from typing import Any
 
-from sqlalchemy import Integer, Boolean, Column, DateTime, Numeric, REAL, create_engine
+from sqlalchemy import Integer, Column, DateTime, Numeric, REAL, create_engine, ARRAY
 from sqlalchemy.orm import declarative_base
 
 Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
 Base: Any = declarative_base()
 
 
-class Health(Base):
-    __tablename__ = 'health'
+class Meal(Base):
+    __tablename__ = 'meal'
 
     index = Column(Integer, primary_key=True)
     ts = Column(DateTime)
     level_0 = Column(Integer)
-    po_pulse = Column(Integer)
-    po_ox = Column(Integer)
-    weight = Column(REAL)
-    fat = Column(REAL)
-    bpc_pulse = Column(Integer)
-    bpc_systolic = Column(Integer)
-    bpc_diastolic = Column(Integer)
-    bpc_ihb = Column(Boolean)
-    bpc_hypertension = Column(Integer, default=0)
-    temperature = Column(REAL)
+    calories = Column(Integer)
+    fat = Column(Integer)
+    cholesterol = Column(Integer)
+    sodium = Column(Integer)
+    carbohydrate = Column(Integer)
+    protein = Column(Integer)
+    servings = Column(ARRAY(REAL))
+    indices = Column(ARRAY(Integer))
+
+
+class Food(Base):
+    __tablename__ = 'food'
+
+    index = Column(Integer, primary_key=True)
+    ts = Column(DateTime)
+    level_0 = Column(Integer)
 
 
 class Config(Base):

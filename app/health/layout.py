@@ -1,68 +1,14 @@
 """Dash Application Layout Health Data"""
-from typing import Optional
-
 import arrow
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+from .assets.utils import dropdown_input, form_buttons, user_input
 
 BTN_DICT = {
     'scope': ['Last 24 hours', 'Last 14 days', 'Last 90 days'],
     'ihb': ['Regular Heart Beat', 'Irregular Heart Beat'],
     'stage': ['No Hypertension', 'Pre-Hypertension', 'Stage I Hypertension', 'Stage II Hypertension']
 }
-
-
-def dropdown_input(name: str, className: str, value: str) -> object:
-    return html.Div(
-        id=f'{name}-div',
-        children=[
-            dcc.Dropdown(
-                id=f'{name}-{className}-menu',
-                className=className,
-                options=BTN_DICT[name],
-                value=value
-            )
-        ]
-    )
-
-
-def user_input(name: str, className: str, type: str, placeholder: str, required: bool, value: Optional[str]) -> object:
-    return html.Div(
-        id=f'{name}-{className}-div',
-        children=[
-            dcc.Input(
-                id=f'{name}-{className}',
-                name=f'{name}-{className}',
-                className=className,
-                type=type,
-                placeholder=placeholder,
-                required=required,
-                value=value
-            )
-        ]
-    )
-
-
-def form_buttons(name: str, className: str, children: str) -> object:
-    return html.Div(
-        id=f'{name}-{className}-div',
-        children=html.Button(
-            id=f'{name}-{className}',
-            className=className,
-            children=children
-        )
-    )
-
-
-def form_checkbox(name: str, className: str, options: str) -> object:
-    return html.Div(
-        id=f'{name}-{className}-div',
-        children=dcc.Checklist(
-            id=f'{name}-{className}',
-            options=BTN_DICT[options],
-            inline=True
-        )
-    )
 
 
 layout = html.Div(
@@ -77,7 +23,7 @@ layout = html.Div(
             className='card-title'
         ),
         html.H1(
-            id='bgl',
+            id='health',
             className='card-header',
             children='General Health Information'
         ),
@@ -87,7 +33,8 @@ layout = html.Div(
             children=dropdown_input(
                 name='scope',
                 className='dropdown',
-                value='Last 24 hours'
+                value='Last 24 hours',
+                btn_dict=BTN_DICT
             )
         ),
         dbc.Form(
@@ -207,7 +154,8 @@ layout = html.Div(
                             children=dropdown_input(
                                 name='ihb',
                                 className='dropdown',
-                                value='Regular Heart Beat'
+                                value='Regular Heart Beat',
+                                btn_dict=BTN_DICT
                             )
                         ),
                         dbc.Col(
@@ -215,7 +163,8 @@ layout = html.Div(
                             children=dropdown_input(
                                 name='stage',
                                 className='dropdown',
-                                value='No Hypertension'
+                                value='No Hypertension',
+                                btn_dict=BTN_DICT
                             )
                         ),
                         dbc.Col(

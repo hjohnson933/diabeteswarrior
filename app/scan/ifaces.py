@@ -1,11 +1,6 @@
 """Scan Data Interfaces"""
-from typing import Any
-
-from sqlalchemy import Integer, Boolean, Column, DateTime, Numeric, Text, REAL, create_engine
-from sqlalchemy.orm import declarative_base
-
-Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
-Base: Any = declarative_base()
+from sqlalchemy import Integer, Boolean, Column, DateTime, Numeric, Text, REAL
+from .assets import Base
 
 
 class Scan(Base):

@@ -16,6 +16,7 @@
         "datareader",
         "diabeteswarrior",
         "dotenv",
+        "dwarrior",
         "gunicorn",
         "hjohnson",
         "HLTH",

@@ -1,11 +1,6 @@
 """Meal Data Interfaces"""
-from typing import Any
-
-from sqlalchemy import Integer, Column, DateTime, Numeric, REAL, create_engine, TEXT
-from sqlalchemy.orm import declarative_base
-
-Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
-Base: Any = declarative_base()
+from sqlalchemy import Integer, Column, DateTime, Numeric, REAL, TEXT
+from .assets import Base
 
 
 class Meal(Base):
@@ -20,6 +15,8 @@ class Meal(Base):
     sodium = Column(REAL)
     carbohydrate = Column(REAL)
     protein = Column(REAL)
+    serving = Column(TEXT)
+    indices = Column(TEXT)
 
 
 class Food(Base):

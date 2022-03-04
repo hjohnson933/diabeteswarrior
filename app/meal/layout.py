@@ -50,7 +50,8 @@ def form_buttons(name: str, className: str, children: str) -> object:
 
 def food_table() -> object:
     with Engine.begin() as connection:
-        pd.read_sql_table('food', connection)
+        df = pd.read_sql_table('food', connection)
+        return dash_table.DataTable(df.to_dict('records'), [{"name": i, "id": i} for i in df.columns])
 
 
 layout = html.Div(
@@ -86,12 +87,59 @@ layout = html.Div(
         html.Div(
             id='new-food',
             className='food',
-            children=['New food entry form']
+            children=[
+                dbc.Form(
+                    id='scan',
+                    children=[
+                        dbc.Row(
+                            id='top-row',
+                            children=[
+                                dbc.Col(
+                                    id='top-row-left',
+                                    children=[]
+                                ),
+                                dbc.Col(
+                                    id='top-row-center-left',
+                                    children=[]
+                                ),
+                                dbc.Col(
+                                    id='top-row-center-right',
+                                    children=[]
+                                ),
+                                dbc.Col(
+                                    id='top-row-right',
+                                    children=[]
+                                )
+                            ]
+                        ),
+                        html.Br(),
+                        dbc.Row(
+                            id='button-row',
+                            children=[
+                                dbc.Col(
+                                    id='button-row-left'
+                                ),
+                                dbc.Col(
+                                    id='button-row-center',
+                                    children=form_buttons(
+                                        name='submit',
+                                        className='button',
+                                        children='Submit'
+                                    )
+                                ),
+                                dbc.Col(
+                                    id='button-row-right'
+                                )
+                            ]
+                        )
+                    ]
+                )
+            ]
         ),
         html.Div(
             id='food-table',
             className='food',
-            children=['Food Table']
+            children=food_table()
         )
     ]
 )

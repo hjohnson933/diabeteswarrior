@@ -1,7 +1,7 @@
 """Meal Data Interfaces"""
 from typing import Any
 
-from sqlalchemy import Integer, Column, DateTime, Numeric, REAL, create_engine, ARRAY
+from sqlalchemy import Integer, Column, DateTime, Numeric, REAL, create_engine, TEXT
 from sqlalchemy.orm import declarative_base
 
 Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
@@ -14,14 +14,12 @@ class Meal(Base):
     index = Column(Integer, primary_key=True)
     ts = Column(DateTime)
     level_0 = Column(Integer)
-    calories = Column(Integer)
-    fat = Column(Integer)
-    cholesterol = Column(Integer)
-    sodium = Column(Integer)
-    carbohydrate = Column(Integer)
-    protein = Column(Integer)
-    servings = Column(ARRAY(REAL))
-    indices = Column(ARRAY(Integer))
+    calories = Column(REAL)
+    fat = Column(REAL)
+    cholesterol = Column(REAL)
+    sodium = Column(REAL)
+    carbohydrate = Column(REAL)
+    protein = Column(REAL)
 
 
 class Food(Base):
@@ -30,6 +28,16 @@ class Food(Base):
     index = Column(Integer, primary_key=True)
     ts = Column(DateTime)
     level_0 = Column(Integer)
+    domain = Column(TEXT)
+    name = Column(TEXT)
+    portion = Column(TEXT)
+    unit = Column(TEXT)
+    calories = Column(Integer)
+    fat = Column(Integer)
+    cholesterol = Column(Integer)
+    sodium = Column(Integer)
+    carbohydrate = Column(Integer)
+    protein = Column(Integer)
 
 
 class Config(Base):

@@ -156,7 +156,7 @@ layout = html.Div(
                             name='carbohydrate',
                             className='input',
                             type='number',
-                            placeholder='CarCarbohydrates consumed',
+                            placeholder='Carbohydrates consumed',
                             required=False,
                             value=None
                         )

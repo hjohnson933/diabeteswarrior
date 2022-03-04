@@ -26,7 +26,8 @@ layout = html.Div(
         dropdown_input(
             name='scope',
             className='dropdown',
-            value='Last 24 hours'
+            value='Last 24 hours',
+            btn_dict=BTN_DICT
         ),
         html.Div('Meal Feedback'),
         dbc.Form(

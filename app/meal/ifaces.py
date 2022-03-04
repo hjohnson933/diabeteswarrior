@@ -1,6 +1,6 @@
 """Meal Data Interfaces"""
 from sqlalchemy import Integer, Column, DateTime, Numeric, REAL, TEXT
-from .assets import Base
+from .assets.utils import Base
 
 
 class Meal(Base):

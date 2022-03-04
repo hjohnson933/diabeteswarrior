@@ -1,6 +1,6 @@
 """Health Data Interfaces"""
 from sqlalchemy import Integer, Boolean, Column, DateTime, Numeric, REAL
-from .assets import Base
+from .assets.utils import Base
 
 
 class Health(Base):

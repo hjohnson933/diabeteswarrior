@@ -6,7 +6,7 @@ import pandas as pd
 from dash.dependencies import Input, Output
 from flask_login import current_user
 
-from .ifaces import Engine
+from .assets.utils import Engine
 
 scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 message_dict = {'Is high': 3, 'Is going high': 2, 'My high alarm': 1, 'No alarm': 0, 'My low alarm': -1, 'Is going low': -2, 'Is low': -3}

@@ -1,4 +1,5 @@
-from typing import Optional, Any
+from typing import Any, Optional
+
 import dash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
@@ -18,7 +19,7 @@ def dropdown_input(name: str, className: str, value: str, btn_dict: dict) -> obj
 
 def user_input(name: str, className: str, type: str, placeholder: str, required: bool, value: Optional[str]) -> object:
     return dash.dcc.Input(
-        id=f'{name}-{className}',
+        id=f'{name}-{className}-input',
         name=f'{name}-{className}',
         className=className,
         type=type,
@@ -30,7 +31,7 @@ def user_input(name: str, className: str, type: str, placeholder: str, required:
 
 def form_buttons(name: str, className: str, children: str) -> object:
     return dash.html.Button(
-        id=f'{name}-{className}',
+        id=f'{name}-{className}-button',
         className=className,
         children=children
     )

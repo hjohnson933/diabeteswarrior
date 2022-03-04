@@ -6,7 +6,7 @@ import pandas as pd
 from dash.dependencies import Input, Output
 from flask_login import current_user
 
-from .ifaces import Engine
+from .assets.utils import Engine
 
 scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 stage_dict = {'No Hypertension': 0, 'Pre-Hypertension': 1, 'Stage I Hypertension': 2, 'Stage II Hypertension': 3}

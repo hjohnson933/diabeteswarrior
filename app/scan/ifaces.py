@@ -1,6 +1,6 @@
 """Scan Data Interfaces"""
 from sqlalchemy import Integer, Boolean, Column, DateTime, Numeric, Text, REAL
-from .assets import Base
+from .assets.utils import Base
 
 
 class Scan(Base):

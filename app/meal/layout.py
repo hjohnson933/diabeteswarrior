@@ -1,9 +1,9 @@
 """Meal Dash Application Layout"""
 import arrow
 import dash_bootstrap_components as dbc
-from dash import dcc, html
+from dash import dcc, html, dash_table
 
-from .assets.utils import dropdown_input, form_buttons, user_input
+from .assets.utils import dropdown_input, form_buttons, user_input, get_table_data
 
 BTN_DICT = {
     'scope': ['Last 24 hours', 'Last 14 days', 'Last 90 days'],
@@ -29,6 +29,10 @@ BTN_DICT = {
                   {'label': 'Speck', 'value': 'sp'},
                   {'label': 'Slice', 'value': 'sl'}]
 }
+
+food_columns = ['index', 'domain', 'name', 'portion', 'unit', 'calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein']
+
+df0 = get_table_data(table='food', columns=food_columns)
 
 
 layout = html.Div(
@@ -177,6 +181,10 @@ layout = html.Div(
             ]
         ),
         html.Br(),
-        html.P('food_table()')
+        dash_table.DataTable(
+            style_data={'whiteSpace': 'normal', 'height': 'auto'},
+            data=df0.to_dict('records'),
+            columns=[{"name": i, "id": i} for i in df0.columns]
+        )
     ]
 )

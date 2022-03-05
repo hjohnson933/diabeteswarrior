@@ -49,3 +49,10 @@ def write_db(records, table) -> object:
 def max_idx(table) -> int:
     with Engine.begin() as connection:
         return pd.read_sql(table, connection)['index'].count()
+
+
+def get_table_data(table, columns) -> object:
+    with Engine.begin() as connection:
+        df = pd.read_sql(table, connection, columns=columns)
+        df.set_index('index')
+    return df

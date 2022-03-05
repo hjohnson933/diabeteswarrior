@@ -1,4 +1,4 @@
-"""Health Data Interfaces"""
+"""Health Dash Application Interfaces"""
 from sqlalchemy import Integer, Boolean, Column, DateTime, Numeric, REAL
 from .assets.utils import Base
 

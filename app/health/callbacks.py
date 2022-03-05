@@ -1,4 +1,4 @@
-"""Dash Application Callbacks"""
+"""Health Dash Application Callbacks"""
 
 import arrow
 import dash
@@ -16,7 +16,7 @@ ihb_dict = {'Regular Heart Beat': 0, 'Irregular Heart Beat': 1}
 def register_callbacks(dashapp):
     @dashapp.callback(
         Output('user-store', 'data'),
-        Input('scope-dropdown-menu', 'value')
+        Input('scope-health-menu', 'value')
     )
     def cur_user(children) -> str:
         if current_user.is_authenticated:
@@ -35,30 +35,30 @@ def register_callbacks(dashapp):
             return F"Interface for User: {data['username']}"
 
     @dashapp.callback(
-        Output('submit-button', 'n_clicks'),
-        Output('timetamp-input', 'value'),
-        Output('po_pulse-input', 'value'),
-        Output('po_ox-input', 'value'),
-        Output('weight-input', 'value'),
-        Output('fat-input', 'value'),
-        Output('bpc_pulse-input', 'value'),
-        Output('bpc_systolic-input', 'value'),
-        Output('bpc_diastolic-input', 'value'),
-        Output('ihb-dropdown-menu', 'value'),
-        Output('stage-dropdown-menu', 'value'),
-        Output('temperature-input', 'value'),
-        Input('temperature-input', 'value'),
-        Input('stage-dropdown-menu', 'value'),
-        Input('ihb-dropdown-menu', 'value'),
-        Input('bpc_diastolic-input', 'value'),
-        Input('bpc_systolic-input', 'value'),
-        Input('bpc_pulse-input', 'value'),
-        Input('fat-input', 'value'),
-        Input('weight-input', 'value'),
-        Input('po_ox-input', 'value'),
-        Input('po_pulse-input', 'value'),
-        Input('timetamp-input', 'value'),
-        Input('submit-button', 'n_clicks')
+        Output('submit-health-button', 'n_clicks'),
+        Output('timetamp-health-input', 'value'),
+        Output('po_pulse-health-input', 'value'),
+        Output('po_ox-health-input', 'value'),
+        Output('weight-health-input', 'value'),
+        Output('fat-health-input', 'value'),
+        Output('bpc_pulse-health-input', 'value'),
+        Output('bpc_systolic-health-input', 'value'),
+        Output('bpc_diastolic-health-input', 'value'),
+        Output('ihb-health-menu', 'value'),
+        Output('stage-health-menu', 'value'),
+        Output('temperature-health-input', 'value'),
+        Input('temperature-health-input', 'value'),
+        Input('stage-health-menu', 'value'),
+        Input('ihb-health-menu', 'value'),
+        Input('bpc_diastolic-health-input', 'value'),
+        Input('bpc_systolic-health-input', 'value'),
+        Input('bpc_pulse-health-input', 'value'),
+        Input('fat-health-input', 'value'),
+        Input('weight-health-input', 'value'),
+        Input('po_ox-health-input', 'value'),
+        Input('po_pulse-health-input', 'value'),
+        Input('timetamp-health-input', 'value'),
+        Input('submit-health-button', 'n_clicks')
     )
     def submit_record(temperature, stage, bpc_ihb, bpc_diastolic, bpc_systolic, bpc_pulse, fat, weight, po_ox, po_pulse, timestamp, submit_button):
         ctx = dash.callback_context

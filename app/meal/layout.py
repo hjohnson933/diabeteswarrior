@@ -32,7 +32,7 @@ BTN_DICT = {
 
 food_columns = ['index', 'domain', 'name', 'portion', 'unit', 'calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein']
 
-df0 = get_table_data(table='food', columns=food_columns)
+df0 = get_table_data(table='food', columns=food_columns, servings=True)
 
 
 layout = html.Div(
@@ -182,9 +182,19 @@ layout = html.Div(
         ),
         html.Br(),
         dash_table.DataTable(
+            id='food-table',
             style_data={'whiteSpace': 'normal', 'height': 'auto'},
             data=df0.to_dict('records'),
-            columns=[{"name": i, "id": i} for i in df0.columns]
+            columns=[{"name": i, "id": i} for i in df0.columns],
+            editable=True,
+            filter_action='native',
+            sort_action='native',
+            sort_mode='multi',
+            column_selectable=False,
+            row_deletable=False,
+            row_selectable='multi',
+            selected_columns=[],
+            selected_rows=[]
         )
     ]
 )

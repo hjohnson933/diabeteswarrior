@@ -39,20 +39,22 @@ def form_checkbox(name: str, className: str, options: str, btn_dict: dict) -> ob
         inline=True)
 
 
-def write_db(records, table) -> object:
+def write_db(records: str, table: str) -> object:
     df = pd.DataFrame(data=records)
     df.set_index('index')
     with Engine.begin() as connection:
         df.to_sql(table, con=connection, if_exists='append')
 
 
-def max_idx(table) -> int:
+def max_idx(table: str) -> int:
     with Engine.begin() as connection:
         return pd.read_sql(table, connection)['index'].count()
 
 
-def get_table_data(table, columns) -> object:
+def get_table_data(table: str, columns: list, servings: bool = False) -> object:
     with Engine.begin() as connection:
         df = pd.read_sql(table, connection, columns=columns)
         df.set_index('index')
+        if servings:
+            df['serving'] = None
     return df

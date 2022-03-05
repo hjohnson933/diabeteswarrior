@@ -2,6 +2,7 @@
 from typing import Any, Optional
 
 import dash
+import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 
@@ -10,37 +11,41 @@ Base: Any = declarative_base()
 
 
 def dropdown_input(name: str, className: str, value: str, btn_dict: dict) -> object:
-    return dash.dcc.Dropdown(
-        id=f'{name}-{className}-menu',
+    return dash.dcc.Dropdown(id=f'{name}-{className}-menu',
         className=className,
         options=btn_dict[name],
-        value=value
-    )
+        value=value)
 
 
 def user_input(name: str, className: str, type: str, placeholder: str, required: bool, value: Optional[str]) -> object:
-    return dash.dcc.Input(
-        id=f'{name}-{className}-input',
+    return dash.dcc.Input(id=f'{name}-{className}-input',
         name=f'{name}-{className}',
         className=className,
         type=type,
         placeholder=placeholder,
         required=required,
-        value=value
-    )
+        value=value)
 
 
 def form_buttons(name: str, className: str, children: str) -> object:
-    return dash.html.Button(
-        id=f'{name}-{className}-button',
+    return dash.html.Button(id=f'{name}-{className}-button',
         className=className,
-        children=children
-    )
+        children=children)
 
 
 def form_checkbox(name: str, className: str, options: str, btn_dict: dict) -> object:
-    return dash.dcc.Checklist(
-        id=f'{name}-{className}',
+    return dash.dcc.Checklist(id=f'{name}-{className}',
         options=btn_dict[options],
-        inline=True
-    )
+        inline=True)
+
+
+def write_db(records, table) -> object:
+    df = pd.DataFrame(data=records)
+    df.set_index('index')
+    with Engine.begin() as connection:
+        df.to_sql(table, con=connection, if_exists='append')
+
+
+def max_idx(table) -> int:
+    with Engine.begin() as connection:
+        return pd.read_sql(table, connection)['index'].count()

@@ -2,11 +2,10 @@
 
 import arrow
 import dash
-import pandas as pd
 from dash.dependencies import Input, Output
 from flask_login import current_user
 
-from .assets.utils import Engine
+from .assets.utils import max_idx, write_db
 
 scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 stage_dict = {'No Hypertension': 0, 'Pre-Hypertension': 1, 'Stage I Hypertension': 2, 'Stage II Hypertension': 3}
@@ -65,23 +64,30 @@ def register_callbacks(dashapp):
         form_valid = False
         timestamp = arrow.now().format("YYYY-MM-DD HH:MM")
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        index = 0
-        with Engine.begin() as connection:
-            index = pd.read_sql('health', connection)['index'].count()
+        index = max_idx(table='health')
 
         if po_pulse is not None and po_pulse > 0 and po_ox is not None and po_ox > 0 and weight is not None and weight > 0 \
             and fat is not None and fat > 0 and bpc_pulse is not None and bpc_pulse > 0 and bpc_systolic is not None and \
                 bpc_systolic > 0 and bpc_diastolic is not None and bpc_diastolic > 0 and temperature is not None and temperature > 0:
             form_valid = True
 
-        if form_valid and button_id == 'submit-button' and submit_button > 0:
-            health = {'index': [index + 1], 'ts': timestamp, 'po_pulse': po_pulse, 'po_ox': po_ox, 'weight': weight, 'fat': fat, 'bpc_pulse': bpc_pulse, 'bpc_systolic': bpc_systolic, 'bpc_diastolic': bpc_diastolic, 'bpc_hypertension': stage_dict[stage], 'bpc_ihb': ihb_dict[bpc_ihb], 'temperature': temperature}
+        if form_valid and button_id == 'submit-health-button' and submit_button > 0:
+            health = {
+                'index': [index + 1],
+                'ts': timestamp,
+                'po_pulse': po_pulse,
+                'po_ox': po_ox,
+                'weight': weight,
+                'fat': fat,
+                'bpc_pulse': bpc_pulse,
+                'bpc_systolic': bpc_systolic,
+                'bpc_diastolic': bpc_diastolic,
+                'bpc_hypertension': stage_dict[stage],
+                'bpc_ihb': ihb_dict[bpc_ihb],
+                'temperature': temperature
+            }
 
-            df = pd.DataFrame(data=health)
-            df.set_index('index')
-
-            with Engine.begin() as connection:
-                df.to_sql('health', con=connection, if_exists='append')
+            write_db(records=health, table='health')
 
             return 0, timestamp, None, None, None, None, None, None, None, 'Regular Heart Beat', 'No Hypertension', None
 

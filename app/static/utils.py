@@ -1,3 +1,4 @@
+"""Diabetes Warrior Utilities"""
 from typing import Any, Optional
 
 import dash

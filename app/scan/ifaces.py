@@ -1,4 +1,4 @@
-"""Scan Data Interfaces"""
+"""Scan Dash Application Interfaces"""
 from sqlalchemy import Integer, Boolean, Column, DateTime, Numeric, Text, REAL
 from .assets.utils import Base
 

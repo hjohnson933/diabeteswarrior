@@ -1,4 +1,4 @@
-"""Dash Application Callbacks"""
+"""Scan Dash Application Callbacks"""
 
 import arrow
 import dash
@@ -16,7 +16,7 @@ trend_dict = {'Pointing up': 2, 'Pointing up and right': 1, 'Pointing right': 0,
 def register_callbacks(dashapp):
     @dashapp.callback(
         Output('user-store', 'data'),
-        Input('scope-dropdown-menu', 'value')
+        Input('scope-scan-menu', 'value')
     )
     def cur_user(children) -> str:
         if current_user.is_authenticated:
@@ -35,26 +35,26 @@ def register_callbacks(dashapp):
             return F"Interface for User: {data['username']}"
 
     @dashapp.callback(
-        Output('submit-button', 'n_clicks'),
-        Output('event-dropdown-menu', 'value'),
-        Output('message-dropdown-menu', 'value'),
-        Output('trend-dropdown-menu', 'value'),
-        Output('glucose-input', 'value'),
-        Output('bolus_unit-input', 'value'),
-        Output('basal_unit-input', 'value'),
-        Output('carbohydrate-input', 'value'),
-        Output('notes-input', 'value'),
-        Output('timetamp-input', 'value'),
-        Input('event-dropdown-menu', 'value'),
-        Input('message-dropdown-menu', 'value'),
-        Input('trend-dropdown-menu', 'value'),
-        Input('glucose-input', 'value'),
-        Input('bolus_unit-input', 'value'),
-        Input('basal_unit-input', 'value'),
-        Input('carbohydrate-input', 'value'),
-        Input('notes-input', 'value'),
-        Input('timetamp-input', 'value'),
-        Input('submit-button', 'n_clicks')
+        Output('submit-scan-button', 'n_clicks'),
+        Output('event-scan-menu', 'value'),
+        Output('message-scan-menu', 'value'),
+        Output('trend-scan-menu', 'value'),
+        Output('glucose-scan-input', 'value'),
+        Output('bolus_unit-scan-input', 'value'),
+        Output('basal_unit-scan-input', 'value'),
+        Output('carbohydrate-scan-input', 'value'),
+        Output('notes-scan-input', 'value'),
+        Output('timetamp-scan-input', 'value'),
+        Input('event-scan-menu', 'value'),
+        Input('message-scan-menu', 'value'),
+        Input('trend-scan-menu', 'value'),
+        Input('glucose-scan-input', 'value'),
+        Input('bolus_unit-scan-input', 'value'),
+        Input('basal_unit-scan-input', 'value'),
+        Input('carbohydrate-scan-input', 'value'),
+        Input('notes-scan-input', 'value'),
+        Input('timetamp-scan-input', 'value'),
+        Input('submit-scan-button', 'n_clicks')
     )
     def submit_record(event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes, timestamp, submit_button):
         """Hold session data till the submit button is pressed. It then writes the data to the database and reset the form. If the submint button is pressed before you have valid glucose data then session is held until the blood sugar data is entered. Blood glucose level is the only required data."""
@@ -118,6 +118,6 @@ def register_callbacks(dashapp):
     #     Input('data-scope', 'value'),
     #     State('user-store', 'data')
     # )
-    # def update_graph(selected_dropdown_value, data) -> dict:
-    #     df = pdr.get_data_yahoo(selected_dropdown_value, start=dt(2017, 1, 1), end=dt.now())
+    # def update_graph(selected_scan_value, data) -> dict:
+    #     df = pdr.get_data_yahoo(selected_scan_value, start=dt(2017, 1, 1), end=dt.now())
     #     return {'data': [{'x': df.index, 'y': df.Close}], 'layout': {'margin': {'l': 40, 'r': 0, 't': 20, 'b': 30}}}

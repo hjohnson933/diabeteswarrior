@@ -38,7 +38,7 @@ layout = html.Div(
             )
         ),
         dbc.Form(
-            id='health',
+            id='form-health',
             children=[
                 dbc.Row(
                     id='pulseoximeter',

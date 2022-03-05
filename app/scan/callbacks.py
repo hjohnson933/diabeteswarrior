@@ -2,11 +2,10 @@
 
 import arrow
 import dash
-import pandas as pd
 from dash.dependencies import Input, Output
 from flask_login import current_user
 
-from .assets.utils import Engine
+from .assets.utils import max_idx, write_db
 
 scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 message_dict = {'Is high': 3, 'Is going high': 2, 'My high alarm': 1, 'No alarm': 0, 'My low alarm': -1, 'Is going low': -2, 'Is low': -3}
@@ -57,10 +56,8 @@ def register_callbacks(dashapp):
         Input('submit-scan-button', 'n_clicks')
     )
     def submit_record(event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes, timestamp, submit_button):
-        """Hold session data till the submit button is pressed. It then writes the data to the database and reset the form. If the submint button is pressed before you have valid glucose data then session is held until the blood sugar data is entered. Blood glucose level is the only required data."""
-
         ctx = dash.callback_context
-
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
         bolus = False
         basal = False
         food = False
@@ -69,9 +66,7 @@ def register_callbacks(dashapp):
         lower_limit = -1
         upper_limit = 1
         trend_n = trend_dict[trend]
-        index = 0
-        with Engine.begin() as connection:
-            index = pd.read_sql_table('scan', connection)['index'].count()
+        index = max_idx(table='scan')
 
         if trend_n == -2:
             lower_limit = -12
@@ -101,14 +96,27 @@ def register_callbacks(dashapp):
         if event == 'Execrise':
             exercise = True
 
-        scan = {'index': [index + 1], 'ts': [arrow.now().format("YYYY-MM-DD HH:mm")], 'message': [message_dict[message]], 'notes': [notes], 'glucose': [glucose], 'trend': [trend_n], 'bolus': [bolus], 'bolus_u': [bolus_u], 'basal': [basal], 'basal_u': [basal_u], 'food': [food], 'carbohydrate': [carbohydrate], 'medication': [medication], 'exercise': [exercise], 'lower_limit': [lower_limit], 'upper_limit': [upper_limit]}
-        df = pd.DataFrame(data=scan)
-        df.set_index('index')
+        scan = {
+            'index': [index + 1],
+            'ts': [arrow.now().format("YYYY-MM-DD HH:mm")],
+            'message': [message_dict[message]],
+            'notes': [notes],
+            'glucose': [glucose],
+            'trend': [trend_n],
+            'bolus': [bolus],
+            'bolus_u': [bolus_u],
+            'basal': [basal],
+            'basal_u': [basal_u],
+            'food': [food],
+            'carbohydrate': [carbohydrate],
+            'medication': [medication],
+            'exercise': [exercise],
+            'lower_limit': [lower_limit],
+            'upper_limit': [upper_limit]
+        }
 
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        if button_id == 'submit-button' and glucose is not None and submit_button > 0:
-            with Engine.begin() as connection:
-                df.to_sql('scan', con=connection, if_exists='append')
+        if button_id == 'submit-scan-button' and glucose is not None and submit_button > 0:
+            write_db(records=scan, table='scan')
             return 0, 'No Special Event', 'No alarm', 'Pointing right', None, None, None, None, '', arrow.now().format("YYYY-MM-DD HH:mm")
         else:
             return submit_button, event, message, trend, glucose, bolus_u, basal_u, carbohydrate, notes, arrow.now().format("YYYY-MM-DD HH:mm")

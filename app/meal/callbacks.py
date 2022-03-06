@@ -1,12 +1,12 @@
 """Meal Dash Application Callbacks"""
 
-import arrow
+# import arrow
 import dash
-import pandas as pd
+# import pandas as pd
 from dash.dependencies import Input, Output
 from flask_login import current_user
 
-from .assets.utils import Engine
+# from .assets.utils import write_db
 
 scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 
@@ -32,11 +32,27 @@ def register_callbacks(dashapp):
         else:
             return F"Interface for User: {data['username']}"
 
-    # @dashapp.callback(
-    #     Output('my-graph', 'figure'),
-    #     Input('data-scope', 'value'),
-    #     State('user-store', 'data')
-    # )
-    # def update_graph(selected_dropdown_value, data) -> dict:
-    #     df = pdr.get_data_yahoo(selected_dropdown_value, start=dt(2017, 1, 1), end=dt.now())
-    #     return {'data': [{'x': df.index, 'y': df.Close}], 'layout': {'margin': {'l': 40, 'r': 0, 't': 20, 'b': 30}}}
+    @dashapp.callback(
+        Output('test-output', 'children'),
+        Input('food-table', 'derived_virtual_data'),
+        Input('food-table', 'derived_virtual_selected_rows'),
+        Input('submit-meal-button', 'n_clicks'),
+        Input('submit-food-button', 'n_clicks'),
+        Input('calc-meal-button', 'n_clicks')
+    )
+    def calc_meal(dvd, dvsr, smmb, sffb, cmfb) -> str:
+        """ dvsr is the index of the selected food item from the table.
+            dvd is a indexed list of dictionaries containing the data for the selected food items."""
+        ctx = dash.callback_context
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        indices = ''
+        # ? submit-meal-button
+        # ? submit-food-button
+        if button_id == 'calc-meal-button':
+            for each in dvsr:
+                indices += F"{each};"
+                indices = indices.strip()
+            if indices.endswith(';'):
+                indices = indices.rstrip(';')
+
+        return indices

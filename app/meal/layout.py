@@ -39,6 +39,7 @@ layout = html.Div(
     id='main',
     className='container-xl',
     children=[
+        html.P(id='test-output'),
         dcc.Store(id='user-store'),
         html.H1(id='username'),
         html.H1(id='meal-food', children='Meals and Food Data'),
@@ -103,7 +104,7 @@ layout = html.Div(
                     placeholder='Indices',
                     required=False,
                     value=None),
-                form_buttons(name='submit-meal',
+                form_buttons(name='submit',
                     className='meal',
                     children='Submit Meal')
             ]
@@ -175,12 +176,15 @@ layout = html.Div(
                     placeholder='Protein',
                     required=True,
                     value=None),
-                form_buttons(name='submit-food',
+                form_buttons(name='submit',
                     className='food',
                     children='Submit Food')
             ]
         ),
         html.Br(),
+        form_buttons(name='calc',
+            className='meal',
+            children='Calculate Meal'),
         dash_table.DataTable(
             id='food-table',
             style_data={'whiteSpace': 'normal', 'height': 'auto'},

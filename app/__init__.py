@@ -11,9 +11,9 @@ def create_app():
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
 
-    from app.meal.callbacks import register_callbacks
-    from app.meal.layout import layout
-    register_dashapps(server, 'Meal', 'meal', layout, register_callbacks)
+    from app.food.callbacks import register_callbacks
+    from app.food.layout import layout
+    register_dashapps(server, 'Food', 'food', layout, register_callbacks)
 
     from app.health.callbacks import register_callbacks
     from app.health.layout import layout

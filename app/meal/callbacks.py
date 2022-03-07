@@ -1,12 +1,12 @@
 """Meal Dash Application Callbacks"""
 
-# import arrow
-# import dash
-# import pandas as pd
+import arrow
+import dash
+
 from dash.dependencies import Input, Output
 from flask_login import current_user
 
-# from .assets.utils import max_idx
+from .assets.utils import max_idx, write_db
 
 scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 
@@ -28,8 +28,7 @@ def register_callbacks(dashapp):
         else:
             return F"Interface for User: {data['username']}"
 
-    @dashapp.callback(
-        Output('test-output', 'children'),
+    @dashapp.callback(Output('test-output', 'children'),
         Output('calories-meal-input', 'value'),
         Output('fat-meal-input', 'value'),
         Output('cholesterol-meal-input', 'value'),
@@ -38,6 +37,7 @@ def register_callbacks(dashapp):
         Output('protein-meal-input', 'value'),
         Output('servings-meal-input', 'value'),
         Output('indices-meal-input', 'value'),
+        Output('submit-meal-button', 'n_clicks'),
         Input('food-table', 'derived_virtual_data'),
         Input('food-table', 'derived_virtual_selected_rows'),
         Input('calories-meal-input', 'value'),
@@ -45,11 +45,11 @@ def register_callbacks(dashapp):
         Input('cholesterol-meal-input', 'value'),
         Input('sodium-meal-input', 'value'),
         Input('carbohydrate-meal-input', 'value'),
-        Input('protein-meal-input', 'value')
-    )
-    def calc_meal(dvd, dvsr, calories, fat, cholesterol, sodium, carbohydrate, protein):
-        # ctx = dash.callback_context
-        # button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        Input('protein-meal-input', 'value'),
+        Input('submit-meal-button', 'n_clicks'))
+    def calc_meal(dvd, dvsr, calories, fat, cholesterol, sodium, carbohydrate, protein, smb):
+        ctx = dash.callback_context
+        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
         calories = 0
         fat = 0
         cholesterol = 0
@@ -73,4 +73,22 @@ def register_callbacks(dashapp):
 
         servings = str(servings).replace(', ', ';').replace('[', '').replace(']', '').replace("'", "")
         indices = str(indices).replace(', ', ';').replace('[', '').replace(']', '').replace("'", "")
-        return '', calories, fat, cholesterol, sodium, carbohydrate, protein, servings, indices
+
+        if button_id == 'submit-meal-button' and smb > 0:
+            meal = {
+                'index': [max_idx('meal') + 1],
+                'ts': [arrow.now().format("YYYY-MM-DD HH:mm")],
+                'calories': [calories],
+                'fat': [fat],
+                'cholesterol': [cholesterol],
+                'sodium': [sodium],
+                'carbohydrate': [carbohydrate],
+                'protein': [protein],
+                'servings': [servings],
+                'indices': [indices]
+            }
+            write_db(meal, 'meal')
+            dvsr = []
+            return button_id, 0, 0, 0, 0, 0, 0, '', '', 0
+
+        return button_id, calories, fat, cholesterol, sodium, carbohydrate, protein, servings, indices, smb

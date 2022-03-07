@@ -13,6 +13,7 @@
         "certifi",
         "cffi",
         "cgms",
+        "cmbn",
         "cmfb",
         "datareader",
         "diabeteswarrior",

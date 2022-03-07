@@ -30,8 +30,7 @@ def register_callbacks(dashapp):
         else:
             return F"Interface for User: {data['username']}"
 
-    @dashapp.callback(
-        Output('submit-food-button', 'n_clicks'),
+    @dashapp.callback(Output('submit-food-button', 'n_clicks'),
         Output('timetamp-food-input', 'value'),
         Output('domain-food-input', 'value'),
         Output('name-food-input', 'value'),
@@ -54,8 +53,7 @@ def register_callbacks(dashapp):
         Input('cholesterol-food-input', 'value'),
         Input('sodium-food-input', 'value'),
         Input('carbohydrate-food-input', 'value'),
-        Input('protein-food-input', 'value')
-    )
+        Input('protein-food-input', 'value'))
     def new_food(sfb, timestamp, domain, name, portion, unit, calories, fat, cholesterol, sodium, carbohydrate, protein) -> str:
         ctx = dash.callback_context
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]

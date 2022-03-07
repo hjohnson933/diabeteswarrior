@@ -28,8 +28,7 @@ def register_callbacks(dashapp):
         else:
             return F"Interface for User: {data['username']}"
 
-    @dashapp.callback(Output('test-output', 'children'),
-        Output('calories-meal-input', 'value'),
+    @dashapp.callback(Output('calories-meal-input', 'value'),
         Output('fat-meal-input', 'value'),
         Output('cholesterol-meal-input', 'value'),
         Output('sodium-meal-input', 'value'),
@@ -89,6 +88,6 @@ def register_callbacks(dashapp):
             }
             write_db(meal, 'meal')
             dvsr = []
-            return button_id, 0, 0, 0, 0, 0, 0, '', '', 0
+            return 0, 0, 0, 0, 0, 0, '', '', 0
 
-        return button_id, calories, fat, cholesterol, sodium, carbohydrate, protein, servings, indices, smb
+        return calories, fat, cholesterol, sodium, carbohydrate, protein, servings, indices, smb

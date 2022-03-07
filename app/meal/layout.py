@@ -38,7 +38,6 @@ df0 = get_table_data(table='food', columns=food_columns, servings=True)
 layout = html.Div(id='main',
     className='container-xl',
     children=[
-        html.P(id='test-output'),
         dcc.Store(id='user-store'),
         html.H1(id='username'),
         html.H1(id='meal-food', children='Meals and Food Data'),
@@ -109,9 +108,6 @@ layout = html.Div(id='main',
             ]
         ),
         html.Br(),
-        # form_buttons(name='calc',
-        #     className='meal',
-        #     children='Calculate Meal'),
         dash_table.DataTable(
             id='food-table',
             style_data={'whiteSpace': 'normal', 'height': 'auto'},

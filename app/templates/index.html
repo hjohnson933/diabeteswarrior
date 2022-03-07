@@ -5,5 +5,9 @@
     <h1>Hello, stranger!</h1>
   {% else %}
     <h1>Hi, {{ current_user.username }}!</h1>
+    <a href="/scan/">Scan</a>
+    <a href="/food/">Food</a>
+    <a href="/meal/">Meal</a>
+    <a href="/health/">Health</a>
   {% endif %}
 {% endblock content %}

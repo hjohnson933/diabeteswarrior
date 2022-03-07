@@ -5,6 +5,7 @@ import dash
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
+from dash import html
 
 Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
 Base: Any = declarative_base()
@@ -58,3 +59,15 @@ def get_table_data(table: str, columns: list, servings: bool = False) -> object:
         if servings:
             df['serving'] = None
     return df
+
+
+def nav_home(username) -> str:
+    rv = html.Div(children=[
+        html.H1(F"Hi, {username}"),
+        html.A("Home ", href="/"),
+        html.A("Scan ", href="/scan/"),
+        html.A("Food ", href="/food/"),
+        html.A("Meal ", href="/meal/"),
+        html.A("health ", href="/health/")
+    ])
+    return rv

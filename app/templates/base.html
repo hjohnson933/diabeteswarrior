@@ -13,11 +13,6 @@
       {% else %}
       <a href="{{ url_for('main.logout') }}">Logout</a>
       {% endif %}
-      <a href="/scan/">Scan</a>
-      <a href="/food/">Food</a>
-      <a href="/meal/">Meal</a>
-      <a href="/health/">Health</a>
-
       {% block content %}{% endblock %}
       </div>
   </body>

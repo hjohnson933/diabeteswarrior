@@ -5,7 +5,7 @@ import dash
 from dash.dependencies import Input, Output
 from flask_login import current_user
 
-from .assets.utils import max_idx, write_db
+from .assets.utils import max_idx, write_db, nav_home
 
 scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 message_dict = {'Is high': 3, 'Is going high': 2, 'My high alarm': 1, 'No alarm': 0, 'My low alarm': -1, 'Is going low': -2, 'Is low': -3}
@@ -31,7 +31,7 @@ def register_callbacks(dashapp):
         if data is None:
             return ''
         else:
-            return F"Interface for User: {data['username']}"
+            return nav_home(data['username'])
 
     @dashapp.callback(
         Output('submit-scan-button', 'n_clicks'),

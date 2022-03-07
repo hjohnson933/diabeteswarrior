@@ -16,7 +16,7 @@ layout = html.Div(
     className='health',
     children=[
         dcc.Store(id='user-store'),
-        html.H1(id='username'),
+        html.P(id='username'),
         html.H1(id='hlth', children='General Health Information'),
         dropdown_input(name='scope',
             className='health',

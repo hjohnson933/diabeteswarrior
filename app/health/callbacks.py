@@ -5,7 +5,7 @@ import dash
 from dash.dependencies import Input, Output
 from flask_login import current_user
 
-from .assets.utils import max_idx, write_db
+from .assets.utils import max_idx, write_db, nav_home
 
 scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 stage_dict = {'No Hypertension': 0, 'Pre-Hypertension': 1, 'Stage I Hypertension': 2, 'Stage II Hypertension': 3}
@@ -31,7 +31,7 @@ def register_callbacks(dashapp):
         if data is None:
             return ''
         else:
-            return F"Interface for User: {data['username']}"
+            return nav_home(data['username'])
 
     @dashapp.callback(
         Output('submit-health-button', 'n_clicks'),

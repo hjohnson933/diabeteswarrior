@@ -38,7 +38,7 @@ layout = html.Div(
     className='container-xl',
     children=[
         dcc.Store(id='user-store'),
-        html.H1(id='username'),
+        html.P(id='username'),
         html.H1(id='data', children='New Food Data'),
         dropdown_input(name='scope',
             className='food',

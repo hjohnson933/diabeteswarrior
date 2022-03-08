@@ -1,4 +1,4 @@
-"""Health Dash Application Callbacks"""
+"""Health Dash Application Callbacks."""
 
 import arrow
 import dash
@@ -13,6 +13,7 @@ ihb_dict = {'Regular Heart Beat': 0, 'Irregular Heart Beat': 1}
 
 
 def register_callbacks(dashapp):
+    """Callbacks for the Dash health application."""
     @dashapp.callback(
         Output('user-store', 'data'),
         Input('scope-health-menu', 'value')

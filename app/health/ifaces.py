@@ -1,9 +1,12 @@
-"""Health Dash Application Interfaces"""
+"""Health Dash Application Interfaces."""
+# todo move to app.models
 from sqlalchemy import Integer, Boolean, Column, DateTime, Numeric, REAL
 from .assets.utils import Base
 
 
 class Health(Base):
+    """Health data model."""
+
     __tablename__ = 'health'
 
     index = Column(Integer, primary_key=True)
@@ -22,6 +25,8 @@ class Health(Base):
 
 
 class Config(Base):
+    """Personal configuration data model."""
+
     __tablename__ = 'config'
 
     id = Column(Integer, primary_key=True)

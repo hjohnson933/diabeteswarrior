@@ -1,9 +1,12 @@
-"""Scan Dash Application Interfaces"""
+"""Scan Dash Application Interfaces."""
+# todo move to app.models
 from sqlalchemy import Integer, Boolean, Column, DateTime, Numeric, Text, REAL
 from .assets.utils import Base
 
 
 class Scan(Base):
+    """Scan data models."""
+
     __tablename__ = 'scan'
 
     index = Column(Integer, primary_key=True)
@@ -26,6 +29,8 @@ class Scan(Base):
 
 
 class Config(Base):
+    """Personal configuration data model."""
+
     __tablename__ = 'config'
 
     id = Column(Integer, primary_key=True)

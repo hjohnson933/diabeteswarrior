@@ -1,4 +1,4 @@
-"""Scan Dash Application Callbacks"""
+"""Scan Dash Application Callbacks."""
 
 import arrow
 import dash
@@ -13,6 +13,14 @@ trend_dict = {'Pointing up': 2, 'Pointing up and right': 1, 'Pointing right': 0,
 
 
 def register_callbacks(dashapp):
+    """All callbacks registered for the Scan application.
+
+    Args:
+        dashapp (object): The Dash server.
+
+    Returns:
+        None: Nothing
+    """
     @dashapp.callback(
         Output('user-store', 'data'),
         Input('scope-scan-menu', 'value')

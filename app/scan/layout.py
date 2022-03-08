@@ -1,4 +1,4 @@
-"""Scan Dash Application Layout"""
+"""Scan Dash Application Layout."""
 import arrow
 import dash_bootstrap_components as dbc
 from dash import dcc, html

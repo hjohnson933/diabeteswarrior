@@ -1,4 +1,4 @@
-"""Meal Dash Application Callbacks"""
+"""Meal Dash Application Callbacks."""
 
 import arrow
 import dash
@@ -10,6 +10,7 @@ scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 
 
 def register_callbacks(dashapp):
+    """Callbacks for the Dash food application."""
     @dashapp.callback(
         Output('user-store', 'data'),
         Input('scope-food-menu', 'value')

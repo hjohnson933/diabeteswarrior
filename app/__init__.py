@@ -1,4 +1,4 @@
-"""Main Flask Application"""
+"""Main Flask Application."""
 import dash
 import dash_bootstrap_components as dbc
 from config import BaseConfig
@@ -7,7 +7,12 @@ from flask.helpers import get_root_path
 from flask_login import login_required
 
 
-def create_app():
+def create_app() -> object:
+    """Configure the Flask server and register the blueprints.
+
+    Returns:
+        object: flask server instance.
+    """
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
 
@@ -33,7 +38,16 @@ def create_app():
     return server
 
 
-def register_dashapps(app, title, base_pathname, layout, register_callbacks_func):
+def register_dashapps(app: str, title: str, base_pathname: str, layout: str, register_callbacks_func: str) -> None:
+    """Register the Dash application in the flask server.
+
+    Args:
+        app (str): The name of the Flask server.
+        title (str): The name of the Dash application.
+        base_pathname (str): The root file path of the Dash application.
+        layout (str): The file name of the Dash layout.
+        register_callbacks_func (str): The file name of the Dash callbacks.
+    """
     meta_viewport = {"name": "viewport", "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
 
     my_dashapp = dash.Dash(__name__,
@@ -52,14 +66,19 @@ def register_dashapps(app, title, base_pathname, layout, register_callbacks_func
         _project_dashviews(my_dashapp)
 
 
-def _project_dashviews(dashapp):
+def _project_dashviews(dashapp: object) -> None:
+    """Ensure authentication for the dash routes."""
     for view_func in dashapp.server.view_functions:
         if view_func.startswith(dashapp.config.url_base_pathname):
-            dashapp.server.view_functions[view_func] = login_required(
-                dashapp.server.view_functions[view_func])
+            dashapp.server.view_functions[view_func] = login_required(dashapp.server.view_functions[view_func])
 
 
-def register_extensions(server):
+def register_extensions(server: object) -> None:
+    """Initialize the Flask extensions to the server instance.
+
+    Args:
+        server (object): Flask server instance.
+    """
     from app.extensions import authenticate, login, migrate
 
     authenticate.init_app(server)
@@ -68,7 +87,12 @@ def register_extensions(server):
     migrate.init_app(server, authenticate)
 
 
-def register_blueprints(server):
+def register_blueprints(server: object) -> None:
+    """Register the blueprints to the Flask server instance.
+
+    Args:
+        server (object): The flask server instance.
+    """
     from app.webapp import server_bp
 
     server.register_blueprint(server_bp)

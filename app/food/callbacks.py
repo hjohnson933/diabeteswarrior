@@ -28,7 +28,7 @@ def register_callbacks(dashapp):
         if data is None:
             return ''
         else:
-            return nav_home(data['username'])
+            return nav_home(data['username'], 'nav')
 
     @dashapp.callback(Output('submit-food-button', 'n_clicks'),
         Output('timetamp-food-input', 'value'),

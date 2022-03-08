@@ -5,7 +5,6 @@ import dash
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
-from dash import html
 
 Engine = create_engine('postgresql://hjohnson933:__46_LITTLE_barbados_LATE_76__@git.house.lan:5432/hjohnson933')
 Base: Any = declarative_base()
@@ -40,6 +39,21 @@ def form_checkbox(name: str, className: str, options: str, btn_dict: dict) -> ob
         inline=True)
 
 
+def nav_home(username: str, className: str) -> str:
+    return dash.html.Div(id=F"{username}-{className}-div",
+        className=className,
+        children=[
+            dash.html.H1(id=f'{username}-{className}-heading', className=className, children=F'Hi, {username}'),
+            dash.html.Hr(),
+            dash.html.A(id=f'{username}-{className}-home', className=className, href="/", children="Home "),
+            dash.html.A(id=f'{username}-{className}-scan', className=className, href="/scan/", children="Scan "),
+            dash.html.A(id=f'{username}-{className}-food', className=className, href="/food/", children="Food "),
+            dash.html.A(id=f'{username}-{className}-meal', className=className, href="/meal/", children="Meal "),
+            dash.html.A(id=f'{username}-{className}-health', className=className, href="/health/", children="Health ")
+        ]
+    )
+
+
 def write_db(records: str, table: str) -> object:
     df = pd.DataFrame(data=records)
     df.set_index('index')
@@ -59,15 +73,3 @@ def get_table_data(table: str, columns: list, servings: bool = False) -> object:
         if servings:
             df['serving'] = None
     return df
-
-
-def nav_home(username) -> str:
-    rv = html.Div(children=[
-        html.H1(F"Hi, {username}"),
-        html.A("Home ", href="/"),
-        html.A("Scan ", href="/scan/"),
-        html.A("Food ", href="/food/"),
-        html.A("Meal ", href="/meal/"),
-        html.A("health ", href="/health/")
-    ])
-    return rv

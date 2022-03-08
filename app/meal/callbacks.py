@@ -26,7 +26,7 @@ def register_callbacks(dashapp):
         if data is None:
             return ''
         else:
-            return nav_home(data['username'])
+            return nav_home(data['username'], 'nav')
 
     @dashapp.callback(Output('calories-meal-input', 'value'),
         Output('fat-meal-input', 'value'),

@@ -1,4 +1,4 @@
-"""Meal Dash Application Callbacks"""
+"""Meal Dash Application Callbacks."""
 
 import arrow
 import dash
@@ -12,6 +12,7 @@ scope_dict = {'Last 24 hours': 24, 'Last 14 days': 336, 'Last 90 days': 2160}
 
 
 def register_callbacks(dashapp):
+    """Callbacks for the meals dash application."""
     @dashapp.callback(Output('user-store', 'data'),
         Input('scope-meal-menu', 'value'))
     def cur_user(children) -> str:
@@ -60,7 +61,11 @@ def register_callbacks(dashapp):
 
         if dvsr is not None:
             for each in dvsr:
-                each_serving = float(dvd[each]['serving'])
+                try:
+                    each_serving = float(dvd[each]['serving'])
+                except TypeError:
+                    each_serving = 1
+
                 calories += dvd[each]['calories'] * each_serving
                 fat += dvd[each]['fat'] * each_serving
                 cholesterol += dvd[each]['cholesterol'] * each_serving

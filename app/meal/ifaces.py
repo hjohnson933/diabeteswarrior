@@ -1,9 +1,11 @@
-"""Meal Dash Application Interfaces"""
+"""Meal Dash Application Interfaces."""
 from sqlalchemy import Integer, Column, DateTime, Numeric, REAL, TEXT
 from .assets.utils import Base
 
 
 class Meals(Base):
+    """Meal Model."""
+
     __tablename__ = 'meal'
 
     index = Column(Integer, primary_key=True)
@@ -20,6 +22,8 @@ class Meals(Base):
 
 
 class Foods(Base):
+    """Food Model."""
+
     __tablename__ = 'food'
 
     index = Column(Integer, primary_key=True)
@@ -38,6 +42,8 @@ class Foods(Base):
 
 
 class Config(Base):
+    """User Configuration Model."""
+
     __tablename__ = 'config'
 
     id = Column(Integer, primary_key=True)

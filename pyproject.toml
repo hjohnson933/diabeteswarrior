@@ -21,6 +21,7 @@ prompt-toolkit = "^3.0.28"
 dash-bootstrap-components = "^1.0.3"
 SQLAlchemy = "^1.4.31"
 xonsh = "^0.11.0"
+numpy = "^1.22.3"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"

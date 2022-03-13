@@ -14,11 +14,13 @@ server_bp = Blueprint('main', __name__)
 
 @server_bp.route('/')
 def index() -> str:
+    """Home route."""
     return render_template('index.html', title='Home Page')
 
 
 @server_bp.route('/login/', methods=['GET', 'POST'])
 def login() -> object:
+    """Login route."""
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 
@@ -41,6 +43,7 @@ def login() -> object:
 @server_bp.route('/logout/')
 @login_required
 def logout() -> object:
+    """Logout route."""
     logout_user()
 
     return redirect(url_for('main.index'))
@@ -48,6 +51,7 @@ def logout() -> object:
 
 @server_bp.route('/register/', methods=['GET', 'POST'])
 def register() -> object:
+    """Route to the registration form."""
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 
@@ -65,4 +69,5 @@ def register() -> object:
 
 @server_bp.route('/favicon.ico')
 def favicon():
+    """Add a route to the favicon for the application."""
     return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'favicon.icon', mime='image/vnd.microsoft.icon')

@@ -4,6 +4,7 @@ venv/
 __pycache__/
 
 instance/
+migrations/
 
 .pytest_cache/
 .converage
@@ -14,13 +15,8 @@ build/
 *.egg-info/
 
 .env
-app/scan/data/
 hjohnson933.session.sql
-out/linecounter.json
-out/linecounter.txt
-
-out/
-app/health/data/health.csv
+out/*
 learn*.py
-app/meal/data/food.csv
-app/meal/data/meal.csv
+*/data/
+requirements.txt

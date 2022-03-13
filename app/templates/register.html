@@ -4,8 +4,16 @@
   <h1>Register</h1>
   <form action="", method="POST">
     {{ form.hidden_tag() }}
-    <p>{{ form.username.label }}<br>{{ form.username(size=32) }}<br></p>
-    <p>{{ form.password.label }}<br>{{ form.password(size=32)}}<br></p>
+    <p>{{ form.username.label }}: {{ form.username(size=32) }}, {{ form.password.label }}: {{ form.password(size=32)}}, {{form.email.label }}: {{ form.email(size=128) }}<br></p>
+    <hr>
+    <p>{{ form.chart_min.label }}: {{ form.chart_min(size=3) }}, {{ form.chart_max.label }}: {{ form.chart_max(size=5) }}<br></p>
+    <p>{{ form.limit_min.label }}: {{ form.limit_min(size=3) }}, {{ form.limit_max.label }}: {{ form.limit_max(size=3) }}<br></p>
+    <p>{{ form.target_min.label }}: {{ form.target_min(size=3) }}, {{ form.target_max.label }}: {{ form.target_max(size=3) }}<br></p>
+    <p>{{ form.my_target_min.label }}: {{ form.my_target_min(size=3) }}, {{ form.my_target_max.label }}: {{ form.my_target_max(size=3) }}<br></p>
+    <p>{{ form.meal_ideal.label }}: {{ form.meal_ideal(size=3) }}, {{ form.meal_good.label }}: {{ form.meal_good(size=3) }}, {{ form.meal_bad.label }}: {{ form.meal_bad(size=3) }}<br></p>
+    <hr>
+    <p>{{ form.my_target_weight.label }}: {{ form.my_target_weight(size=6) }}, {{ form.my_target_bmi.label }}: {{ form.my_target_bmi(size=5) }}<br></p>
+    <hr>
     <p>{{ form.submit() }}</p>
   </form>
 {% endblock content %}

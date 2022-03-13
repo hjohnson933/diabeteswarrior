@@ -1,6 +1,6 @@
 """Main Flask Application."""
 import dash
-import dash_bootstrap_components as dbc
+# import dash_bootstrap_components as dbc
 from config import BaseConfig
 from flask import Flask
 from flask.helpers import get_root_path
@@ -50,12 +50,12 @@ def register_dashapps(app: str, title: str, base_pathname: str, layout: str, reg
     """
     meta_viewport = {"name": "viewport", "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
 
+    #    removed from my_dashapp for testing external_stylesheets=[dbc.themes.BOOTSTRAP])
     my_dashapp = dash.Dash(__name__,
                            server=app,
                            url_base_pathname=F'/{base_pathname}/',
                            assets_folder=get_root_path(__name__) + F'/{base_pathname}/assets/',
-                           meta_tags=[meta_viewport],
-                           external_stylesheets=[dbc.themes.BOOTSTRAP])
+                           meta_tags=[meta_viewport])
     my_dashapp.enable_dev_tools()
 
     with app.app_context():

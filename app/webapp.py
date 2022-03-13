@@ -71,3 +71,9 @@ def register() -> object:
 def favicon():
     """Add a route to the favicon for the application."""
     return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'favicon.icon', mime='image/vnd.microsoft.icon')
+
+
+@server_bp.route('/grid.css')
+def grid_css():
+    """Add route to css grid."""
+    return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'grid.css', mime='text/css')

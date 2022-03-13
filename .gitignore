@@ -23,3 +23,10 @@ requirements.txt
 
 diabeteswarrior.code-workspace
 .vscode
+instance_old/app.db
+instance_old/app2.db
+migrations_old/alembic.ini
+migrations_old/script.py.mako
+migrations_old/versions/0bd7d333a03e_init.py
+migrations_old
+instance_old

@@ -20,3 +20,6 @@ out/*
 learn*.py
 */data/
 requirements.txt
+
+diabeteswarrior.code-workspace
+.vscode

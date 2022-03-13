@@ -3,7 +3,7 @@
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app.extensions import authenticate, login
+from app.extensions import db, login
 
 
 @login.user_loader
@@ -12,7 +12,7 @@ def load_user(id) -> int:
     return User.query.get(int(id))
 
 
-class User(UserMixin, authenticate.Model):
+class User(UserMixin, db.Model):
     """A model to the user.
 
     Args:
@@ -23,9 +23,9 @@ class User(UserMixin, authenticate.Model):
         [bool, str]: Returns a boolean value indicating whether the user password is correct. Returns the user name.
     """
 
-    id: int = authenticate.Column(authenticate.Integer, primary_key=True)
-    username: str = authenticate.Column(authenticate.String(64), index=True, unique=True)
-    password_hash: str = authenticate.Column(authenticate.String(128))
+    id: int = db.Column(db.Integer, primary_key=True)
+    username: str = db.Column(db.String(64), index=True, unique=True)
+    password_hash: str = db.Column(db.String(128))
 
     def set_password(self, password) -> None:
         """Generate a hash of the password."""

@@ -79,12 +79,12 @@ def register_extensions(server: object) -> None:
     Args:
         server (object): Flask server instance.
     """
-    from app.extensions import authenticate, login, migrate
+    from app.extensions import db, login, migrate
 
-    authenticate.init_app(server)
+    db.init_app(server)
     login.init_app(server)
     login.login_view = 'main.login'
-    migrate.init_app(server, authenticate)
+    migrate.init_app(server, db)
 
 
 def register_blueprints(server: object) -> None:

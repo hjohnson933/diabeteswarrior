@@ -1,7 +1,7 @@
 """Create the forms used by the Flask server."""
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, IntegerField, DecimalField, EmailField
-from wtforms.validators import DataRequired, NumberRange, Email
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, IntegerField, DecimalField
+from wtforms.validators import DataRequired, NumberRange, Length, Email, EqualTo
 
 
 class LoginForm(FlaskForm):
@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
         FlaskForm (object): Forms base class.
     """
 
-    username = StringField('Username', validators=[DataRequired('Username is required!')])
+    username = StringField('Username', validators=[DataRequired('Username is required!'), Length(min=3, max=32)])
     password = PasswordField('Password', validators=[DataRequired('Password is required!')])
     submit = SubmitField('Login')
     remember_me = BooleanField('Remember Me')
@@ -39,20 +39,21 @@ class RegistrationForm(FlaskForm):
 
     """
 
-    username = StringField('Username', validators=[DataRequired('Username is required!')])
+    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=32, message='Username is required! and must be between 3 and 32 characters long')])
     password = PasswordField('Password', validators=[DataRequired('Password is required!')])
-    email = EmailField('Email Address', validators=[DataRequired('Email address is required!'), Email()])
-    chart_min = IntegerField('Lowest Chart Value', default=40, validators=[NumberRange(min=10, max=2656)])
-    chart_max = IntegerField('Highest Chart Value', default=400, validators=[NumberRange(min=10, max=2656)])
-    limit_min = IntegerField('Lowest Acceptable Value', default=55, validators=[NumberRange(min=21, max=70)])
-    limit_max = IntegerField('Highest Acceptable Value', default=250, validators=[NumberRange(min=180, max=250)])
-    target_min = IntegerField('Lower Target Value', default=70)
-    target_max = IntegerField('Upper Target Value', default=180)
-    my_target_min = IntegerField('My Lower Fasting Target Value', validators=[NumberRange(min=70, max=180)])
-    my_target_max = IntegerField('My Upper Fasting Target Value', validators=[NumberRange(min=70, max=180)])
-    meal_ideal = IntegerField('IDEAL Postprandial Glucose', default=180)
-    meal_good = IntegerField('OK Postprandial Glucose', default=250)
-    meal_bad = IntegerField('BAD Postprandial Glucose', default=270)
-    my_target_weight = DecimalField('Your Target Weight')
-    my_target_bmi = DecimalField('Your Target Body Mass Index')
+    confirm = PasswordField('Confirm Password', validators=[DataRequired('Password is required!'), EqualTo('password')])
+    email = StringField('Email Address', validators=[DataRequired(), Email(), Length(min=6, max=128, message='Email address is required! and must be between 6 and 128 characters long')])
+    chart_min = IntegerField('Chart Low', default=40, validators=[NumberRange(min=10, max=2656)])
+    chart_max = IntegerField('Chart High', default=400, validators=[NumberRange(min=10, max=2656)])
+    limit_min = IntegerField('Acceptable Low', default=55, validators=[NumberRange(min=21, max=70)])
+    limit_max = IntegerField('Acceptable High', default=250, validators=[NumberRange(min=180, max=250)])
+    target_min = IntegerField('Target Low', default=70)
+    target_max = IntegerField('Target High', default=180)
+    my_target_min = IntegerField('Fasting Target Low', validators=[NumberRange(min=70, max=180)])
+    my_target_max = IntegerField('Fasting Target High', validators=[NumberRange(min=70, max=180)])
+    meal_ideal = IntegerField('IDEAL Meal Glucose', default=180)
+    meal_good = IntegerField('OK Meal Glucose', default=250)
+    meal_bad = IntegerField('BAD Meal Glucose', default=270)
+    my_target_weight = DecimalField('Target Body Weight')
+    my_target_bmi = DecimalField('Target Body Mass Index')
     submit = SubmitField('Register')

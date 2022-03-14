@@ -3,7 +3,7 @@
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app.extensions import db, login
+from app.extensions import login, db
 
 
 @login.user_loader
@@ -24,10 +24,9 @@ class User(UserMixin, db.Model):
     """
 
     id: int = db.Column(db.Integer, primary_key=True)
-    username: str = db.Column(db.String(64), index=True, unique=True)
+    username: str = db.Column(db.String(32), index=True, unique=True)
     email: str = db.Column(db.String(128), index=True, unique=True)
     password_hash: str = db.Column(db.String(128))
-    email_hash: str = db.Column(db.String(128))
     chart_min: int = db.Column(db.Integer)
     chart_max: int = db.Column(db.Integer)
     limit_min: int = db.Column(db.Integer)
@@ -50,17 +49,9 @@ class User(UserMixin, db.Model):
         """Generate a hash of the password."""
         self.password_hash = generate_password_hash(password)
 
-    def set_email(self, email) -> None:
-        """Generate a hash of the email address."""
-        self.email_hash = generate_password_hash(email)
-
     def check_password(self, password) -> bool:
         """Return True if the hashes of the entered password and stored password match."""
         return check_password_hash(self.password_hash, password)
-
-    def check_email(self, email) -> bool:
-        """Return True if the hashes of the entered email and stored email match."""
-        return check_password_hash(self.email_hash, email)
 
     def __repr__(self) -> str:
         """Return a string representation of the user."""

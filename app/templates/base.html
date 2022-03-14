@@ -5,20 +5,74 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='grid.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='utilities.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+      <title>Diabetes Warrior - {{ title }}</title>
+    {% else %}
+      <title>Diabetes Warrior</title>
+    {% endif %}
   </head>
 
   <body>
-    <div>
-      Diabetes Warrior:
-      <a href="{{ url_for('main.index') }}">Home</a>
-      {% if current_user.is_anonymous %}
-      <a href="{{ url_for('main.login') }}">Login</a>
-      {% else %}
-      <a href="{{ url_for('main.logout') }}">Logout</a>
-      {% endif %}
-      {% block content %}{% endblock %}
+    <!-- class="site-header" -->
+    <header>
+      <!-- class="navbar navbar-expand-md navbar-dark fixed-top" -->
+      <nav>
+        <!-- class="container" -->
+        <div>
+          <!-- class="navbar-brand mr-4" -->
+          <a href="/">Diabetes Warrior</a>
+          <!-- class="navbar-toggler" -->
+          <button type="button" data-toggle="collapse" data-target="#navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <!-- class="navbar-toggler-icon" -->
+            <span></span>
+          </button>
+          <!-- class="collapse navbar-collapse" -->
+          <div id="navbarToggle">
+            <!-- class="navbar-nav mr-auto" -->
+            <div>
+              <!-- class="nav-item nav-link" -->
+              <a href="{{ url_for('main.index') }}">Home</a>
+              {% if current_user.is_anonymous %}
+                <!-- class="nav-item nav-link" -->
+                <a href="{{ url_for('main.login') }}">Login</a>
+              {% else %}
+                <!-- class="nav-item nav-link" -->
+                <a href="{{ url_for('main.logout') }}">Logout</a>
+                <p>Scan</p>
+                <p>Meal</p>
+                <p>Health</p>
+                <p>Food</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- class="container" -->
+    <main role="main">
+      <!-- class="row" -->
+      <div>
+        <!-- class="col-md-8" -->
+        <div>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, messages in message %}
+                <!-- class="alert alert-{{ category }}" -->
+                <div>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
       </div>
+    </main>
   </body>
 
-  </html>
+</html>

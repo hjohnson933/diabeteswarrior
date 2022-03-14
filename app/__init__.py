@@ -1,6 +1,5 @@
 """Main Flask Application."""
 import dash
-# import dash_bootstrap_components as dbc
 from config import BaseConfig
 from flask import Flask
 from flask.helpers import get_root_path
@@ -79,12 +78,12 @@ def register_extensions(server: object) -> None:
     Args:
         server (object): Flask server instance.
     """
-    from app.extensions import db, login, migrate
+    from app.extensions import login, migrate, db
 
-    db.init_app(server)
     login.init_app(server)
     login.login_view = 'main.login'
     migrate.init_app(server, db)
+    db.init_app(server)
 
 
 def register_blueprints(server: object) -> None:

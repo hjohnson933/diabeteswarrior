@@ -30,3 +30,4 @@ migrations_old/script.py.mako
 migrations_old/versions/0bd7d333a03e_init.py
 migrations_old
 instance_old
+icons/

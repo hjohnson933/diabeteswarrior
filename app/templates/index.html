@@ -1,13 +1,5 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% if current_user.is_anonymous %}
-    <h1>Hello, stranger!</h1>
-  {% else %}
-    <h1>Hi, {{ current_user.username }}!</h1>
-    <a href="/scan/">Scan</a>
-    <a href="/food/">Food</a>
-    <a href="/meal/">Meal</a>
-    <a href="/health/">Health</a>
-  {% endif %}
+  <p>Same content displayed no matter the login status of the current user.</p>
 {% endblock content %}

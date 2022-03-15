@@ -1,36 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <!-- class="content-section" -->
-<div>
+<div class="content-section">
     <h1>{{ title }}</h1>
-    <form action="", method="POST">
+    <form id="{{ title.lower() }}-form" action="" method="POST">
       {{ form.hidden_tag() }}
-      <!-- class="form-group" -->
-      <fieldset>
-        <!-- class="border-bottom, mb-4" -->
-        <legend>Register Now.</legend>
+      <fieldset id="{{ title.lower() }}-fields" class="form-group">
+        <legend id="{{ title.lower() }}-legend" class="border-bottom mb-4">Register Now.</legend>
         {% for each in fields %}
-          <!-- class="form-group" -->
-          <div>
-            <!-- class="form-control-label"; "form-control form-control-lg"  -->
-            {{ form[each].label }}: {{ form[each] }}
+          <div id="{{ each }}-field" class="form-group row">
+            <div id="{{ each }}-label" class="form-group col">
+              {{ form[each].label(class="form-control-sm") }}
+            </div>
+            <div id="{{ each }}-value" class="form-group col">
+              {% if form[each].errors %}
+                {{ form[each](class="form-control form-control-sm is-invalid") }}
+                <div id="{{ each }}-error" class="invalid-feedback">
+                  {% for error in form[each].errors %}
+                    <span>{{ error }}</span>
+                  {% endfor %}
+                </div>
+              {% else %}
+                {{ form[each](class="form-control form-control-sm") }}
+              {% endif %}
+            </div>
           </div>
         {% endfor %}
       </fieldset>
-      <!-- class="form-group" -->
-      <div>
-        <!-- class="btn btn-outline-info" -->
-        {{ form.submit() }}
+      <br>
+      <div id="{{ title.lower() }}-submit" class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
       </div>
     </form>
 </div>
-<!-- class="border-top pt-3" -->
-<div >
-  <!-- class="text-muted" -->
-  <small>
+<div id="{{ title.lower() }}-footer" class="border-top pt-3">
+  <small class="text-muted">
     Already Registered?
-    <!-- class="ml-2" -->
     <a href="{{ url_for('main.login') }}">Login Now.</a>
   </small>
 </div>

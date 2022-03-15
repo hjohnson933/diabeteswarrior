@@ -11,8 +11,8 @@ class LoginForm(FlaskForm):
         FlaskForm (object): Forms base class.
     """
 
-    username = StringField('Username', validators=[DataRequired('Username is required!'), Length(min=3, max=32)])
-    password = PasswordField('Password', validators=[DataRequired('Password is required!')])
+    username = StringField('Username or Email Address', validators=[DataRequired('You must provide a username or a email address.')])
+    password = PasswordField('Password', validators=[DataRequired('You must provide your password.')])
     submit = SubmitField('Login')
     remember_me = BooleanField('Remember Me')
 

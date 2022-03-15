@@ -5,9 +5,9 @@ from flask import Blueprint, redirect, render_template, url_for, send_from_direc
 from flask_login import current_user, login_required, logout_user, login_user
 from werkzeug.urls import url_parse
 
-# from app.extensions import db
+from app.extensions import db
 from app.forms import RegistrationForm, LoginForm
-from app.models import User
+from app.models import Users
 
 server_bp = Blueprint('main', __name__)
 
@@ -63,13 +63,25 @@ def register() -> object:
         return redirect(url_for('main.index'))
 
     form = RegistrationForm()
-    fields = ['username', 'password', 'confirm', 'email', 'chart_min', 'chart_max', 'limit_min', 'limit_max', 'target_min', 'target_max', 'my_target_min', 'my_target_max', 'meal_ideal', 'meal_good', 'meal_bad', 'my_target_weight', 'my_target_bmi']
+    fields = ['username', 'email', 'password', 'confirm']
 
     if form.validate_on_submit():
+        user = Users()
+        user.username = str(form.username.data)
+        user.email = str(form.email.data)
+        user.password = user.set_account_hash(password=F'{user.username}{user.email}{str(form.password.data)}')
+        db.session.add(user)
+        db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.account'))
 
     return render_template('register.html', title='Register', form=form, fields=fields)
+
+
+@server_bp.route('/account/', methods=['GET', 'POST'])
+@login_required
+def account() -> object:
+    return redirect(url_for('main.account'))
 
 
 @server_bp.route('/favicon.ico')
@@ -82,15 +94,3 @@ def favicon():
 def main_css():
     """Add route to css main """
     return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'main.css', mime='text/css')
-
-
-@server_bp.route('/bootstrap.css')
-def bootstrap_css():
-    """Add route to css main """
-    return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'bootstrap.css', mime='text/css')
-
-
-@server_bp.route('/utilities.css')
-def utilities_css():
-    """Add route to css main """
-    return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'utilities.css', mime='text/css')

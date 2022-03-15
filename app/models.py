@@ -9,10 +9,10 @@ from app.extensions import login, db
 @login.user_loader
 def load_user(id) -> int:
     """Return the current users id number."""
-    return User.query.get(int(id))
+    return Users.query.get(int(id))
 
 
-class User(UserMixin, db.Model):
+class Users(UserMixin, db.Model):
     """A model of the user.
 
     Args:
@@ -24,9 +24,34 @@ class User(UserMixin, db.Model):
     """
 
     id: int = db.Column(db.Integer, primary_key=True)
-    username: str = db.Column(db.String(32), index=True, unique=True)
-    email: str = db.Column(db.String(128), index=True, unique=True)
-    password_hash: str = db.Column(db.String(128))
+    username: str = db.Column(db.String(32), index=True, nullable=False)
+    email: str = db.Column(db.String(128), index=True, nullable=False)
+    account_hash: str = db.Column(db.String(128), index=True, unique=True)
+    target = db.relationship('Targets', backref='active_user', lazy=True)
+    scan = db.relationship('Scans', backref='active_user', lazy=True)
+    food = db.relationship('Foods', backref='active_user', lazy=True)
+    meal = db.relationship('Meals', backref='active_user', lazy=True)
+    health = db.relationship('Healths', backref='active_user', lazy=True)
+
+    def set_account_hash(self, password) -> None:
+        """Generate a hash of the username, email and password."""
+        self.account_hash = generate_password_hash(password)
+
+    def check_password(self, password) -> bool:
+        """Return True if the hashes of the entered password and stored password match."""
+        return check_password_hash(self.account_hash, password)
+
+    def __repr__(self) -> str:
+        """Return a string representation of the user."""
+        return F'<User {self.username}>'
+
+
+class Targets(db.Model):
+    """Users Target Data"""
+
+    index = db.Column(db.Integer, primary_key=True)
+    ts = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     chart_min: int = db.Column(db.Integer)
     chart_max: int = db.Column(db.Integer)
     limit_min: int = db.Column(db.Integer)
@@ -40,22 +65,6 @@ class User(UserMixin, db.Model):
     meal_bad: int = db.Column(db.Integer)
     my_target_weight: float = db.Column(db.Numeric)
     my_target_bmi: float = db.Column(db.Numeric)
-    scan = db.relationship('Scans', backref='active_user', lazy=True)
-    food = db.relationship('Foods', backref='active_user', lazy=True)
-    meal = db.relationship('Meals', backref='active_user', lazy=True)
-    health = db.relationship('Healths', backref='active_user', lazy=True)
-
-    def set_password(self, password) -> None:
-        """Generate a hash of the password."""
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password) -> bool:
-        """Return True if the hashes of the entered password and stored password match."""
-        return check_password_hash(self.password_hash, password)
-
-    def __repr__(self) -> str:
-        """Return a string representation of the user."""
-        return F'<User {self.username}>'
 
 
 class Healths(db.Model):

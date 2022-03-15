@@ -11,7 +11,8 @@ class LoginForm(FlaskForm):
         FlaskForm (object): Forms base class.
     """
 
-    username = StringField('Username or Email Address', validators=[DataRequired('You must provide a username or a email address.')])
+    username = StringField('Username', validators=[DataRequired('You must provide your username.')])
+    email = StringField('Email', validators=[DataRequired('You must provide your email address.')])
     password = PasswordField('Password', validators=[DataRequired('You must provide your password.')])
     submit = SubmitField('Login')
     remember_me = BooleanField('Remember Me')
@@ -43,6 +44,12 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired('Password is required!')])
     confirm = PasswordField('Confirm Password', validators=[DataRequired('Password is required!'), EqualTo('password')])
     email = StringField('Email Address', validators=[DataRequired(), Email(), Length(min=6, max=128, message='Email address is required! and must be between 6 and 128 characters long')])
+    submit = SubmitField('Register')
+
+
+class AccountForm(FlaskForm):
+    """User Target Data"""
+
     chart_min = IntegerField('Chart Low', default=40, validators=[NumberRange(min=10, max=2656)])
     chart_max = IntegerField('Chart High', default=400, validators=[NumberRange(min=10, max=2656)])
     limit_min = IntegerField('Acceptable Low', default=55, validators=[NumberRange(min=21, max=70)])

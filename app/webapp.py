@@ -6,8 +6,8 @@ from flask import Blueprint, flash, redirect, render_template, send_from_directo
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app.extensions import db
-from app.forms import ScanForm, TargetForm, LoginForm, RegistrationForm
-from app.models import Targets, Users, Scans
+from app.forms import TargetForm, LoginForm, RegistrationForm  # ,ScanForm
+from app.models import Targets, Users  # , Scans
 
 # from werkzeug.urls import url_parse
 
@@ -109,9 +109,9 @@ def target() -> object:
 @server_bp.route('/scan/', methods=['GET', 'POST'])
 @login_required
 def scan() -> object:
-    form = ScanForm()
-    fields = ['message', 'notes', 'glucose', 'trend', 'bolus_u', 'basal_u', 'carbohydrates', 'medication', 'exercise']
-    return render_template('scan.html', title='Scan', form=form, fields=fields)
+    # form = ScanForm()
+    # fields = ['message', 'notes', 'glucose', 'trend', 'bolus_u', 'basal_u', 'carbohydrates', 'medication', 'exercise']
+    return render_template('scan.html', title='Scan')
 
 
 @server_bp.route('/meal/', methods=['GET', 'POST'])

@@ -1,13 +1,16 @@
 """Blueprint for Flask routes."""
 import os
 
-from flask import Blueprint, redirect, render_template, url_for, send_from_directory, request, flash
-from flask_login import current_user, login_required, logout_user, login_user
-from werkzeug.urls import url_parse
+import arrow
+from flask import Blueprint, flash, redirect, render_template, send_from_directory, url_for  # , request
+from flask_login import current_user, login_required, login_user, logout_user
 
 from app.extensions import db
-from app.forms import RegistrationForm, LoginForm
-from app.models import Users
+from app.forms import ScanForm, TargetForm, LoginForm, RegistrationForm
+from app.models import Targets, Users, Scans
+
+# from werkzeug.urls import url_parse
+
 
 server_bp = Blueprint('main', __name__)
 
@@ -34,24 +37,16 @@ def login() -> object:
         return redirect(url_for('main.index'))
 
     form = LoginForm()
-    fields = ['username', 'password']
+    fields = ['email', 'password']
 
     if form.validate_on_submit():
-        if form.username.data == 'admin' or form.username.data == 'a@dw.com':
-            if form.password.data == 'pass':
-                flash('Login successful', 'success')
-                return redirect(url_for('main.index'))
-            flash('Login failed', 'danger')
-    #     user = User.query.filter_by(username=form.username.data).first()
-    #     if user is None or not user.check_password(form.password.data):
-    #         error = 'Invalid username or password'
-    #         return render_template('login.html', error=error, form=form)
+        user = Users.query.filter_by(email=form.email.data).first()
+        if user is None or not user.check_password(form.password.data):
+            error = 'Invalid email or password'
+            return render_template('login.html', error=error, form=form)
 
-    #     login_user(user, remember=form.remember_me.data)
-    #     next_page = request.args.get('next')
-    #     if not next_page or url_parse(next_page).netloc != '':
-    #         next_page = url_for('main.index')
-    #     return redirect(next_page)
+        if login_user(user, remember=form.remember_me.data):
+            return redirect(url_for('main.index'))
 
     return render_template('login.html', title='Sign In', form=form, fields=fields)
 
@@ -69,19 +64,72 @@ def register() -> object:
         user = Users()
         user.username = str(form.username.data)
         user.email = str(form.email.data)
-        user.password = user.set_account_hash(password=F'{user.username}{user.email}{str(form.password.data)}')
+        user.password = user.set_password_hash(password=form.password.data)
+        user.account_token = F"{user.username.lower()}_{user.email.lower()}"
         db.session.add(user)
         db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('main.account'))
+        return redirect(url_for('main.target'))
 
     return render_template('register.html', title='Register', form=form, fields=fields)
 
 
-@server_bp.route('/account/', methods=['GET', 'POST'])
+@server_bp.route('/target/', methods=['GET', 'POST'])
 @login_required
-def account() -> object:
-    return redirect(url_for('main.account'))
+def target() -> object:
+
+    form = TargetForm()
+    fields = ['chart_min', 'chart_max', 'limit_min', 'limit_max', 'target_min', 'target_max', 'my_target_min', 'my_target_max', 'meal_ideal', 'meal_good', 'meal_bad', 'my_target_weight', 'my_target_bmi']
+
+    if form.validate_on_submit():
+        target = Targets()
+        target.ts = arrow.now().format("YYYY-MM-DD HH:mm")
+        target.user_id = current_user.id
+        target.chart_min = form.chart_min.data
+        target.chart_max = form.chart_max.data
+        target.limit_min = form.limit_min.data
+        target.limit_max = form.limit_max.data
+        target.target_min = form.target_min.data
+        target.target_max = form.target_max.data
+        target.my_target_min = form.my_target_min.data
+        target.my_target_max = form.my_target_max.data
+        target.meal_ideal = form.meal_ideal.data
+        target.meal_good = form.meal_good.data
+        target.meal_bad = form.meal_bad.data
+        target.my_target_weight = form.my_target_weight.data
+        target.my_target_bmi = form.my_target_bmi.data
+        db.session.add(target)
+        db.session.commit()
+        flash(f'Target data saved for {current_user.username}!', 'success')
+        return redirect(url_for('main.index'))
+
+    return render_template('target.html', title='Targets', form=form, fields=fields)
+
+
+@server_bp.route('/scan/', methods=['GET', 'POST'])
+@login_required
+def scan() -> object:
+    form = ScanForm()
+    fields = ['message', 'notes', 'glucose', 'trend', 'bolus_u', 'basal_u', 'carbohydrates', 'medication', 'exercise']
+    return render_template('scan.html', title='Scan', form=form, fields=fields)
+
+
+@server_bp.route('/meal/', methods=['GET', 'POST'])
+@login_required
+def meal():
+    ...
+
+
+@server_bp.route('/health/', methods=['GET', 'POST'])
+@login_required
+def health():
+    ...
+
+
+@server_bp.route('/food/')
+@login_required
+def food():
+    ...
 
 
 @server_bp.route('/favicon.ico')

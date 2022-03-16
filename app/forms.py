@@ -7,11 +7,16 @@ from wtforms.validators import DataRequired, NumberRange, Length, Email, EqualTo
 class LoginForm(FlaskForm):
     """Create the class with the login data.
 
-    Args:
-        FlaskForm (object): Forms base class.
+        Attributes:
+        -----------
+        email: str
+            The email address you registered with.
+        password: str
+            Your password.
+        submit: bool
+            Triggers the application to verify your credentials and allow access to your information.
     """
 
-    username = StringField('Username', validators=[DataRequired('You must provide your username.')])
     email = StringField('Email', validators=[DataRequired('You must provide your email address.')])
     password = PasswordField('Password', validators=[DataRequired('You must provide your password.')])
     submit = SubmitField('Login')
@@ -21,23 +26,19 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     """Create the class with the registration data.
 
-    Args:
-        FlaskForm (object): Forms base class.
-
-    @param chart_min Bottom edge of the chart, also the minimum value I found for life
-    @param chart_max Top edge of the chart, also the maximum value I found for life
-    @param limit_min The minimum acceptable blood glucose value
-    @param limit_max The maximum acceptable blood glucose value
-    @param target_min The minimum ideal blood glucose
-    @param target_max The maximum ideal blood glucose
-    @param my_target_min my fasting lower target
-    @param my_target_max my fasting upper target
-    @param meal_ideal The ideal value after a meal
-    @param meal_good A value that is OK every once in a while.
-    @param meal_bad A value that you should never execede
-    @param my_target_weight The weight I would like to matain
-    @param my_target_bmi The body mass index I would like to matain
-
+        Attributes:
+        -----------
+        username: str
+            The name you would like application to call you.
+        password: str
+            The password or phrase you want to use for identification.
+        confirm: str
+            Verify you entered the password or phrase correctly.
+        email: str
+            The email address you want notifications sent to, you don't have to enter a real email address
+            be aware that if you don't you cannot change your password.
+        submit: bool
+            Triggers the application to store the data in the data base and send you to the next page.
     """
 
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=32, message='Username is required! and must be between 3 and 32 characters long')])
@@ -47,8 +48,40 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
 
-class AccountForm(FlaskForm):
-    """User Target Data"""
+class TargetForm(FlaskForm):
+    """User Target Data
+
+        Attributes:
+        -----------
+        chart_min: int
+            Bottom edge of the chart, also the minimum value I found for life
+        chart_max: int
+            Top edge of the chart, also the maximum value I found for life
+        limit_min: int
+            The minimum acceptable blood glucose value
+        limit_max: int
+            The maximum acceptable blood glucose value
+        target_min: int
+            The minimum ideal blood glucose
+        target_max: int
+            The maximum ideal blood glucose
+        my_target_min: int
+            my fasting lower target
+        my_target_max: int
+            my fasting upper target
+        meal_ideal: int
+            The ideal value after a meal
+        meal_good: int
+            A value that is OK every once in a while.
+        meal_bad: int
+            A value that you should never execede
+        my_target_weight: float
+            The weight I would like to matain
+        my_target_bmi: float
+            The body mass index I would like to matain
+        submit: bool
+            Triggers the application to store the data in the data base and send you to the next page.
+    """
 
     chart_min = IntegerField('Chart Low', default=40, validators=[NumberRange(min=10, max=2656)])
     chart_max = IntegerField('Chart High', default=400, validators=[NumberRange(min=10, max=2656)])
@@ -63,4 +96,39 @@ class AccountForm(FlaskForm):
     meal_bad = IntegerField('BAD Meal Glucose', default=270)
     my_target_weight = DecimalField('Target Body Weight')
     my_target_bmi = DecimalField('Target Body Mass Index')
-    submit = SubmitField('Register')
+    submit = SubmitField('Save Targets')
+
+
+class ScanForm(FlaskForm):
+    """User Scan Data
+
+        Attributes:
+        -----------
+        message: int
+            Index of the current message from the Freestyle reader
+        notes: str
+            Additional notes you would like to add to the record
+        glucose: int
+            Current glucose value
+        trend: int
+            Index of the current glucose trend from the Freestyle reader
+        bolus_u: int
+            The amount of insulin you have taken for this scan
+        basal_u: int
+            The amount of basal insulin you have taken for this scan
+        carbohydrates: int
+            The number of carbohydrates you have ingested for this scan
+        medication: bool
+            Set to true if you have taken medication for this scan
+        exercise: bool
+            Set to true if you have exercised for this scan
+    """
+
+    message = IntegerField('Message', default=0, validators=[NumberRange(message='Must be in the range of -3 to 3', min=-3, max=3)])
+    notes = StringField('Notes')
+    glucose = IntegerField('Glucose', validators=[DataRequired('A glucose reading is required!')])
+    trend = IntegerField('Trend', default=0, validators=[NumberRange(message='Must be in the range of -2 to 2', min=-2, max=2)])
+    bolus_u = IntegerField('Amount of bolus insulin taken', default=0)
+    basal_u = IntegerField('Amount of basal insulin taken', default=0)
+    medication = BooleanField('Medication', default=False)
+    exercise = BooleanField('Execrise', default=False)

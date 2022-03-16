@@ -31,8 +31,8 @@
                 <a class="nav-item nav-link" href="{{ url_for('main.register') }}">Register</a>
               {% else %}
                 <a class="nav-item nav-link" href="{{ url_for('main.logout') }}">Logout</a>
-                <a class="nav-item nav-link" href="#">Account</a>
-                <a class="nav-item nav-link" href="#">Scan</a>
+                <a class="nav-item nav-link" href="{{ url_for('main.target') }}">Target</a>
+                <a class="nav-item nav-link" href="{{ url_for('main.scan') }}">Scan</a>
                 <a class="nav-item nav-link" href="#">Meal</a>
                 <a class="nav-item nav-link" href="#">Health</a>
                 <a class="nav-item nav-link" href="#">Food</a>

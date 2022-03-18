@@ -153,7 +153,7 @@ def scan() -> object:
         flash(f'Scan data saved for {current_user.username}!', 'success')
         return redirect(url_for('main.index'))
 
-    return render_template('scan.html', title='Scan', form=form, fields=fields)
+    return render_template('new.html', title='Scan', form=form, fields=fields)
 
 
 @server_bp.route('/meal/', methods=['GET', 'POST'])

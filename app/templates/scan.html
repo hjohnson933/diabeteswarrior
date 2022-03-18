@@ -1,92 +1,60 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ title }}</h1>
-  <div class="tab">
-    <button class="tablinks" onclick="openCity(event, 'Scan')">Scan</button>
-    <button class="tablinks" onclick="openCity(event, 'Table')">Table</button>
-    <button class="tablinks" onclick="openCity(event, 'Graph')">Graph</button>
-  </div>
-  <div id="Scan" class="tabcontent">
-    <h3>Scan</h3>
-    <div class="content-section">
-      <form id="{{ title.lower() }}-form" action="" method="POST">
-        {{ form.hidden_tag() }}
-        <fieldset id="{{ title.lower() }}-fields" class="form-group">
-          <legend id="{{ title.lower() }}-legend" class="border-bottom mb-4">Enter {{ title.lower() }} data.</legend>
-          {% for each in fields %}
-            {% if form[each].type == 'RadioField' %}
-              <div id="{{ each }}-field" class="form-group row">
-                <div  id="{{ each }}-label" class="form-group col">
-                  {{ form[each].label }}
-                </div>
-                <div  id="{{ each }}-value" class="form-group col">
-                  {{ form[each](class="form-control form-control-sm") }}
-                </div>
+<h3>New {{ title }} Data</h3>
+  <div class="content-section">
+    <form id="{{ title.lower() }}-form" action="" method="POST">
+      {{ form.hidden_tag() }}
+      <fieldset id="{{ title.lower() }}-fields" class="form-group">
+        <legend id="{{ title.lower() }}-legend" class="border-bottom mb-4">{{ current_user.username }}</legend>
+        {% for each in fields %}
+          {% if form[each].type == 'RadioField' %}
+            <div id="{{ each }}-field" class="form-group m-2 row">
+              <div  id="{{ each }}-label" class="form-group col-2"
+                {{ form[each].label(class="form-control-label") }}
               </div>
-            {% elif form[each].type == 'TextAreaField' %}
-              <div id="{{ each }}-field" class="form-group row">
-                <div id="{{ each }}-label" class="form-group col">
-                  {{ form[each].label(class="form-control-sm") }}
-                </div>
-                <div id="{{ each }}-value" class="form-group col">
-                  {{ form[each](class="form-control form-control-sm") }}
-                </div>
+              <div  id="{{ each }}-value" class="form-group col-4">
+                {{ form[each](class="bg-dark") }}
               </div>
-            {% elif form[each].type == 'BooleanField' %}
-              <div id="{{ each }}-field" class="form-group row">
-                <div id="{{ each }}-label" class="form-group col">
-                  {{form[each].label(class="form-check-label") }}
-                </div>
-                <div id="{{ each }}-value" class="form-group col">
-                  {{ form[each](class="form-check-input") }}
-                </div>
+            </div>
+          {% elif form[each].type == 'TextAreaField' %}
+            <div id="{{ each }}-field" class="form-group m-2 row">
+              <div id="{{ each }}-label" class="form-group col-2">
+                {{ form[each].label(class="form-control-label") }}
               </div>
-            {% else %}
-              <div id="{{ each }}-field" class="form-group row">
-                <div id="{{ each }}-label" class="form-group col">
-                  {{ form[each].label(class="form-control-sm") }}
-                </div>
-                <!-- Test for and deal with validation errors -->
-                <div id="{{ each }}-value" class="form-group col">
-                  {{ form[each](class="form-control form-control-sm") }}
-                </div>
+              <div id="{{ each }}-value" class="form-group col-4">
+                {{ form[each](class="bg-dark text-white") }}
               </div>
-            {% endif %}
-          {% endfor %}
-        </fieldset>
-        <br>
-        <div id="{{ title.lower() }}-submit" class="form-group">
-          {{ form.submit(class="btn btn-outline-info") }}
-        </div>
-        <small id="forgot-password" class="text-muted">
-          <a href="#">  Request Password Reset </a>
-        </small>
-      </form>
+            </div>
+          {% elif form[each].type == 'BooleanField' %}
+            <div id="{{ each }}-field" class="form-group m-2 row">
+              <div id="{{ each }}-label" class="form-group col-2">
+                {{form[each].label(class="form-check-label") }}
+              </div>
+              <div id="{{ each }}-value" class="form-group col-4">
+                {{ form[each](class="form-check-input") }}
+              </div>
+            </div>
+          {% else %}
+            <div id="{{ each }}-field" class="form-group m-2 row">
+              <div id="{{ each }}-label" class="form-group col-2">
+                {{ form[each].label(class="form-control-label") }}
+              </div>
+              <!-- Test for and deal with validation errors -->
+              <div id="{{ each }}-value" class="form-group col-4">
+                {{ form[each](class="bg-dark text-white") }}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </fieldset>
+      <br>
+      <div id="{{ title.lower() }}-submit" class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+      </div>
+      <small id="forgot-password" class="text-muted">
+        <a href="#">  Request Password Reset </a>
+      </small>
+    </form>
     </div>
-  </div>
-  <div id="Table" class="tabcontent">
-    <h3>Table</h3>
-    <p>Table is the capital of France.</p> 
-  </div>
-  <div id="Graph" class="tabcontent">
-    <h3>Graph</h3>
-    <p>Graph is the capital of Japan.</p>
-  </div>
-  <script>
-    function openCity(evt, cityName) {
-      var i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
-      tablinks = document.getElementsByClassName("tablinks");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-      }
-      document.getElementById(cityName).style.display = "block";
-      evt.currentTarget.className += " active";
-    }
-  </script>
-
 {% endblock content %}

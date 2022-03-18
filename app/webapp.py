@@ -16,9 +16,10 @@ server_bp = Blueprint('main', __name__)
 
 
 @server_bp.route('/')
+@server_bp.route("/home")
 def index() -> str:
     """Home route."""
-    return render_template('index.html', title='Home Page')
+    return render_template('base.html', title='Home Page')
 
 
 @server_bp.route('/logout/')

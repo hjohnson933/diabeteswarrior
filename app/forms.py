@@ -1,6 +1,6 @@
 """Create the forms used by the Flask server."""
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, IntegerField, DecimalField
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, IntegerField, DecimalField, TextAreaField, RadioField  # , SelectField
 from wtforms.validators import DataRequired, NumberRange, Length, Email, EqualTo
 
 
@@ -122,13 +122,17 @@ class ScanForm(FlaskForm):
             Set to true if you have taken medication for this scan
         exercise: bool
             Set to true if you have exercised for this scan
+        submit: bool
+            Triggers the application to store the data in the data base and send you to the next page.
     """
 
-    message = IntegerField('Message', default=0, validators=[NumberRange(message='Must be in the range of -3 to 3', min=-3, max=3)])
-    notes = StringField('Notes')
-    glucose = IntegerField('Glucose', validators=[DataRequired('A glucose reading is required!')])
-    trend = IntegerField('Trend', default=0, validators=[NumberRange(message='Must be in the range of -2 to 2', min=-2, max=2)])
+    message = RadioField('Message', choices=[(3, 'Glucose High'), (2, 'Glucose Going High'), (1, 'My High Glucose Alert'), (0, 'None'), (-1, 'My Low Glucose Alert'), (-2, 'Glucose Going Low'), (-3, 'Glucose Low')], default=0)
+    notes = TextAreaField('Notes')
+    glucose = IntegerField('Glucose', validators=[DataRequired('A glucose value is required.')])
+    trend = RadioField('Trend', choices=[(2, 'Up'), (1, 'Up and right'), (0, 'Right'), (-1, 'Down and right'), (2, 'Down')], default=0)
     bolus_u = IntegerField('Amount of bolus insulin taken', default=0)
     basal_u = IntegerField('Amount of basal insulin taken', default=0)
-    medication = BooleanField('Medication', default=False)
-    exercise = BooleanField('Execrise', default=False)
+    carbohydrates = IntegerField('Carbohydrates', default=0)
+    medication = BooleanField('Medication')
+    exercise = BooleanField('Execrise')
+    submit = SubmitField('Save Scan')

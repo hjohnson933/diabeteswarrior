@@ -6,8 +6,8 @@ from flask import Blueprint, flash, redirect, render_template, send_from_directo
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app.extensions import db
-from app.forms import TargetForm, LoginForm, RegistrationForm  # ,ScanForm
-from app.models import Targets, Users  # , Scans
+from app.forms import TargetForm, LoginForm, RegistrationForm, ScanForm
+from app.models import Targets, Users, Scans
 
 # from werkzeug.urls import url_parse
 
@@ -109,9 +109,50 @@ def target() -> object:
 @server_bp.route('/scan/', methods=['GET', 'POST'])
 @login_required
 def scan() -> object:
-    # form = ScanForm()
-    # fields = ['message', 'notes', 'glucose', 'trend', 'bolus_u', 'basal_u', 'carbohydrates', 'medication', 'exercise']
-    return render_template('scan.html', title='Scan')
+    form = ScanForm()
+    fields = ['message', 'notes', 'glucose', 'trend', 'bolus_u', 'basal_u', 'carbohydrates', 'medication', 'exercise']
+
+    if form.validate_on_submit():
+        scan = Scans()
+        scan.bolus = False
+        scan.basal = False
+        scan.food = False
+        scan.lower_limit = -1
+        scan.upper_limit = 1
+        scan.ts = arrow.now().format("YYYY-MM-DD HH:mm")
+        scan.message = int(form.message.data)
+        scan.notes = form.notes.data
+        scan.glucose = int(form.glucose.data)
+        scan.trend = int(form.trend.data)
+        scan.bolus_u = int(form.bolus_u.data)
+        if scan.bolus_u > 0:
+            scan.bolus = True
+        scan.basal_u = int(form.basal_u.data)
+        if scan.basal > 0:
+            scan.basal = True
+        scan.carbohydrates = int(form.carbohydrates.data)
+        if scan.carbohydrates > 0:
+            scan.food = True
+        scan.medication = form.medication.data
+        scan.exercise = form.exercise.data
+        if scan.trend == 2:
+            scan.upper_limit = 12
+            scan.lower_limit = 2
+        if scan.trend == 1:
+            scan.lower_limit = 1
+            scan.upper_limit = 2
+        if scan.trend == -1:
+            scan.upper_limit = -1
+            scan.lower_limit = -2
+        if scan.trend == -2:
+            scan.upper_limit = -2
+            scan.lower_limit = -12
+        db.session.add(scan)
+        db.session.commit()
+        flash(f'Scan data saved for {current_user.username}!', 'success')
+        return redirect(url_for('main.index'))
+
+    return render_template('scan.html', title='Scan', form=form, fields=fields)
 
 
 @server_bp.route('/meal/', methods=['GET', 'POST'])

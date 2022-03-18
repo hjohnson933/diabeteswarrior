@@ -17,28 +17,45 @@
 
   <body>
     <header class="site-header">
-      <nav class="navbar navbar-expand-md fixed-top">
-        <div class="container">
-          <a class="navbar-brand mr-4" href="/">Diabetes Warrior</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"><i class="fa-duotone fa-bars"></i></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav">
-              <a class="nav-item nav-link" href="{{ url_for('main.index') }}">Home</a>
-              {% if current_user.is_anonymous %}
-                <a class="nav-item nav-link" href="{{ url_for('main.login') }}">Login</a>
-                <a class="nav-item nav-link" href="{{ url_for('main.register') }}">Register</a>
-              {% else %}
-                <a class="nav-item nav-link" href="{{ url_for('main.logout') }}">Logout</a>
-                <a class="nav-item nav-link" href="{{ url_for('main.target') }}">Target</a>
-                <a class="nav-item nav-link" href="{{ url_for('main.scan') }}">Scan</a>
-                <a class="nav-item nav-link" href="#">Meal</a>
-                <a class="nav-item nav-link" href="#">Health</a>
-                <a class="nav-item nav-link" href="#">Food</a>
-              {% endif %}
-            </div>
-          </div>
+      <nav class="navbar navbar-expand-sm bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Diabetes Warrior</a>
+          <ul class="navbar-nav">
+            {% if current_user.is_anonymous %}
+              <a class="nav-link" href="{{ url_for('main.register') }}">Register</a>
+              <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
+            {% else %}
+              <a class="nav-link" href="#">CGM</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Scan</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('main.scan') }}">New Scan</a></li>
+                  <li><a class="dropdown-item" href="#">Scan Table</a></li>
+                  <li><a class="dropdown-item" href="#">Scan Graph</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Health</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">New Health Record</a></li>
+                  <li><a class="dropdown-item" href="#">Health Table</a></li>
+                  <li><a class="dropdown-item" href="#">Health Graph</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Meal & Food</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">New Meal</a></li>
+                  <li><a class="dropdown-item" href="#">Meal Table</a></li>
+                  <li><a class="dropdown-item" href="#">Meal Graph</a></li>
+                  <li><a class="dropdown-item" href="#">New Food</a></li>
+                  <li><a class="dropdown-item" href="#">Food Table</a></li>
+                </ul>
+              </li>
+              <a class="nav-link" href="{{ url_for('main.target') }}">Target</a>
+              <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
+            {% endif %}
+          </ul>
         </div>
       </nav>
     </header>

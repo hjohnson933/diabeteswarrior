@@ -80,64 +80,67 @@ class Users(UserMixin, db.Model):
         return F'<User {self.username}>'
 
 
-class Targets(db.Model):
-    """The Users Targets Model
+class Scans(db.Model):
+    """The Users Scans Models.
 
         Attributes:
-        -----------
-        index: int
-            calculate the record index
-        ts: datetime
-            The timestamp of the record being stored
-        user_id: int
-            The user identifier for the record being stored
-        chart_min: int
-            The lower limit of the chart
-        chart_max: int
-            the upper limit of the chart
-        limit_min: int
-            the lowest value your meter gives a number for
-        limit_max: int
-            the highest value your meter gives a number for
-        target_min: int
-            the lowest value the ADA or your doctor recemends
-        target_max: int
-            the highest value the ADA or your doctor recemends
-        my_target_min: int
-            the fasting value you would like to not go below
-        my_target_max: int
-            the fasting value you would like to not go above
-        meal_ideal: int
-            your post meal value that you would like
-        meal_good: int
-            your post meal value that you will accept occasionally
-        meal_bad: int
-            your post meal value that you you should never exceed
-        my_target_weight: float
-            the goal of you body weight
-        my_target_bmi: float
-            the goal of your body mass index
+            -----------
+            index: int
+                calculate the record index
+            ts: datetime
+                The timestamp of the record being stored
+            user_id: int
+                The user identifier for the record being stored
+            message: int
+                The message from the top left of the Freestyle reader
+            notes: str
+                Additional notes you would like to add.
+            glucose: int
+                Your current glucose reading
+            trend: int
+                Your current trend from the Freestyle reader
+            bolus: bool
+                True if you entered an amount of bolus insulin
+            bolus_u: int
+                The amount of bolus insulin you used
+            basal: bool
+                True if you entered a amount of basal insulin
+            basal_u: int
+                The amount of basal insulin you used
+            food: bool
+                True if you entered an amount of carbohydrates
+            carbohydrate: int
+                The amount of carbohydrates ingested
+            medication: bool
+                Set to true if you took your medication
+            exercise: bool
+                Set to true if you exercised
+            lower_limit: float
+                Calculated, used for graphing
+            upper_limit: float
+                Calculated, used for graphing
 
         Methods:
         --------
     """
 
     index = db.Column(db.Integer, primary_key=True)
-    ts = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    chart_min: int = db.Column(db.Integer)
-    chart_max: int = db.Column(db.Integer)
-    limit_min: int = db.Column(db.Integer)
-    limit_max: int = db.Column(db.Integer)
-    target_min: int = db.Column(db.Integer)
-    target_max: int = db.Column(db.Integer)
-    my_target_min: int = db.Column(db.Integer)
-    my_target_max: int = db.Column(db.Integer)
-    meal_ideal: int = db.Column(db.Integer)
-    meal_good: int = db.Column(db.Integer)
-    meal_bad: int = db.Column(db.Integer)
-    my_target_weight: float = db.Column(db.Numeric)
-    my_target_bmi: float = db.Column(db.Numeric)
+    ts = db.Column(db.DateTime)
+    message = db.Column(db.Integer)
+    notes = db.Column(db.Text)
+    glucose = db.Column(db.Integer)
+    trend = db.Column(db.Integer)
+    bolus = db.Column(db.Boolean)
+    bolus_u = db.Column(db.Integer)
+    basal = db.Column(db.Boolean)
+    basal_u = db.Column(db.Integer)
+    food = db.Column(db.Boolean)
+    carbohydrate = db.Column(db.Integer)
+    medication = db.Column(db.Boolean)
+    exercise = db.Column(db.Boolean)
+    lower_limit = db.Column(db.REAL)
+    upper_limit = db.Column(db.REAL)
 
 
 class Healths(db.Model):
@@ -286,64 +289,61 @@ class Foods(db.Model):
     protein = db.Column(db.Integer)
 
 
-class Scans(db.Model):
-    """The Users Scans Models.
+class Targets(db.Model):
+    """The Users Targets Model
 
         Attributes:
-            -----------
-            index: int
-                calculate the record index
-            ts: datetime
-                The timestamp of the record being stored
-            user_id: int
-                The user identifier for the record being stored
-            message: int
-                The message from the top left of the Freestyle reader
-            notes: str
-                Additional notes you would like to add.
-            glucose: int
-                Your current glucose reading
-            trend: int
-                Your current trend from the Freestyle reader
-            bolus: bool
-                True if you entered an amount of bolus insulin
-            bolus_u: int
-                The amount of bolus insulin you used
-            basal: bool
-                True if you entered a amount of basal insulin
-            basal_u: int
-                The amount of basal insulin you used
-            food: bool
-                True if you entered an amount of carbohydrates
-            carbohydrate: int
-                The amount of carbohydrates ingested
-            medication: bool
-                Set to true if you took your medication
-            exercise: bool
-                Set to true if you exercised
-            lower_limit: float
-                Calculated, used for graphing
-            upper_limit: float
-                Calculated, used for graphing
+        -----------
+        index: int
+            calculate the record index
+        ts: datetime
+            The timestamp of the record being stored
+        user_id: int
+            The user identifier for the record being stored
+        chart_min: int
+            The lower limit of the chart
+        chart_max: int
+            the upper limit of the chart
+        limit_min: int
+            the lowest value your meter gives a number for
+        limit_max: int
+            the highest value your meter gives a number for
+        target_min: int
+            the lowest value the ADA or your doctor recemends
+        target_max: int
+            the highest value the ADA or your doctor recemends
+        my_target_min: int
+            the fasting value you would like to not go below
+        my_target_max: int
+            the fasting value you would like to not go above
+        meal_ideal: int
+            your post meal value that you would like
+        meal_good: int
+            your post meal value that you will accept occasionally
+        meal_bad: int
+            your post meal value that you you should never exceed
+        my_target_weight: float
+            the goal of you body weight
+        my_target_bmi: float
+            the goal of your body mass index
 
         Methods:
         --------
     """
 
     index = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     ts = db.Column(db.DateTime)
-    message = db.Column(db.Integer)
-    notes = db.Column(db.Text)
-    glucose = db.Column(db.Integer)
-    trend = db.Column(db.Integer)
-    bolus = db.Column(db.Boolean)
-    bolus_u = db.Column(db.Integer)
-    basal = db.Column(db.Boolean)
-    basal_u = db.Column(db.Integer)
-    food = db.Column(db.Boolean)
-    carbohydrate = db.Column(db.Integer)
-    medication = db.Column(db.Boolean)
-    exercise = db.Column(db.Boolean)
-    lower_limit = db.Column(db.REAL)
-    upper_limit = db.Column(db.REAL)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    chart_min: int = db.Column(db.Integer)
+    chart_max: int = db.Column(db.Integer)
+    limit_min: int = db.Column(db.Integer)
+    limit_max: int = db.Column(db.Integer)
+    target_min: int = db.Column(db.Integer)
+    target_max: int = db.Column(db.Integer)
+    my_target_min: int = db.Column(db.Integer)
+    my_target_max: int = db.Column(db.Integer)
+    meal_ideal: int = db.Column(db.Integer)
+    meal_good: int = db.Column(db.Integer)
+    meal_bad: int = db.Column(db.Integer)
+    my_target_weight: float = db.Column(db.Numeric)
+    my_target_bmi: float = db.Column(db.Numeric)

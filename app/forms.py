@@ -136,3 +136,123 @@ class ScanForm(FlaskForm):
     medication = BooleanField('Medication')
     exercise = BooleanField('Execrise')
     submit = SubmitField('Save Scan')
+
+
+class HealthForm(FlaskForm):
+    """ User Health Data
+
+        Attributes:
+        -----------
+        submit: bool
+            Triggers the application to store the data in the data base and send you to the next page.
+        po_pulse: int
+            Heart rate from the pulseoximeter
+        po_ox: int
+            Oxygen saturation from the pulseoximeter
+        weight: float
+            Body weight from the Tanita bathroom scale
+        fat: float
+            Body mass index from the Tanita bathroom scale
+        bpc_pulse: int
+            Heart rate from the WGNBPW-720 blood pressure monitor
+        bpc_systolic: int
+            Systolic pressure from the WGNBPW-720 blood pressure monitor
+        bpc_diastolic: int
+            Diastolic pressure from the WGNBPW-720 blood pressure monitor
+        bpc_ihb: bool
+            Irregular heart beat indicator from the WGNBPW-720 blood pressure monitor
+        bpc_hypertension: int
+            Hypertension stage indicator from the WGNBPW-720 blood pressure monitor
+        temperature: float
+            Body temperature
+    """
+
+    po_pulse = IntegerField('Pulse', validators=[DataRequired('Pulse rate is required.')])
+    po_ox = IntegerField('Oxygen', validators=[DataRequired('Oxygen level is required.')])
+    weight = DecimalField('Weight', validators=[DataRequired('Weight is required.')])
+    fat = DecimalField('Body Mass Index', validators=[DataRequired('Body Mass Index is required.')])
+    bpc_pulse = IntegerField('Pulse', validators=[DataRequired('Pulse rate is required.')])
+    bpc_systolic = IntegerField('Systolic', validators=[DataRequired('Systolic pressure is required.')])
+    bpc_diastolic = IntegerField('Diastolic', validators=[DataRequired('Diastolic pressure is required.')])
+    bpc_ihb = BooleanField('Irregular Heart Beat', default=False)
+    bpc_hypertension = RadioField('Hypertension', choices=[(0, 'None'), (1, 'Pre-Hypertension'), (2, 'Stage I'), (3, 'Stage II')], default=0)
+    temperature = DecimalField('Temperature', validators=[DataRequired('Temperature is required.')])
+    submit = SubmitField('Save Health')
+
+
+class MealForm(FlaskForm):
+    """ User Meal Form
+
+        Attributes:
+        -----------
+        submit: bool
+            Triggers the application to store the data in the data base and send you to the next page.
+        calories: float
+            Total calories in this meal.
+        fat: float
+            Total fat in this meal.
+        cholesterol: float
+            Total cholesterol in this meal.
+        sodium: float
+            Total sodium in this meal.
+        carbohydrate: float
+            Total carbohydrate in this meal.
+        protein: float
+            Total protein in this meal.
+        serving: list
+            Number of servings for each food item in this meal.
+        indices: list
+            Index of each food item in this meal.
+    """
+
+    calories = DecimalField('Calories', validators=[DataRequired('Calculated or entered it must have a value.')])
+    fat = DecimalField('Fat', validators=[DataRequired('Calculated or entered it must have a value.')])
+    cholesterol = DecimalField('Cholesterol', validators=[DataRequired('Calculated or entered it must have a value.')])
+    sodium = DecimalField('Sodium', validators=[DataRequired('Calculated or entered it must have a value.')])
+    carbohydrate = DecimalField('Carbohydrates', validators=[DataRequired('Calculated or entered it must have a value.')])
+    protein = DecimalField('Protein', validators=[DataRequired('Calculated or entered it must have')])
+    serving = TextAreaField('Serving', validators=[DataRequired('Semicolon seperated list of values.')])
+    indices = TextAreaField('Indices', validators=[DataRequired('Semicolon seperated list of values.')])
+    submit = SubmitField('Save Meal')
+
+
+class FoodForm(FlaskForm):
+    """ User Food Form
+
+        Attributes:
+        -----------
+        submit: bool
+            Triggers the application to store the data in the data base and send you to the next page.
+        domain: str
+            The name of the Cook, Manufacturer or product Distributer.
+        name: str
+            The name of the food item.
+        portion: str
+            A value that indicates what is a whole portion.
+        unit: str
+            The scale the portion is measured in.
+        calories: int
+            The calories in the portion.
+        fat: int
+            The amount of fat in the portion, typically in grams.
+        cholesterol: int
+            The amount of cholesterol in the portion, typically in milligrams.
+        sodium: int
+            The amount of sodium in the portion, typically in milligrams.
+        carbohydrate: int
+            The amount of carbohydrates in the portion, typically in grams.
+        protein: int
+            The amount of protein in the portion, typically in grams.
+    """
+
+    domain = TextAreaField('Domain', validators=[DataRequired('The domain is required.')])
+    name = TextAreaField('Name', validators=[DataRequired('The name of the food is required.')])
+    portion = TextAreaField('Portion', validators=[DataRequired('The portion is required.')])
+    unit = TextAreaField('Unit', validators=[DataRequired('The portion units is required.')])
+    calories = IntegerField('Calories', validators=[DataRequired('The number of calories is required.')])
+    fat = IntegerField('Fat', validators=[DataRequired('The amount of fat is required.')])
+    cholesterol = IntegerField('Cholesterol', validators=[DataRequired('The amount of cholesterol is required.')])
+    sodium = IntegerField('Sodium', validators=[DataRequired('The amount of sodium is required.')])
+    carbohydrate = IntegerField('Carbohydrates', validators=[DataRequired('The number of carbohydrates is required.')])
+    protein = IntegerField('Protein', validators=[DataRequired('The amount of protein is required.')])
+    submit = SubmitField('Save Food')

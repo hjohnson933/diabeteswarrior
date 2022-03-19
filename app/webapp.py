@@ -6,8 +6,8 @@ from flask import Blueprint, flash, redirect, render_template, send_from_directo
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app.extensions import db
-from app.forms import TargetForm, LoginForm, RegistrationForm, ScanForm
-from app.models import Targets, Users, Scans
+from app.forms import TargetForm, LoginForm, RegistrationForm, ScanForm, HealthForm, MealForm, FoodForm
+from app.models import Targets, Users, Scans, Healths, Meals, Foods
 
 # from werkzeug.urls import url_parse
 
@@ -121,6 +121,7 @@ def scan() -> object:
         scan.lower_limit = -1
         scan.upper_limit = 1
         scan.ts = arrow.now().format("YYYY-MM-DD HH:mm")
+        scan.user_id = current_user.id
         scan.message = int(form.message.data)
         scan.notes = form.notes.data
         scan.glucose = int(form.glucose.data)
@@ -156,22 +157,86 @@ def scan() -> object:
     return render_template('new.html', title='Scan', form=form, fields=fields)
 
 
-@server_bp.route('/meal/', methods=['GET', 'POST'])
-@login_required
-def meal():
-    ...
-
-
 @server_bp.route('/health/', methods=['GET', 'POST'])
 @login_required
-def health():
-    ...
+def health() -> object:
+    form = HealthForm()
+    fields = ['po_pulse', 'po_ox', 'weight', 'fat', 'bpc_pulse', 'bpc_systolic', 'bpc_diastolic', 'bpc_ihb', 'bpc_hypertension', 'temperature']
+
+    if form.validate_on_submit():
+        health = Healths()
+        health.ts = arrow.now().format("YYYY-MM-DD HH:mm")
+        health.user_id = current_user.id
+        health.po_pulse = form.po_pulse.data
+        health.po_ox = form.po_ox.data
+        health.weight = form.weight.data
+        health.fat = form.fat.data
+        health.bpc_pulse = form.bpc_pulse.data
+        health.bpc_systolic = form.bpc_systolic.data
+        health.bpc_diastolic = form.bpc_diastolic.data
+        health.bpc_ihb = form.bpc_ihb.data
+        health.bpc_hypertension = form.bpc_hypertension.data
+        health.temperature = form.temperature.data
+        db.session.add(health)
+        db.session.commit()
+        flash(f'Health data saved for {current_user.username}!', 'success')
+        return redirect(url_for('main.index'))
+
+    return render_template('new.html', title='Health', form=form, fields=fields)
+
+
+@server_bp.route('/meal/', methods=['GET', 'POST'])
+@login_required
+def meal() -> object:
+    form = MealForm()
+    fields = ['calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein', 'serving', 'indices']
+
+    if form.validate_on_submit():
+        meal = Meals()
+        meal.ts = arrow.now().format("YYYY-MM-DD HH:mm")
+        meal.user_id = current_user.id
+        meal.calories = form.calories.data
+        meal.fat = form.fat.data
+        meal.cholesterol = form.cholesterol.data
+        meal.sodium = form.sodium.data
+        meal.carbohydrate = form.carbohydrate.data
+        meal.protein = form.protein.data
+        meal.serving = form.serving.data
+        meal.indices = form.indices.data
+        db.session.add(meal)
+        db.session.commit()
+        flash(f'Meal data saved for {current_user.username}!', 'success')
+        return redirect(url_for('main.index'))
+
+    return render_template('new.html', title='Meal', form=form, fields=fields)
 
 
 @server_bp.route('/food/')
 @login_required
-def food():
-    ...
+def food() -> object:
+    form = FoodForm()
+    fields = ['domain', 'name', 'portion', 'unit', 'calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein']
+
+    if form.validate_on_submit():
+        food = Foods()
+        food.ts = arrow.now().format("YYYY-MM-DD HH:mm")
+        food.user_id = current_user.id
+        food.domain = form.domain.data
+        food.name = form.name.data
+        food.portion = form.portion.data
+        food.unit = form.unit.data
+        food.calories = form.calories.data
+        food.fat = form.fat.data
+        food.cholesterol = form.cholesterol.data
+        food.sodium = form.sodium.data
+        food.carbohydrate = form.carbohydrate.data
+        food.protein = form.protein.data
+        db.session.add(food)
+        db.session.commit()
+        flash(f'Food data saved for {current_user.username}!', 'success')
+        return redirect(url_for('main.index'))
+
+    return render_template('new.html', title='Food', form=form, fields=fields)
 
 
 @server_bp.route('/favicon.ico')

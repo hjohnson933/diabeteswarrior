@@ -27,7 +27,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Scan</a>
                 <ul class="dropdown-menu bg-dark">
-                  <li><a class="dropdown-item text-white" href="{{ url_for('main.scan') }}">New Scan</a></li>
+                  <li><a class="dropdown-item text-white" href="{{ url_for('main.scan_data') }}">New Scan</a></li>
                   <li><a class="dropdown-item text-white" href="#">Scan Table</a></li>
                   <li><a class="dropdown-item text-white" href="#">Scan Graph</a></li>
                 </ul>
@@ -35,7 +35,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Health</a>
                 <ul class="dropdown-menu bg-dark">
-                  <li><a class="dropdown-item text-white" href="{{ url_for('main.health') }}">New Health Record</a></li>
+                  <li><a class="dropdown-item text-white" href="{{ url_for('main.health_data') }}">New Health Record</a></li>
                   <li><a class="dropdown-item text-white" href="#">Health Table</a></li>
                   <li><a class="dropdown-item text-white" href="#">Health Graph</a></li>
                 </ul>
@@ -43,14 +43,14 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Meal & Food</a>
                 <ul class="dropdown-menu bg-dark">
-                  <li><a class="dropdown-item text-white" href="{{ url_for('main.meal') }}">New Meal</a></li>
+                  <li><a class="dropdown-item text-white" href="{{ url_for('main.meal_data') }}">New Meal</a></li>
                   <li><a class="dropdown-item text-white" href="#">Meal Table</a></li>
                   <li><a class="dropdown-item text-white" href="#">Meal Graph</a></li>
-                  <li><a class="dropdown-item text-white" href="{{ url_for('main.food') }}">New Food</a></li>
+                  <li><a class="dropdown-item text-white" href="{{ url_for('main.food_data') }}">New Food</a></li>
                   <li><a class="dropdown-item text-white" href="#">Food Table</a></li>
                 </ul>
               </li>
-              <a class="nav-link" href="{{ url_for('main.target') }}">Target</a>
+              <a class="nav-link" href="{{ url_for('main.target_data') }}">Target</a>
               <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
             {% endif %}
           </ul>

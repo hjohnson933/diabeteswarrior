@@ -1,9 +1,11 @@
 """Main Flask Application."""
+
 import dash
-from config import BaseConfig
 from flask import Flask
 from flask.helpers import get_root_path
 from flask_login import login_required
+
+from config import BaseConfig
 
 
 def create_app() -> object:
@@ -15,21 +17,21 @@ def create_app() -> object:
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
 
-    """from app.meal.callbacks import register_callbacks
-    from app.meal.layout import layout
-    register_dashapps(server, 'Meal', 'meal', layout, register_callbacks)
+    # from app.scan.callbacks import register_callbacks
+    # from app.scan.layout import layout
+    # register_dashapps(server, 'Scan', 'scan', layout, register_callbacks)
 
-    from app.food.callbacks import register_callbacks
-    from app.food.layout import layout
-    register_dashapps(server, 'Food', 'food', layout, register_callbacks)
+    # # from app.meal.callbacks import register_callbacks
+    # from app.meal.layout import layout
+    # register_dashapps(server, 'Meal', 'meal', layout, register_callbacks)
 
-    from app.health.callbacks import register_callbacks
-    from app.health.layout import layout
-    register_dashapps(server, 'Health', 'health', layout, register_callbacks)
+    # from app.food.callbacks import register_callbacks
+    # from app.food.layout import layout
+    # register_dashapps(server, 'Food', 'food', layout, register_callbacks)
 
-    from app.scan.callbacks import register_callbacks
-    from app.scan.layout import layout
-    register_dashapps(server, 'Scan', 'scan', layout, register_callbacks)"""
+    # from app.health.callbacks import register_callbacks
+    # from app.health.layout import layout
+    # register_dashapps(server, 'Health', 'health', layout, register_callbacks)
 
     register_extensions(server)
     register_blueprints(server)
@@ -78,7 +80,7 @@ def register_extensions(server: object) -> None:
     Args:
         server (object): Flask server instance.
     """
-    from app.extensions import login, migrate, db
+    from app.extensions import db, login, migrate
 
     login.init_app(server)
     login.login_view = 'main.login'

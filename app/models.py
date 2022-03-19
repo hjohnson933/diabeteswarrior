@@ -7,9 +7,9 @@ from app.extensions import login, db
 
 
 @login.user_loader
-def load_user(id) -> int:
+def load_user(uid) -> int:
     """Return the current users id number."""
-    return Users.query.get(int(id))
+    return Users.query.get(int(uid))
 
 
 class Users(UserMixin, db.Model):

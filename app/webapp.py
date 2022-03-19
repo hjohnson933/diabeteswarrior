@@ -1,13 +1,15 @@
 """Blueprint for Flask routes."""
 import os
 
+from typing import ByteString
 import arrow
-from flask import Blueprint, flash, redirect, render_template, send_from_directory, url_for  # , request
+from dash.dcc import Store
+from flask import Blueprint, flash, redirect, render_template, send_from_directory, url_for # , request
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app.extensions import db
-from app.forms import TargetForm, LoginForm, RegistrationForm, ScanForm, HealthForm, MealForm, FoodForm
-from app.models import Targets, Users, Scans, Healths, Meals, Foods
+from app.forms import FoodForm, HealthForm, LoginForm, MealForm, RegistrationForm, ScanForm, TargetForm
+from app.models import Foods, Healths, Meals, Scans, Targets, Users
 
 # from werkzeug.urls import url_parse
 
@@ -35,6 +37,7 @@ def logout() -> object:
 def login() -> object:
     """Login route."""
     if current_user.is_authenticated:
+        Store(id='user_id', storage_type='session', data={current_user.id: current_user.username})
         return redirect(url_for('main.index'))
 
     form = LoginForm()
@@ -48,6 +51,8 @@ def login() -> object:
 
         if login_user(user, remember=form.remember_me.data):
             return redirect(url_for('main.index'))
+
+        Store(id='user_id', storage_type='session', data={current_user.id: current_user.username})
 
     return render_template('login.html', title='Sign In', form=form, fields=fields)
 
@@ -77,7 +82,7 @@ def register() -> object:
 
 @server_bp.route('/target/', methods=['GET', 'POST'])
 @login_required
-def target() -> object:
+def target_data() -> object:
 
     form = TargetForm()
     fields = ['chart_min', 'chart_max', 'limit_min', 'limit_max', 'target_min', 'target_max', 'my_target_min', 'my_target_max', 'meal_ideal', 'meal_good', 'meal_bad', 'my_target_weight', 'my_target_bmi']
@@ -109,7 +114,7 @@ def target() -> object:
 
 @server_bp.route('/scan/', methods=['GET', 'POST'])
 @login_required
-def scan() -> object:
+def scan_data() -> object:
     form = ScanForm()
     fields = ['message', 'notes', 'glucose', 'trend', 'bolus_u', 'basal_u', 'carbohydrates', 'medication', 'exercise']
 
@@ -132,8 +137,8 @@ def scan() -> object:
         scan.basal_u = int(form.basal_u.data)
         if scan.basal > 0:
             scan.basal = True
-        scan.carbohydrates = int(form.carbohydrates.data)
-        if scan.carbohydrates > 0:
+        scan.carbohydrate = int(form.carbohydrates.data)
+        if scan.carbohydrate > 0:
             scan.food = True
         scan.medication = form.medication.data
         scan.exercise = form.exercise.data
@@ -159,7 +164,7 @@ def scan() -> object:
 
 @server_bp.route('/health/', methods=['GET', 'POST'])
 @login_required
-def health() -> object:
+def health_data() -> object:
     form = HealthForm()
     fields = ['po_pulse', 'po_ox', 'weight', 'fat', 'bpc_pulse', 'bpc_systolic', 'bpc_diastolic', 'bpc_ihb', 'bpc_hypertension', 'temperature']
 
@@ -187,7 +192,7 @@ def health() -> object:
 
 @server_bp.route('/meal/', methods=['GET', 'POST'])
 @login_required
-def meal() -> object:
+def meal_data() -> object:
     form = MealForm()
     fields = ['calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein', 'serving', 'indices']
 
@@ -213,7 +218,7 @@ def meal() -> object:
 
 @server_bp.route('/food/')
 @login_required
-def food() -> object:
+def food_data() -> object:
     form = FoodForm()
     fields = ['domain', 'name', 'portion', 'unit', 'calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein']
 
@@ -240,7 +245,7 @@ def food() -> object:
 
 
 @server_bp.route('/favicon.ico')
-def favicon():
+def favicon() -> ByteString:
     """Add a route to the favicon for the application."""
     return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'favicon.icon', mime='image/vnd.microsoft.icon')
 

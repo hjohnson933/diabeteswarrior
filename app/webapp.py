@@ -3,8 +3,7 @@ import os
 
 from typing import ByteString
 import arrow
-from dash.dcc import Store
-from flask import Blueprint, flash, redirect, render_template, send_from_directory, url_for # , request
+from flask import Blueprint, flash, redirect, render_template, send_from_directory, url_for  # , request
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app.extensions import db
@@ -37,7 +36,6 @@ def logout() -> object:
 def login() -> object:
     """Login route."""
     if current_user.is_authenticated:
-        Store(id='user_id', storage_type='session', data={current_user.id: current_user.username})
         return redirect(url_for('main.index'))
 
     form = LoginForm()
@@ -51,8 +49,6 @@ def login() -> object:
 
         if login_user(user, remember=form.remember_me.data):
             return redirect(url_for('main.index'))
-
-        Store(id='user_id', storage_type='session', data={current_user.id: current_user.username})
 
     return render_template('login.html', title='Sign In', form=form, fields=fields)
 

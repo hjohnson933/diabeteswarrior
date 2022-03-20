@@ -1,4 +1,4 @@
-"""Database models for authentication and authorization."""
+"""Database models for authentication, authorization & user data."""
 
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -12,7 +12,7 @@ def load_user(uid) -> int:
     return Users.query.get(int(uid))
 
 
-class Users(UserMixin, db.Model):
+class Users(db.Model, UserMixin):
     """The User Model.
 
     Attributes

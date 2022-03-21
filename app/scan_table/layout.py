@@ -5,7 +5,7 @@ layout = html.Div(
     children=[
         html.A(
             id="nav-to-home",
-            style={'font-size': '175%', 'color': "#0d6efd"},
+            style={'font-size': '175%'},
             href="/home/",
             children="Diabetes Warrior"
         ),

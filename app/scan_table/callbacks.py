@@ -17,9 +17,6 @@ def register_callbacks(dashapp):
         rv = dash_table.DataTable(
             data=df.to_dict('records'),
             columns=[{"name": i, "id": i} for i in df.columns],
-            style_header={'backgroundColor': 'black'},
-            style_cell={'backgroundColor': 'black'},
-            style_filter={'text': 'white'},
             filter_action='native',
             page_action='native',
             page_current=0,

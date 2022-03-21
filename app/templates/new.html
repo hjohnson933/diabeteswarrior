@@ -14,7 +14,7 @@
                 {{ form[each].label(class="form-control-label") }}
               </div>
               <div  id="{{ each }}-value" class="form-group col-4">
-                {{ form[each](class="bg-dark") }}
+                {{ form[each](class="") }}
               </div>
             </div>
           {% elif form[each].type == 'TextAreaField' %}
@@ -23,7 +23,7 @@
                 {{ form[each].label(class="form-control-label") }}
               </div>
               <div id="{{ each }}-value" class="form-group col-4">
-                {{ form[each](class="bg-dark text-white") }}
+                {{ form[each](class="") }}
               </div>
             </div>
           {% elif form[each].type == 'BooleanField' %}
@@ -42,7 +42,7 @@
               </div>
               <!-- Test for and deal with validation errors -->
               <div id="{{ each }}-value" class="form-group col-4">
-                {{ form[each](class="bg-dark text-white") }}
+                {{ form[each](class="") }}
               </div>
             </div>
           {% endif %}

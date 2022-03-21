@@ -15,7 +15,7 @@
   </head>
   <body>
     <header class="site-header">
-      <nav class="navbar navbar-expand-sm bg-dark">
+      <nav class="navbar navbar-expand-sm">
         <div class="container-fluid">
           {% if current_user.is_anonymous %}
             <a class="navbar-brand" href="/">Diabetes Warrior</a>
@@ -30,28 +30,28 @@
               <a class="nav-link" href="#">CGM</a>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Scan</a>
-                <ul class="dropdown-menu bg-dark">
-                  <li><a class="dropdown-item text-white" href="{{ url_for('main.scan_data') }}">New Scan</a></li>
-                  <li><a class="dropdown-item text-white" href="/scan_table/">Scan Table</a></li>
-                  <li><a class="dropdown-item text-white" href="/scan_graph/">Scan Graph</a></li>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('main.scan_data') }}">New Scan</a></li>
+                  <li><a class="dropdown-item" href="/scan_table/">Scan Table</a></li>
+                  <li><a class="dropdown-item" href="/scan_graph/">Scan Graph</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Health</a>
-                <ul class="dropdown-menu bg-dark">
-                  <li><a class="dropdown-item text-white" href="{{ url_for('main.health_data') }}">New Health Record</a></li>
-                  <li><a class="dropdown-item text-white" href="#">Health Table</a></li>
-                  <li><a class="dropdown-item text-white" href="#">Health Graph</a></li>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('main.health_data') }}">New Health Record</a></li>
+                  <li><a class="dropdown-item" href="#">Health Table</a></li>
+                  <li><a class="dropdown-item" href="#">Health Graph</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Meal & Food</a>
-                <ul class="dropdown-menu bg-dark">
-                  <li><a class="dropdown-item text-white" href="{{ url_for('main.meal_data') }}">New Meal</a></li>
-                  <li><a class="dropdown-item text-white" href="#">Meal Table</a></li>
-                  <li><a class="dropdown-item text-white" href="#">Meal Graph</a></li>
-                  <li><a class="dropdown-item text-white" href="{{ url_for('main.food_data') }}">New Food</a></li>
-                  <li><a class="dropdown-item text-white" href="#">Food Table</a></li>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('main.meal_data') }}">New Meal</a></li>
+                  <li><a class="dropdown-item" href="#">Meal Table</a></li>
+                  <li><a class="dropdown-item" href="#">Meal Graph</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('main.food_data') }}">New Food</a></li>
+                  <li><a class="dropdown-item" href="#">Food Table</a></li>
                 </ul>
               </li>
               <a class="nav-link" href="{{ url_for('main.target_data') }}">Target</a>

@@ -14,12 +14,16 @@ def create_app() -> object:
     Returns:
         object: flask server instance.
     """
-    server = Flask(__name__)
+    server = Flask(__name__, instance_relative_config=True)
     server.config.from_object(BaseConfig)
 
-    from app.tables_scan.callbacks import register_callbacks
-    from app.tables_scan.layout import layout
-    register_dashapps(server, 'Scan', 'tables_scan', layout, register_callbacks)
+    from app.scan_table.callbacks import register_callbacks
+    from app.scan_table.layout import layout
+    register_dashapps(server, 'Scan', 'scan_table', layout, register_callbacks)
+
+    from app.scan_graph.callbacks import register_callbacks
+    from app.scan_graph.layout import layout
+    register_dashapps(server, 'Scan', 'scan_graph', layout, register_callbacks)
 
     # # from app.meal.callbacks import register_callbacks
     # from app.meal.layout import layout
@@ -36,7 +40,6 @@ def create_app() -> object:
     register_extensions(server)
     register_blueprints(server)
 
-    print(server.config.__dict__)
     return server
 
 

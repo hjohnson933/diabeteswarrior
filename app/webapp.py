@@ -3,7 +3,7 @@ import os
 
 from typing import ByteString
 import arrow
-from flask import Blueprint, flash, redirect, render_template, send_from_directory, url_for  # , request
+from flask import Blueprint, flash, make_response, redirect, render_template, send_from_directory, url_for  # , request
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app.extensions import db
@@ -17,10 +17,32 @@ server_bp = Blueprint('main', __name__)
 
 
 @server_bp.route('/')
-@server_bp.route("/home")
 def index() -> str:
-    """Home route."""
-    return render_template('base.html', title='Home Page')
+    """Landing page."""
+    return render_template('base.html', title='Index')
+
+
+@server_bp.route('/main.css')
+def main_css():
+    """Add route to css main """
+    return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'main.css', mime='text/css')
+
+
+@server_bp.route('/favicon.ico')
+def favicon() -> ByteString:
+    """Add a route to the favicon for the application."""
+    return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'favicon.icon', mime='image/vnd.microsoft.icon')
+
+
+@server_bp.route("/home/")
+@login_required
+def home() -> str:
+    """Home page."""
+    resp = make_response(render_template('home.html', title=current_user.username, id=current_user.id))
+    b = bytes(str(current_user.id), 'utf-8')
+
+    resp.set_cookie('userID', b)
+    return resp
 
 
 @server_bp.route('/logout/')
@@ -36,7 +58,7 @@ def logout() -> object:
 def login() -> object:
     """Login route."""
     if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
 
     form = LoginForm()
     fields = ['email', 'password']
@@ -48,7 +70,7 @@ def login() -> object:
             return render_template('login.html', error=error, form=form)
 
         if login_user(user, remember=form.remember_me.data):
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.home'))
 
     return render_template('login.html', title='Sign In', form=form, fields=fields)
 
@@ -238,15 +260,3 @@ def food_data() -> object:
         return redirect(url_for('main.index'))
 
     return render_template('new.html', title='Food', form=form, fields=fields)
-
-
-@server_bp.route('/favicon.ico')
-def favicon() -> ByteString:
-    """Add a route to the favicon for the application."""
-    return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'favicon.icon', mime='image/vnd.microsoft.icon')
-
-
-@server_bp.route('/main.css')
-def main_css():
-    """Add route to css main """
-    return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'main.css', mime='text/css')

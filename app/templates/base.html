@@ -17,7 +17,11 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-sm bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Diabetes Warrior</a>
+          {% if current_user.is_anonymous %}
+            <a class="navbar-brand" href="/">Diabetes Warrior</a>
+          {% else %}
+            <a class="navbar-brand" href="/home/">Diabetes Warrior</a>
+          {% endif %}
           <ul class="navbar-nav">
             {% if current_user.is_anonymous %}
               <a class="nav-link" href="{{ url_for('main.register') }}">Register</a>
@@ -28,8 +32,8 @@
                 <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" href="#">Scan</a>
                 <ul class="dropdown-menu bg-dark">
                   <li><a class="dropdown-item text-white" href="{{ url_for('main.scan_data') }}">New Scan</a></li>
-                  <li><a class="dropdown-item text-white" href="/tables_scan/">Scan Table</a></li>
-                  <li><a class="dropdown-item text-white" href="#">Scan Graph</a></li>
+                  <li><a class="dropdown-item text-white" href="/scan_table/">Scan Table</a></li>
+                  <li><a class="dropdown-item text-white" href="/scan_graph/">Scan Graph</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown">

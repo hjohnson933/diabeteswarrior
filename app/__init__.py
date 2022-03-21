@@ -17,13 +17,13 @@ def create_app() -> object:
     server = Flask(__name__, instance_relative_config=True)
     server.config.from_object(BaseConfig)
 
-    from app.scan_table.callbacks import register_callbacks
-    from app.scan_table.layout import layout
-    register_dashapps(server, 'Scan', 'scan_table', layout, register_callbacks)
+    from app.scans.callbacks import register_callbacks
+    from app.scans.layout import layout
+    register_dashapps(server, 'Scan', 'scans', layout, register_callbacks)
 
-    from app.scan_graph.callbacks import register_callbacks
-    from app.scan_graph.layout import layout
-    register_dashapps(server, 'Scan', 'scan_graph', layout, register_callbacks)
+    # from app.scan_graph.callbacks import register_callbacks
+    # from app.scan_graph.layout import layout
+    # register_dashapps(server, 'Scan', 'scan_graph', layout, register_callbacks)
 
     # # from app.meal.callbacks import register_callbacks
     # from app.meal.layout import layout
@@ -60,7 +60,15 @@ def register_dashapps(app: str, title: str, base_pathname: str, layout: str, reg
                            server=app,
                            url_base_pathname=F'/{base_pathname}/',
                            assets_folder=get_root_path(__name__) + F'/{base_pathname}/assets/',
-                           meta_tags=[meta_viewport])
+                           meta_tags=[meta_viewport],
+                           external_stylesheets=["https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"],
+                           external_scripts=[
+                               {"src": "https://kit.fontawesome.com/3aad6a615d.js", "crossorigin": "anonymous"},
+                               {"src": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js", "integrity": "sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13", "crossorigin": "anonymous"},
+                               {"src": "https://code.jquery.com/jquery-3.6.0.min.js", "integrity": "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=", "crossorigin": "anonymous"},
+                               {"src": "https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.4/umd/popper.min.js", "integrity": "sha512-+Tn2V/oN9O/kiaJg/1o5bETqyS35pMDJzkhkf8uvCzxmRox69AsWkSpBSMEGEe4EZp07Nunw712J3Xvh5Tti0w==", "crossorigin": "anonymous", "referrerpolicy": "no-referrer"}
+                           ]
+                           )
     my_dashapp.enable_dev_tools()
 
     with app.app_context():

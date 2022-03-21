@@ -1,9 +1,10 @@
 """Database models for authentication, authorization & user data."""
 
+import arrow
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app.extensions import login, db
+from app.extensions import db, login
 
 
 @login.user_loader
@@ -80,6 +81,50 @@ class Users(db.Model, UserMixin):
         return F'<User {self.username}>'
 
 
+class Messages(db.Model):
+    """Message Key Value Pairs
+
+    Attributes:
+    ----------
+        id: int
+            Message id number
+        key: int
+            Message key number
+        value: string
+            The message
+    """
+
+    id: int = db.Column(db.Integer, primary_key=True)
+    k: int = db.Column(db.Integer, index=True, nullable=False, unique=True)
+    v: str = db.Column(db.String(32), index=True, nullable=False)
+    mkv = db.relationship('Scans', backref='message_value', lazy=True)
+
+    def __repr__(self) -> str:
+        return F'<Message {self.v}>'
+
+
+class Trends(db.Model):
+    """Trends Key Value Pairs
+
+    Attributes:
+    ----------
+        id: int
+            Trends id number
+        key: int
+            Trends key number
+        value: string
+            The trend
+    """
+
+    id: int = db.Column(db.Integer, primary_key=True)
+    k: int = db.Column(db.Integer, index=True, nullable=False, unique=True)
+    v: str = db.Column(db.String(32), index=True, nullable=False)
+    mkv = db.relationship('Scans', backref='trend_value', lazy=True)
+
+    def __repr__(self) -> str:
+        return F'<Trends {self.v}>'
+
+
 class Scans(db.Model):
     """The Users Scans Models.
 
@@ -127,10 +172,10 @@ class Scans(db.Model):
     index = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     ts = db.Column(db.DateTime)
-    message = db.Column(db.Integer)
+    message = db.Column(db.Integer, db.ForeignKey('messages.k'), nullable=False)
     notes = db.Column(db.Text)
     glucose = db.Column(db.Integer)
-    trend = db.Column(db.Integer)
+    trend = db.Column(db.Integer, db.ForeignKey('trends.k'), nullable=False)
     bolus = db.Column(db.Boolean)
     bolus_u = db.Column(db.Integer)
     basal = db.Column(db.Boolean)
@@ -141,6 +186,12 @@ class Scans(db.Model):
     exercise = db.Column(db.Boolean)
     lower_limit = db.Column(db.REAL)
     upper_limit = db.Column(db.REAL)
+
+    def __repr__(self) -> str:
+        dt = arrow.get(self.ts)
+        dt = dt.humanize()
+
+        return F'<Scan {self.index}, {dt}, {self.message}, {self.notes}, {self.glucose}, {self.trend}, {self.bolus}, {self.bolus_u}, {self.basal}, {self.basal_u}, {self.food}, {self.carbohydrate}, {self.medication}, {self.exercise}, {self.lower_limit}, {self.upper_limit}>'
 
 
 class Healths(db.Model):
@@ -347,3 +398,9 @@ class Targets(db.Model):
     meal_bad: int = db.Column(db.Integer)
     my_target_weight: float = db.Column(db.Numeric)
     my_target_bmi: float = db.Column(db.Numeric)
+
+    def __repr__(self) -> str:
+        dt = arrow.get(self.ts)
+        dt = dt.humanize()
+
+        return F'<Targets {self.index}, {dt}, {self.user_id}, {self.chart_min}, {self.chart_max}, {self.limit_min}, {self.limit_max}, {self.target_min}, {self.target_max}, {self.meal_ideal}, {self.meal_good}, {self.meal_bad}, {self.my_target_min}, {self.my_target_max}, {self.my_target_weight}, {self.my_target_bmi}>'

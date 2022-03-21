@@ -34,11 +34,12 @@ def favicon() -> ByteString:
     return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'favicon.icon', mime='image/vnd.microsoft.icon')
 
 
-@server_bp.route("/home/")
+@server_bp.route("/home/<int:rid>")
 @login_required
-def home() -> str:
+def home(rid: int) -> str:
     """Home page."""
-    resp = make_response(render_template('home.html', title=current_user.username, id=current_user.id))
+    print(rid)
+    resp = make_response(render_template('home.html', title=current_user.username, id=current_user.id, rid=rid))
     b = bytes(str(current_user.id), 'utf-8')
 
     resp.set_cookie('userID', b)
@@ -139,8 +140,11 @@ def scan_data() -> object:
     if form.validate_on_submit():
         scan = Scans()
         scan.bolus = False
+        scan.bolus_u = 0
         scan.basal = False
+        scan.basal_u = 0
         scan.food = False
+        scan.carbohydrates = 0
         scan.lower_limit = -1
         scan.upper_limit = 1
         scan.ts = arrow.now().format("YYYY-MM-DD HH:mm")
@@ -149,14 +153,14 @@ def scan_data() -> object:
         scan.notes = form.notes.data
         scan.glucose = int(form.glucose.data)
         scan.trend = int(form.trend.data)
-        scan.bolus_u = int(form.bolus_u.data)
-        if scan.bolus_u > 0:
+        if int(form.bolus_u.data) > 0:
+            scan.bolus_u = int(form.bolus_u.data)
             scan.bolus = True
-        scan.basal_u = int(form.basal_u.data)
-        if scan.basal > 0:
+        if int(form.basal_u.data) > 0:
+            scan.basal_u = int(form.basal_u.data)
             scan.basal = True
-        scan.carbohydrate = int(form.carbohydrates.data)
-        if scan.carbohydrate > 0:
+        if int(form.carbohydrates.data) > 0:
+            scan.carbohydrate = int(form.carbohydrates.data)
             scan.food = True
         scan.medication = form.medication.data
         scan.exercise = form.exercise.data
@@ -175,7 +179,7 @@ def scan_data() -> object:
         db.session.add(scan)
         db.session.commit()
         flash(f'Scan data saved for {current_user.username}!', 'success')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home', rid=1))
 
     return render_template('new.html', title='Scan', form=form, fields=fields)
 
@@ -203,7 +207,7 @@ def health_data() -> object:
         db.session.add(health)
         db.session.commit()
         flash(f'Health data saved for {current_user.username}!', 'success')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
 
     return render_template('new.html', title='Health', form=form, fields=fields)
 
@@ -229,7 +233,7 @@ def meal_data() -> object:
         db.session.add(meal)
         db.session.commit()
         flash(f'Meal data saved for {current_user.username}!', 'success')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
 
     return render_template('new.html', title='Meal', form=form, fields=fields)
 
@@ -257,6 +261,6 @@ def food_data() -> object:
         db.session.add(food)
         db.session.commit()
         flash(f'Food data saved for {current_user.username}!', 'success')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.home'))
 
     return render_template('new.html', title='Food', form=form, fields=fields)

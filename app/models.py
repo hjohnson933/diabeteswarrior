@@ -88,9 +88,9 @@ class Messages(db.Model):
     ----------
         id: int
             Message id number
-        key: int
+        k: int
             Message key number
-        value: string
+        v: string
             The message
     """
 
@@ -119,7 +119,7 @@ class Trends(db.Model):
     id: int = db.Column(db.Integer, primary_key=True)
     k: int = db.Column(db.Integer, index=True, nullable=False, unique=True)
     v: str = db.Column(db.String(32), index=True, nullable=False)
-    mkv = db.relationship('Scans', backref='trend_value', lazy=True)
+    tkv = db.relationship('Scans', backref='trend_value', lazy=True)
 
     def __repr__(self) -> str:
         return F'<Trends {self.v}>'
@@ -228,6 +228,8 @@ class Healths(db.Model):
 
         Methods:
         --------
+            __repr__: str
+                returns a string representation of the health record.
     """
 
     index = db.Column(db.Integer, primary_key=True)
@@ -241,8 +243,36 @@ class Healths(db.Model):
     bpc_systolic = db.Column(db.Integer)
     bpc_diastolic = db.Column(db.Integer)
     bpc_ihb = db.Column(db.Boolean)
-    bpc_hypertension = db.Column(db.Integer, default=0)
+    bpc_hypertension = db.Column(db.Integer, db.ForeignKey('hypert.k'), default=0)
     temperature = db.Column(db.REAL)
+
+    def __repr__(self) -> str:
+        dt = arrow.get(self.ts)
+        dt = dt.humanize()
+
+        return F'<Health {self.index}, {dt}, {self.po_pulse}, {self.po_ox}, {self.weight}, {self.fat}, {self.bpc_pulse}, {self.bpc_systolic}, {self.bpc_diastolic}, {self.bpc_ihb}, {self.bpc_hypertension}, {self.temperature}>'
+
+
+class Hypert(db.Model):
+    """Hypertension Key Value Pairs
+
+    Attributes:
+    ----------
+        id: int
+            Message id number
+        k: int
+            Hypertension key number
+        v: string
+            The hypertension level
+    """
+
+    id: int = db.Column(db.Integer, primary_key=True)
+    k: int = db.Column(db.Integer, index=True, nullable=False, unique=True)
+    v: str = db.Column(db.String(32), index=True, nullable=False)
+    hkv = db.relationship('Healths', backref='hypert_value', lazy=True)
+
+    def __repr__(self):
+        return F'<Hypertension {self.v}>'
 
 
 class Meals(db.Model):

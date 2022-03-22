@@ -14,6 +14,7 @@ def create_app() -> object:
     Returns:
         object: flask server instance.
     """
+
     server = Flask(__name__, instance_relative_config=True)
     server.config.from_object(BaseConfig)
 
@@ -32,10 +33,6 @@ def create_app() -> object:
     # from app.food.callbacks import register_callbacks
     # from app.food.layout import layout
     # register_dashapps(server, 'Food', 'food', layout, register_callbacks)
-
-    # from app.health.callbacks import register_callbacks
-    # from app.health.layout import layout
-    # register_dashapps(server, 'Health', 'health', layout, register_callbacks)
 
     register_extensions(server)
     register_blueprints(server)

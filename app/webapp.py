@@ -38,7 +38,6 @@ def favicon() -> ByteString:
 @login_required
 def home(rid: int) -> str:
     """Home page."""
-    print(rid)
     resp = make_response(render_template('home.html', title=current_user.username, id=current_user.id, rid=rid))
     b = bytes(str(current_user.id), 'utf-8')
 
@@ -207,7 +206,7 @@ def health_data() -> object:
         db.session.add(health)
         db.session.commit()
         flash(f'Health data saved for {current_user.username}!', 'success')
-        return redirect(url_for('main.home'))
+        return redirect(url_for('main.home', rid=2))
 
     return render_template('new.html', title='Health', form=form, fields=fields)
 

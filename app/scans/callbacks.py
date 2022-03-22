@@ -100,10 +100,7 @@ def make_data_frame(uid) -> object:
 
 
 def register_callbacks(dashapp):
-    @dashapp.callback(
-        Output('table-contents', 'children'),
-        Input('table-contents', 'children')
-    )
+    @dashapp.callback(Output('table-contents', 'children'), Input('table-contents', 'children'))
     def update_output(children):
         uid = flask.request.cookies['userID']
         df = make_data_frame(uid)
@@ -124,8 +121,8 @@ def register_callbacks(dashapp):
             filter_action='native',
             page_action='native',
             sort_action='native',
-            # page_current=0,
-            # page_size=15,
+            page_current=0,
+            page_size=18,
             style_cell={'backgroundColor': 'black', 'font-size': '12px'}
         )
 

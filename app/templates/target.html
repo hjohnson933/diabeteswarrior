@@ -1,39 +1,33 @@
-{% extends "base.html" %}
+{%extends "base.html"%}
 
-{% block content %}
+{%block content%}
 <div class="content-section">
-  <h3>New {{ title }} Data</h3>
-  <form id="{{ title.lower() }}-form" action="" method="POST">
-    {{ form.hidden_tag() }}
-    <fieldset id="{{ title.lower() }}-fields" class="form-group">
-      <legend id="{{ title.lower() }}-legend" class="border-bottom mb-4">{{ current_user.username }}</legend>
-      {% for each in fields %}
-        <div id="{{ each }}-field" class="form-group m-2 row">
-          <div id="{{ each }}-label" class="form-group col-3">
-            {{ form[each].label(class="form-control-label") }}
-          </div>
-          <div id="{{ each }}-value" class="form-group col-4">
-            {% if form[each].errors %}
-              {{ form[each](class="is-invalid") }}
-              <div id="{{ each }}-error" class="invalid-feedback">
-                {% for error in form[each].errors %}
-                  <span>{{ error }}</span>
-                {% endfor %}
+  <h3>New {{title}} Data</h3>
+  <form id="{{title.lower()}}-form" action="" method="POST">
+    {{form.hidden_tag()}}
+    <fieldset id="{{title.lower()}}-fields" class="form-group">
+      <legend id="{{title.lower()}}-legend" class="border-bottom mb-4">{{current_user.username}}</legend>
+      {%for each in fields%}
+        <div id="{{each}}-field" class="form-group m-2 row">
+          <div id="{{each}}-label" class="form-group col-3">{{form[each].label(class="form-control-label")}}</div>
+          <div id="{{each}}-value" class="form-group col-4">
+            {%if form[each].errors%}
+              {{form[each](class="is-invalid")}}
+              <div id="{{each}}-error" class="invalid-feedback">
+                {%for error in form[each].errors%}
+                  <span>{{error}}</span>
+                {%endfor%}
               </div>
-            {% else %}
-              {{ form[each](class="bg-dark text-white") }}
-            {% endif %}
+            {%else%}
+              {{form[each](class="bg-dark text-white")}}
+            {%endif%}
           </div>
         </div>
-      {% endfor %}
+      {%endfor%}
     </fieldset>
     <br>
-    <div id="{{ title.lower() }}-submit" class="form-group">
-      {{ form.submit(class="btn btn-outline-info") }}
-    </div>
-    <small id="forgot-password" class="text-muted">
-      <a href="#">  Request Password Reset </a>
-    </small>
+    <div id="{{title.lower()}}-submit" class="form-group">{{form.submit(class="btn btn-outline-info")}}</div>
+    <small id="forgot-password" class="text-muted"><a href="#">Request Password Reset</a></small>
   </form>
 </div>
-{% endblock content %}
+{%endblock content%}

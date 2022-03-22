@@ -1,60 +1,39 @@
-{% extends "base.html" %}
+{%extends "base.html"%}
 
-{% block content %}
-<h3>New {{ title }} Data</h3>
-  <div class="content-section">
-    <form id="{{ title.lower() }}-form" action="" method="POST">
-      {{ form.hidden_tag() }}
-      <fieldset id="{{ title.lower() }}-fields" class="form-group">
-        <legend id="{{ title.lower() }}-legend" class="border-bottom mb-4">{{ current_user.username }}</legend>
-        {% for each in fields %}
-          {% if form[each].type == 'RadioField' %}
-            <div id="{{ each }}-field" class="form-group m-2 row">
-              <div  id="{{ each }}-label" class="form-group col-2"
-                {{ form[each].label(class="form-control-label") }}
-              </div>
-              <div  id="{{ each }}-value" class="form-group col-4 bg-dark">
-                {{ form[each](class="") }}
-              </div>
-            </div>
-          {% elif form[each].type == 'TextAreaField' %}
-            <div id="{{ each }}-field" class="form-group m-2 row">
-              <div id="{{ each }}-label" class="form-group col-2">
-                {{ form[each].label(class="form-control-label") }}
-              </div>
-              <div id="{{ each }}-value" class="form-group col-4 bg-dark">
-                {{ form[each](class="") }}
-              </div>
-            </div>
-          {% elif form[each].type == 'BooleanField' %}
-            <div id="{{ each }}-field" class="form-group m-2 row">
-              <div id="{{ each }}-label" class="form-group col-2">
-                {{form[each].label(class="form-check-label") }}
-              </div>
-              <div id="{{ each }}-value" class="form-group col-4 bg-dark">
-                {{ form[each](class="form-check-input") }}
-              </div>
-            </div>
-          {% else %}
-            <div id="{{ each }}-field" class="form-group m-2 row">
-              <div id="{{ each }}-label" class="form-group col-2">
-                {{ form[each].label(class="form-control-label") }}
-              </div>
-              <!-- Test for and deal with validation errors -->
-              <div id="{{ each }}-value" class="form-group col-4 bg-dark">
-                {{ form[each](class="") }}
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </fieldset>
-      <br>
-      <div id="{{ title.lower() }}-submit" class="form-group">
-        {{ form.submit(class="btn btn-outline-info") }}
-      </div>
-      <small id="forgot-password" class="text-muted">
-        <a href="#">  Request Password Reset </a>
-      </small>
-    </form>
-    </div>
-{% endblock content %}
+{%block content%}
+<h3>New {{title}} Data</h3>
+<div class="content-section">
+  <form id="{{title.lower()}}-form" action="" method="POST">
+    {{form.hidden_tag()}}
+    <fieldset id="{{title.lower()}}-fields" class="form-group">
+      <legend id="{{title.lower()}}-legend" class="border-bottom mb-4">{{current_user.username}}</legend>
+      {%for each in fields%}
+        {%if form[each].type == 'RadioField'%}
+          <div id="{{each}}-field" class="form-group m-2 row">
+            <div id="{{each}}-label" class="form-group col-2">{{form[each].label(class="form-control-label")}}</div>
+            <div id="{{each}}-value" class="form-group col-4 bg-dark">{{form[each](class="")}}</div>
+          </div>
+        {%elif form[each].type == 'TextAreaField'%}
+          <div id="{{each}}-field" class="form-group m-2 row">
+            <div id="{{each}}-label" class="form-group col-2">{{form[each].label(class="form-control-label")}}</div>
+            <div id="{{each}}-value" class="form-group col-4 bg-dark">{{form[each](class="")}}</div>
+          </div>
+        {%elif form[each].type == 'BooleanField'%}
+          <div id="{{each}}-field" class="form-group m-2 row">
+            <div id="{{each}}-label" class="form-group col-2">{{form[each].label(class="form-check-label")}}</div>
+            <div id="{{each}}-value" class="form-group col-4 bg-dark">{{form[each](class="form-check-input")}}</div>
+          </div>
+        {%else%}
+          <div id="{{each}}-field" class="form-group m-2 row">
+            <div id="{{each}}-label" class="form-group col-2">{{form[each].label(class="form-control-label")}}</div>
+            <div id="{{each}}-value" class="form-group col-4 bg-dark">{{form[each](class="")}}</div>
+          </div>
+        {%endif%}
+      {%endfor%}
+    </fieldset>
+    <br>
+    <div id="{{title.lower()}}-submit" class="form-group">{{form.submit(class="btn btn-outline-info")}}</div>
+    <small id="forgot-password" class="text-muted"><a href="#">Request Password Reset</a></small>
+  </form>
+</div>
+{%endblock content%}

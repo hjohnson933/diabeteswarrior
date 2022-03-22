@@ -1,14 +1,14 @@
-{% extends "base.html" %}
+{%extends "base.html"%}
 
-{% block content %}
+{%block content%}
   <div class="content-section">
     <h1>{{ title }}</h1>
-    {% if rid == 1 %}
+    {%if rid == 1%}
       <iframe class="iframe col-12" height="700" width="110%" src="/scans/" title="Glucose"></iframe>
-    {% elif rid ==2 %}
+    {%elif rid ==2%}
       <iframe class="iframe col-12" height="700" width="110%" src="/healths/" title="Health"></iframe>
-    {% else %}
+    {%else%}
       <p>"PDF report here"</p>
-    {% endif %}
+    {%endif%}
   </div>
-{% endblock %}
+{%endblock%}

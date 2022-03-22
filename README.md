@@ -12,3 +12,7 @@ cd into the Diabetes Warrior directory.
 In your web browser go to `http://127.0.0.1:5000/` and start using Diabetes Warrior.
 
 export DATABASE_URL=sqlite:///${PWD}/instance/app2.db
+
+## Dev Notes
+
+todo Food entry form unit input need to be a drop down

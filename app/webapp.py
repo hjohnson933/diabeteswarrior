@@ -211,6 +211,34 @@ def health_data() -> object:
     return render_template('new.html', title='Health', form=form, fields=fields)
 
 
+@server_bp.route('/food/', methods=['GET', 'POST'])
+@login_required
+def food_data() -> object:
+    form = FoodForm()
+    fields = ['domain', 'name', 'portion', 'unit', 'calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein']
+
+    if form.validate_on_submit():
+        food = Foods()
+        food.ts = arrow.now().format("YYYY-MM-DD HH:mm")
+        food.user_id = current_user.id
+        food.domain = form.domain.data
+        food.name = form.name.data
+        food.portion = form.portion.data
+        food.unit = form.unit.data
+        food.calories = form.calories.data
+        food.fat = form.fat.data
+        food.cholesterol = form.cholesterol.data
+        food.sodium = form.sodium.data
+        food.carbohydrate = form.carbohydrate.data
+        food.protein = form.protein.data
+        db.session.add(food)
+        db.session.commit()
+        flash(f'Food data saved for {current_user.username}!', 'success')
+        return redirect(url_for('main.home', rid=3))
+
+    return render_template('new.html', title='Food', form=form, fields=fields)
+
+
 @server_bp.route('/meal/', methods=['GET', 'POST'])
 @login_required
 def meal_data() -> object:
@@ -235,31 +263,3 @@ def meal_data() -> object:
         return redirect(url_for('main.home'))
 
     return render_template('new.html', title='Meal', form=form, fields=fields)
-
-
-@server_bp.route('/food/')
-@login_required
-def food_data() -> object:
-    form = FoodForm()
-    fields = ['domain', 'name', 'portion', 'unit', 'calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein']
-
-    if form.validate_on_submit():
-        food = Foods()
-        food.ts = arrow.now().format("YYYY-MM-DD HH:mm")
-        food.user_id = current_user.id
-        food.domain = form.domain.data
-        food.name = form.name.data
-        food.portion = form.portion.data
-        food.unit = form.unit.data
-        food.calories = form.calories.data
-        food.fat = form.fat.data
-        food.cholesterol = form.cholesterol.data
-        food.sodium = form.sodium.data
-        food.carbohydrate = form.carbohydrate.data
-        food.protein = form.protein.data
-        db.session.add(food)
-        db.session.commit()
-        flash(f'Food data saved for {current_user.username}!', 'success')
-        return redirect(url_for('main.home'))
-
-    return render_template('new.html', title='Food', form=form, fields=fields)

@@ -4,7 +4,7 @@
 import flask
 # import pandas as pd
 from app import BaseConfig
-# from app.models import Healths, Hypert, Targets, Users
+from app.models import Foods, Units, Users
 from dash import Input, Output  # , dash_table
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -28,8 +28,12 @@ def make_data_frame(uid) -> object:
     engine = create_engine(conn)
     Session = sessionmaker(bind=engine)
     session = Session()
-    # results = session.query().filter(Users.id == uid).all()
+    results = session.query(Foods, Units, Users).\
+        filter(Foods.user_id == Users.id).\
+        filter(Users.id == uid).all()
 
+    # !
+    print(results)
     # result_dict = {}
     # for result in results:
     #     result_dict[result[0].index] = {

@@ -188,8 +188,7 @@ class Scans(db.Model):
     upper_limit = db.Column(db.REAL)
 
     def __repr__(self) -> str:
-        dt = arrow.get(self.ts)
-        dt = dt.humanize()
+        dt = arrow.get(self.ts).humanize()
 
         return F'<Scan {self.index}, {dt}, {self.message}, {self.notes}, {self.glucose}, {self.trend}, {self.bolus}, {self.bolus_u}, {self.basal}, {self.basal_u}, {self.food}, {self.carbohydrate}, {self.medication}, {self.exercise}, {self.lower_limit}, {self.upper_limit}>'
 
@@ -247,8 +246,7 @@ class Healths(db.Model):
     temperature = db.Column(db.REAL)
 
     def __repr__(self) -> str:
-        dt = arrow.get(self.ts)
-        dt = dt.humanize()
+        dt = arrow.get(self.ts).humanize()
 
         return F'<Health {self.index}, {dt}, {self.po_pulse}, {self.po_ox}, {self.weight}, {self.fat}, {self.bpc_pulse}, {self.bpc_systolic}, {self.bpc_diastolic}, {self.bpc_ihb}, {self.bpc_hypertension}, {self.temperature}>'
 
@@ -273,6 +271,28 @@ class Hypert(db.Model):
 
     def __repr__(self):
         return F'<Hypertension {self.v}>'
+
+
+class Units(db.Model):
+    """Message Key Value Pairs
+
+    Attributes:
+    ----------
+        id: int
+            Message id number
+        k: int
+            Message key number
+        v: string
+            The message
+    """
+
+    id: int = db.Column(db.Integer, primary_key=True)
+    k: int = db.Column(db.String(32), index=True, nullable=False, unique=True)
+    v: str = db.Column(db.String(32), index=True, nullable=False)
+    ukv = db.relationship('Foods', backref='units_value', lazy=True)
+
+    def __repr__(self) -> str:
+        return F'<Message {self.v}>'
 
 
 class Meals(db.Model):
@@ -361,13 +381,18 @@ class Foods(db.Model):
     domain = db.Column(db.TEXT)
     name = db.Column(db.TEXT)
     portion = db.Column(db.TEXT)
-    unit = db.Column(db.TEXT)
+    unit = db.Column(db.TEXT, db.ForeignKey('units.k'), nullable=False)
     calories = db.Column(db.Integer)
     fat = db.Column(db.Integer)
     cholesterol = db.Column(db.Integer)
     sodium = db.Column(db.Integer)
     carbohydrate = db.Column(db.Integer)
     protein = db.Column(db.Integer)
+
+    def __repr__(self) -> str:
+        dt = arrow.get(self.ts).humanize()
+
+        return F'<Food {self.index}, {self.user_id}, {dt}, {self.domain}, {self.name}, {self.portion}, {self.unit}, {self.calories}, {self.fat}, {self.cholesterol}, {self.sodium}, {self.carbohydrate}, {self.protein}>'
 
 
 class Targets(db.Model):
@@ -430,7 +455,6 @@ class Targets(db.Model):
     my_target_bmi: float = db.Column(db.Numeric)
 
     def __repr__(self) -> str:
-        dt = arrow.get(self.ts)
-        dt = dt.humanize()
+        dt = arrow.get(self.ts).humanize()
 
         return F'<Targets {self.index}, {dt}, {self.user_id}, {self.chart_min}, {self.chart_max}, {self.limit_min}, {self.limit_max}, {self.target_min}, {self.target_max}, {self.meal_ideal}, {self.meal_good}, {self.meal_bad}, {self.my_target_min}, {self.my_target_max}, {self.my_target_weight}, {self.my_target_bmi}>'

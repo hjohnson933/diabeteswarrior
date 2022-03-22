@@ -9,3 +9,13 @@ background: #000;
 color: #fff;
 margin-top: 2rem;
 }
+
+textarea {
+    background-color: black;
+    color: #fff;
+}
+
+input {
+    background-color: black;
+    color: #fff;
+}

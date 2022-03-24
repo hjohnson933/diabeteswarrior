@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "diabeteswarrior"
 version = "0.1.0"
-description = "Diabetes Managment Application"
+description = "Diabetes Management Application"
 authors = ["Harrison Johnson <hjohnson933@cox.net>"]
 license = "OSLv3"
 

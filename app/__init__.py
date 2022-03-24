@@ -59,12 +59,11 @@ def register_dashapps(app: str, title: str, base_pathname: str, layout: str, reg
                            assets_folder=get_root_path(__name__) + F'/{base_pathname}/assets/',
                            meta_tags=[meta_viewport],
                            external_stylesheets=["https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"],
-                           external_scripts=[
-                               {"src": "https://kit.fontawesome.com/3aad6a615d.js", "crossorigin": "anonymous"},
+                           external_scripts=[{"src": "https://kit.fontawesome.com/3aad6a615d.js", "crossorigin": "anonymous"},
                                {"src": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js", "integrity": "sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13", "crossorigin": "anonymous"},
                                {"src": "https://code.jquery.com/jquery-3.6.0.min.js", "integrity": "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=", "crossorigin": "anonymous"},
-                               {"src": "https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.4/umd/popper.min.js", "integrity": "sha512-+Tn2V/oN9O/kiaJg/1o5bETqyS35pMDJzkhkf8uvCzxmRox69AsWkSpBSMEGEe4EZp07Nunw712J3Xvh5Tti0w==", "crossorigin": "anonymous", "referrerpolicy": "no-referrer"}
-                           ]
+                               {"src": "https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.4/umd/popper.min.js", "integrity": "sha512-+Tn2V/oN9O/kiaJg/1o5bETqyS35pMDJzkhkf8uvCzxmRox69AsWkSpBSMEGEe4EZp07Nunw712J3Xvh5Tti0w==", "crossorigin": "anonymous", "referrerpolicy": "no-referrer"}],
+                           suppress_callback_exceptions=True
                            )
     my_dashapp.enable_dev_tools()
 

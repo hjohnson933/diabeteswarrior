@@ -255,4 +255,4 @@ class FoodForm(FlaskForm):
     sodium = IntegerField('Sodium', validators=[InputRequired('The amount of sodium is required.')])
     carbohydrate = IntegerField('Carbohydrates', validators=[InputRequired('The number of carbohydrates is required.')])
     protein = IntegerField('Protein', validators=[InputRequired('The amount of protein is required.')])
-    submit = SubmitField('Save Food')
+    submit = SubmitField('Save Food',)

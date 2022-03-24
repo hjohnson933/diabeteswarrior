@@ -5,9 +5,9 @@
 }
 
 body {
-background: #000;
-color: #fff;
-margin-top: 2rem;
+    background: #000;
+    color: #fff;
+    margin-top: 2rem;
 }
 
 textarea {
@@ -26,6 +26,23 @@ input {
 }
 
 .dropdown-menu {
+    background-color: black;
+    color: #fff;
+}
+
+.meal-input {
+    background-color: black;
+    color: #fff;
+    font-size: 12px;
+}
+
+.meal-label {
+    background-color: black;
+    color: #fff;
+    font-size: 12px;
+}
+
+.current-page {
     background-color: black;
     color: #fff;
 }

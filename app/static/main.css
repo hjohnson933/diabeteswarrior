@@ -47,7 +47,22 @@ input {
     color: #fff;
 }
 
+.current-page-container {
+    background-color: black;
+    color: #fff;
+}
+
+.current-page {
+    background-color: black;
+    color: #fff;
+}
+
 .form-control {
+    background-color: black;
+    color: #fff;
+}
+
+.page-number {
     background-color: black;
     color: #fff;
 }

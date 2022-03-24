@@ -215,7 +215,7 @@ def health_data() -> object:
 @login_required
 def food_data() -> object:
     form = FoodForm()
-    fields = ['domain', 'name', 'portion', 'unit', 'calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein', 'servings']
+    fields = ['domain', 'name', 'portion', 'unit', 'calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein']
 
     if form.validate_on_submit():
         food = Foods()
@@ -231,7 +231,6 @@ def food_data() -> object:
         food.sodium = form.sodium.data
         food.carbohydrate = form.carbohydrate.data
         food.protein = form.protein.data
-        food.servings = form.servings.data
         db.session.add(food)
         db.session.commit()
         flash(f'Food data saved for {current_user.username}!', 'success')

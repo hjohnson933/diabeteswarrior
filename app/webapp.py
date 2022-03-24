@@ -70,7 +70,7 @@ def login() -> object:
             return render_template('login.html', error=error, form=form)
 
         if login_user(user, remember=form.remember_me.data):
-            return redirect(url_for('main.home'))
+            return redirect(url_for('main.home', rid=0))
 
     return render_template('login.html', title='Sign In', form=form, fields=fields)
 
@@ -93,7 +93,7 @@ def register() -> object:
         db.session.add(user)
         db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('main.target'))
+        return redirect(url_for('main.target_data'))
 
     return render_template('register.html', title='Register', form=form, fields=fields)
 

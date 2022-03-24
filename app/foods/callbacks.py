@@ -84,9 +84,9 @@ def register_callbacks(dashapp):
                    {'name': 'protein', 'id': 'protein'}]
         filter_action = 'native'
 
-        # ? Postprocessing
-        for each in derived_virtual_selected_rows:
-            jd.append(json.dumps(dvd[each]))
+        if derived_virtual_selected_rows is not None:
+            for each in derived_virtual_selected_rows:
+                jd.append(json.dumps(dvd[each]))
 
         dff = pd.DataFrame(jd)
         if dff.empty:

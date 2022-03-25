@@ -61,19 +61,18 @@ def register_callbacks(dashapp):
         return data, columns, filter_action, dff
 
     @dashapp.callback(
-        Output('servings_table', 'data'),
+        Output('servings_table', 'children'),
         Input('filtered_foods', 'data'),
-        Input('servings_table', 'derived_virtual_data'),
+        # Input('servings_table', 'derived_virtual_data'),
     )
-    def update_table(filtered_foods, servings_table):
+    def update_table(filtered_foods):
+        servings = [{'domain': "None", 'name': 'None', 'servings': 0}]
+
         try:
             df = pd.read_json(filtered_foods)
+            print(df.index)
             servings = df[['domain', 'name', 'servings']].to_dict('records')
         except ValueError:
             ...
 
-        try:
-            print(servings_table)
-            return servings
-        except UnboundLocalError:
-            ...
+        return servings

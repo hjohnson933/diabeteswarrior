@@ -3,14 +3,20 @@ from dash import dcc, html, dash_table
 layout = html.Div(id="food-main", className="container-fluid", children=[
     html.Form(id="meal-form", children=["meal form"]),
     html.Br(),
-    dash_table.DataTable(
-        id='servings_table',
-        style_cell={'backgroundColor': 'black', 'font-size': '11px'},
-        columns=[{'name': 'domain', 'id': 'domain'}, {'name': 'name', 'id': 'name'}, {'name': 'servings', 'id': 'servings'}],
-        page_current=0,
-        page_size=6,
-        editable=True
-    ),
+    html.Div(d='servings_table'),
+    # dash_table.DataTable(
+    #     id='servings_table',
+    #     style_cell={'backgroundColor': 'black', 'font-size': '11px'},
+    #     columns=[
+    #         # {'name': 'index', 'id': 'index'},
+    #         {'name': 'domain', 'id': 'domain'},
+    #         {'name': 'name', 'id': 'name'},
+    #         {'name': 'servings', 'id': 'servings'}
+    #     ],
+    #     page_current=0,
+    #     page_size=6,
+    #     editable=True
+    # ),
     html.Br(),
     dash_table.DataTable(
         id='foods_table',

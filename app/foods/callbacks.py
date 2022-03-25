@@ -4,7 +4,7 @@
 import flask
 import pandas as pd
 from app import BaseConfig
-from dash import Input, Output
+from dash import Input, Output, html, dcc
 
 conn = BaseConfig.SQLALCHEMY_DATABASE_URI
 
@@ -22,7 +22,64 @@ def make_data_frame(uid) -> object:
 
     """
 
-    rv = pd.read_sql_query(F'SELECT DISTINCT foods.index, foods.ts, users.username, foods.domain, foods.name, foods.portion, units.v, foods.calories, foods.fat, foods.cholesterol, foods.sodium, foods.carbohydrate, foods.protein FROM foods LEFT JOIN users on foods.user_id = users.id LEFT JOIN units on foods.unit = units.k WHERE foods.user_id = {uid} ORDER BY foods.index', conn, index_col='index')
+    rv = pd.read_sql_query(
+        F'SELECT DISTINCT foods.index, foods.ts, users.username, foods.domain, foods.name, foods.portion, units.v, foods.calories, foods.fat, foods.cholesterol, foods.sodium, foods.carbohydrate, foods.protein FROM foods LEFT JOIN users on foods.user_id = users.id LEFT JOIN units on foods.unit = units.k WHERE foods.user_id = {uid} ORDER BY foods.index', conn, index_col='index')
+    return rv
+
+
+def make_meal_form() -> object:
+    rv = html.Form(
+        id="meal_form",
+        title="Food Item Servings",
+        children=[
+            html.Fieldset(
+                id="meal_fieldset",
+                form="meal_form",
+                children=[
+                    html.Legend(
+                        id="meal_fieldset_legend",
+                        children=["Meal"]
+                    ),
+                    html.Label(
+                        id="domain_label",
+                        form="meal_form",
+                        htmlFor="domain_input",
+                        children=["Domain:"]
+                    ),
+                    dcc.Input(
+                        id="domain_input",
+                        type="text",
+                        value="domain",
+                        readOnly=True
+                    ),
+                    html.Label(
+                        id="name__label",
+                        form="meal_form",
+                        htmlFor="name_input",
+                        children=["Name:"]
+                    ),
+                    dcc.Input(
+                        id="name_input",
+                        type="text",
+                        value="name",
+                        readOnly=True
+                    ),
+                    html.Label(
+                        id="servings_label",
+                        form="meal_form",
+                        htmlFor="servings_input",
+                        children=["Servings:"]
+                    ),
+                    dcc.Input(
+                        id="servings_input",
+                        type="number",
+                        value="servings",
+                    )
+                ]),
+            html.Button()
+        ]
+    )
+
     return rv
 
 
@@ -66,12 +123,11 @@ def register_callbacks(dashapp):
         # Input('servings_table', 'derived_virtual_data'),
     )
     def update_table(filtered_foods):
-        servings = [{'domain': "None", 'name': 'None', 'servings': 0}]
+        servings = make_meal_form()
 
         try:
-            df = pd.read_json(filtered_foods)
-            print(df.index)
-            servings = df[['domain', 'name', 'servings']].to_dict('records')
+            # df = pd.read_json(filtered_foods)
+            return servings
         except ValueError:
             ...
 

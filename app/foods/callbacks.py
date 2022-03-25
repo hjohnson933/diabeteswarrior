@@ -28,11 +28,11 @@ def make_data_frame(uid) -> object:
 
 def register_callbacks(dashapp):
     @dashapp.callback(
-        Output('datatable-interactivity', 'data'),
-        Output('datatable-interactivity', 'columns'),
-        Output('datatable-interactivity', 'filter_action'),
-        Output('intermediate-value', 'data'),
-        Input('datatable-interactivity', 'derived_virtual_selected_rows')
+        Output('foods_table', 'data'),
+        Output('foods_table', 'columns'),
+        Output('foods_table', 'filter_action'),
+        Output('filtered_foods', 'data'),
+        Input('foods_table', 'derived_virtual_selected_rows')
     )
     def update_output(derived_virtual_selected_rows):
         dff = ''
@@ -54,21 +54,26 @@ def register_callbacks(dashapp):
 
         if derived_virtual_selected_rows is not None and len(derived_virtual_selected_rows) > 0:
             df = df.iloc[derived_virtual_selected_rows]
-            dff = df.to_json()
+            filtered_indexes = df.index
+            dff = df.loc[filtered_indexes]
+            dff = dff.assign(servings=1.0).to_json()
 
         return data, columns, filter_action, dff
 
     @dashapp.callback(
-        Output('servings', 'children'),
-        Input('intermediate-value', 'data')
+        Output('servings_table', 'data'),
+        Input('filtered_foods', 'data'),
+        Input('servings_table', 'derived_virtual_data'),
     )
-    def update_table(data):
-        label = []
-        if len(data) != 0:
-            df = pd.read_json(data)
-            label.append(df[['domain', 'name']])
+    def update_table(filtered_foods, servings_table):
+        try:
+            df = pd.read_json(filtered_foods)
+            servings = df[['domain', 'name', 'servings']].to_dict('records')
+        except ValueError:
+            ...
 
-        print(label)
-        # todo build meal form
-
-        return 'data'
+        try:
+            print(servings_table)
+            return servings
+        except UnboundLocalError:
+            ...

@@ -4,7 +4,7 @@
 import flask
 import pandas as pd
 from app import BaseConfig
-from dash import Input, Output, html, dcc
+from dash import Input, Output
 
 conn = BaseConfig.SQLALCHEMY_DATABASE_URI
 
@@ -27,60 +27,11 @@ def make_data_frame(uid) -> object:
     return rv
 
 
-def make_meal_form() -> object:
-    rv = html.Form(
-        id="meal_form",
-        title="Food Item Servings",
-        children=[
-            html.Fieldset(
-                id="meal_fieldset",
-                form="meal_form",
-                children=[
-                    html.Legend(
-                        id="meal_fieldset_legend",
-                        children=["Meal"]
-                    ),
-                    html.Label(
-                        id="domain_label",
-                        form="meal_form",
-                        htmlFor="domain_input",
-                        children=["Domain:"]
-                    ),
-                    dcc.Input(
-                        id="domain_input",
-                        type="text",
-                        value="domain",
-                        readOnly=True
-                    ),
-                    html.Label(
-                        id="name__label",
-                        form="meal_form",
-                        htmlFor="name_input",
-                        children=["Name:"]
-                    ),
-                    dcc.Input(
-                        id="name_input",
-                        type="text",
-                        value="name",
-                        readOnly=True
-                    ),
-                    html.Label(
-                        id="servings_label",
-                        form="meal_form",
-                        htmlFor="servings_input",
-                        children=["Servings:"]
-                    ),
-                    dcc.Input(
-                        id="servings_input",
-                        type="number",
-                        value="servings",
-                    )
-                ]),
-            html.Button()
-        ]
-    )
+def make_field_set(field_set_data: object) -> list[object]:
+    field_set = list(field_set_data)
 
-    return rv
+    for item in field_set:
+        print(item)
 
 
 def register_callbacks(dashapp):
@@ -118,17 +69,18 @@ def register_callbacks(dashapp):
         return data, columns, filter_action, dff
 
     @dashapp.callback(
-        Output('servings_table', 'children'),
+        Output('null', 'children'),
         Input('filtered_foods', 'data'),
         # Input('servings_table', 'derived_virtual_data'),
     )
     def update_table(filtered_foods):
-        servings = make_meal_form()
+        servings = filtered_foods
+        if len(filtered_foods) != 0:
+            df = pd.read_json(filtered_foods)
 
         try:
-            # df = pd.read_json(filtered_foods)
-            return servings
-        except ValueError:
+            make_field_set(zip(df.index, df['domain'], df['name'], df['servings']))
+        except UnboundLocalError:
             ...
 
         return servings

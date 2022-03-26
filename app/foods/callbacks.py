@@ -34,47 +34,6 @@ class Meal:
     servings: int = 1
 
 
-def make_field_set(field_set_data: object) -> list[object]:
-    # field_set_items = list(field_set_data)
-    children = [
-        dcc.Input(id="csrf_token", name="csrf_token", type="hidden", value="test_secret_key"),
-        html.Legend(id="servings_fieldset_legend", className="border-bottom mb-4", children=["Meal"]),
-        # ? loop through the data and create a fieldset for each item
-        # todo move the html.Div into the __str__ of the dataclass Meal
-        html.Div(
-            id="row_0",
-            className="form-group m-2 row",
-            children=[
-                html.Div(
-                    id="row_0_col_0",
-                    className="form-group col-2",
-                    children=[ html.Label( form="form-control-label", htmlFor="index_input", children=["Index:"] ), dcc.Input( id="servings_index_input", type="number", value="index", readOnly=True ), ]
-                ),
-                html.Div(
-                    id="row_0_col_1",
-                    className="form-group col-2",
-                    children=[ html.Label( form="servings_form", htmlFor="domain_input", children=["Domain:"] ), dcc.Input( id="servings_domain_input", type="text", value="domain", readOnly=True ), ]
-                ),
-                html.Div(
-                    id="row_0_col_2",
-                    className="form-group col-2",
-                    children=[ html.Label( id="servings_name_label", form="servings_form", htmlFor="name_input", children=["Name:"] ), dcc.Input( id="servings_name_input", type="text", value="name", readOnly=True ) ]
-                ),
-                html.Div(
-                    id="row_0_col_3",
-                    className="form-group col-2",
-                    children=[ html.Label( id="servings_serving_label", form="servings_form", htmlFor="servings_input", children=["Servings:"] ), dcc.Input( id="servings_serving_input", type="number", value="servings" ) ]
-                )
-            ]
-        ),
-    ]
-
-    # for item in field_set_items:
-    #     print(item)
-
-    return children
-
-
 def register_callbacks(dashapp):
     @dashapp.callback(
         Output('foods_table', 'data'),
@@ -115,87 +74,95 @@ def register_callbacks(dashapp):
         # Input('servings_table', 'derived_virtual_data'),
     )
     def update_table(filtered_foods):
+        items = [('index', 'number', True), ('domain', 'text', True), ('name', 'text', True), ('servings', 'number', False)]
+        for i, j in enumerate(items):
+            print(i, j)
+
         servings = []
         servings.append(dcc.Input(id="csrf_token", name="csrf_token", type="hidden", value="test_secret_key"),)
         servings.append(html.Legend(id="servings_fieldset_legend", className="border-bottom mb-4", children=["Meal"]),)
         # start the loop here
-        servings.append(
-            html.Div(
-                id="row_0",
-                className="form-group m-2 row",
-                children=[
-                    html.Div(
-                        id="row_0_col_0",
-                        className="form-group col-2",
-                        children=[
-                            html.Label(
-                                form="form-control-label",
-                                htmlFor="index_input",
-                                children=["Index:"]
-                            ),
-                            dcc.Input(
-                                id="servings_index_input",
-                                type="number",
-                                value="index",
-                                readOnly=True
-                            ),
-                        ]
-                    ),
-                    html.Div(
-                        id="row_0_col_1",
-                        className="form-group col-2",
-                        children=[
-                            html.Label(
-                                form="servings_form",
-                                htmlFor="domain_input",
-                                children=["Domain:"]
-                            ),
-                            dcc.Input(
-                                id="servings_domain_input",
-                                type="text",
-                                value="domain",
-                                readOnly=True
-                            ),
-                        ]
-                    ),
-                    html.Div(
-                        id="row_0_col_2",
-                        className="form-group col-2",
-                        children=[
-                            html.Label(
-                                id="servings_name_label",
-                                form="servings_form",
-                                htmlFor="name_input",
-                                children=["Name:"]
-                            ),
-                            dcc.Input(
-                                id="servings_name_input",
-                                type="text",
-                                value="name",
-                                readOnly=True
-                            )
-                        ]
-                    ),
-                    html.Div(
-                        id="row_0_col_3",
-                        className="form-group col-2",
-                        children=[
-                            html.Label(
-                                id="servings_serving_label",
-                                form="servings_form",
-                                htmlFor="servings_input",
-                                children=["Servings:"]
-                            ),
-                            dcc.Input(
-                                id="servings_serving_input",
-                                type="number",
-                                value="servings"
-                            )
-                        ]
-                    )
-                ]
-            ),
-        )
+        for r in range(5):
+            servings.append(
+                html.Div(
+                    id=F"row_{r}",
+                    className="form-group m-2 row",
+                    children=[
+                        
+                        html.Div(
+                            id=F"row_{r}_col_0",
+                            className="form-group col-2",
+                            children=[
+                                html.Label(
+                                    form="form-control-label",
+                                    htmlFor="index_input",
+                                    children=["Index:"]
+                                ),
+                                dcc.Input(
+                                    id="servings_index_input",
+                                    type="number",
+                                    value="index",
+                                    readOnly=True
+                                ),
+                            ]
+                        ),
+                        
+                        html.Div(
+                            id=F"row_{r}_col_1",
+                            className="form-group col-2",
+                            children=[
+                                html.Label(
+                                    form="servings_form",
+                                    htmlFor="domain_input",
+                                    children=["Domain:"]
+                                ),
+                                dcc.Input(
+                                    id="servings_domain_input",
+                                    type="text",
+                                    value="domain",
+                                    readOnly=True
+                                ),
+                            ]
+                        ),
+                        html.Div(
+                            id=F"row_{r}_col_2",
+                            className="form-group col-2",
+                            children=[
+                                html.Label(
+                                    id="servings_name_label",
+                                    form="servings_form",
+                                    htmlFor="name_input",
+                                    children=["Name:"]
+                                ),
+                                dcc.Input(
+                                    id="servings_name_input",
+                                    type="text",
+                                    value="name",
+                                    readOnly=True
+                                )
+                            ]
+                        ),
+                        html.Div(
+                            id=F"row_{0}_col_3",
+                            className="form-group col-2",
+                            children=[
+                                html.Label(
+                                    id="servings_serving_label",
+                                    form="servings_form",
+                                    htmlFor="servings_input",
+                                    children=["Servings:"]
+                                ),
+                                dcc.Input(
+                                    id="servings_serving_input",
+                                    type="number",
+                                    value="servings",
+                                    readOnly=False
+                                )
+                            ]
+                        )
+                    ]
+                ),
+            )
 
         # if len(filtered_foods) != 0:
         #     df = pd.read_json(filtered_foods)

@@ -7,19 +7,17 @@ layout = html.Div(id="food-main", className="container-fluid", children=[
         children=[
             html.Fieldset(
                 id="servings_fieldset",
+                className="form-group",
+                form="servings_form"
+            ),
+            html.Button(
+                id="meal_submit_button",
+                title="Meal Submit Button",
+                name="meal_submit_button",
+                className="form-group btn btn-outline-info",
                 form="servings_form",
-                children=[
-                    html.Legend(id="servings_fieldset_legend", children=["Meal"]),
-                    html.Label(id="servings_index_label", form="servings_form", htmlFor="index_input", children=["Index:"]),
-                    dcc.Input(id="servings_index_input", type="number", value="index", readOnly=True),
-                    html.Label(id="servings_domain_label", form="servings_form", htmlFor="domain_input", children=["Domain:"]),
-                    dcc.Input(id="servings_domain_input", type="text", value="domain", readOnly=True),
-                    html.Label(id="servings_name_label", form="servings_form", htmlFor="name_input", children=["Name:"]),
-                    dcc.Input(id="servings_name_input", type="text", value="name", readOnly=True),
-                    html.Label(id="servings_serving_label", form="servings_form", htmlFor="servings_input", children=["Servings:"]),
-                    dcc.Input(id="servings_serving_input", type="number", value="servings")
-                ]),
-            html.Button()
+                children="Meal Submit"
+            )
         ]
     ),
     html.Br(),

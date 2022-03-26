@@ -4,7 +4,7 @@
 import flask
 import pandas as pd
 from app import BaseConfig
-from dash import Input, Output
+from dash import Input, Output, dcc, html
 
 conn = BaseConfig.SQLALCHEMY_DATABASE_URI
 
@@ -28,9 +28,87 @@ def make_data_frame(uid) -> object:
 
 
 def make_field_set(field_set_data: object) -> list[object]:
-    field_set = list(field_set_data)
+    field_set_items = list(field_set_data)
+    children = [
+        dcc.Input(id="csrf_token", name="csrf_token", type="hidden", value="test_secret_key"),
+        html.Legend(id="servings_fieldset_legend", className="border-bottom mb-4", children=["Meal"]),
+        html.Div(
+            id="row_0",
+            className="form-group m-2 row",
+            children=[
+                html.Div(
+                    id="row_0_col_0",
+                    className="form-group col-2",
+                    children=[
+                        html.Label(
+                            form="form-control-label",
+                            htmlFor="index_input",
+                            children=["Index:"]
+                        ),
+                        dcc.Input(
+                            id="servings_index_input",
+                            type="number",
+                            value="index", readOnly=True
+                        ),
+                    ]
+                ),
+                html.Div(
+                    id="row_0_col_1",
+                    className="form-group col-2",
+                    children=[
+                        html.Label(
+                            form="servings_form",
+                            htmlFor="domain_input",
+                            children=["Domain:"]
+                        ),
+                        dcc.Input(
+                            id="servings_domain_input",
+                            type="text",
+                            value="domain",
+                            readOnly=True
+                        ),
+                    ]
+                ),
+                html.Div(
+                    id="row_0_col_2",
+                    className="form-group col-2",
+                    children=[
+                        html.Label(
+                            id="servings_name_label",
+                            form="servings_form",
+                            htmlFor="name_input",
+                            children=["Name:"]
+                        ),
+                        dcc.Input(
+                            id="servings_name_input",
+                            type="text",
+                            value="name",
+                            readOnly=True
+                        )
+                    ]
+                ),
+                html.Div(
+                    id="row_0_col_3",
+                    className="form-group col-2",
+                    children=[
+                        html.Label(
+                            id="servings_serving_label",
+                            form="servings_form",
+                            htmlFor="servings_input",
+                            children=["Servings:"]
+                        ),
+                        dcc.Input(
+                            id="servings_serving_input",
+                            type="number",
+                            value="servings"
+                        )
+                    ]
+                )
+            ]
+        ),
+    ]
 
-    for item in field_set:
+    for item in field_set_items:
         print(item)
 
 

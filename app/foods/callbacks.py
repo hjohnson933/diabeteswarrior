@@ -1,5 +1,4 @@
-# import statistics
-# import json
+from dataclasses import dataclass
 
 import flask
 import pandas as pd
@@ -7,6 +6,11 @@ from app import BaseConfig
 from dash import Input, Output, dcc, html
 
 conn = BaseConfig.SQLALCHEMY_DATABASE_URI
+
+
+@dataclass
+class Children:
+    ...
 
 
 def make_data_frame(uid) -> object:
@@ -28,7 +32,7 @@ def make_data_frame(uid) -> object:
 
 
 def make_field_set(field_set_data: object) -> list[object]:
-    field_set_items = list(field_set_data)
+    # field_set_items = list(field_set_data)
     children = [
         dcc.Input(id="csrf_token", name="csrf_token", type="hidden", value="test_secret_key"),
         html.Legend(id="servings_fieldset_legend", className="border-bottom mb-4", children=["Meal"]),
@@ -108,8 +112,10 @@ def make_field_set(field_set_data: object) -> list[object]:
         ),
     ]
 
-    for item in field_set_items:
-        print(item)
+    # for item in field_set_items:
+    #     print(item)
+
+    return children
 
 
 def register_callbacks(dashapp):
@@ -147,7 +153,7 @@ def register_callbacks(dashapp):
         return data, columns, filter_action, dff
 
     @dashapp.callback(
-        Output('null', 'children'),
+        Output('servings_fieldset', 'children'),
         Input('filtered_foods', 'data'),
         # Input('servings_table', 'derived_virtual_data'),
     )
@@ -157,7 +163,7 @@ def register_callbacks(dashapp):
             df = pd.read_json(filtered_foods)
 
         try:
-            make_field_set(zip(df.index, df['domain'], df['name'], df['servings']))
+            return make_field_set(zip(df.index, df['domain'], df['name'], df['servings']))
         except UnboundLocalError:
             ...
 

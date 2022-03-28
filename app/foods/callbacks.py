@@ -1,9 +1,19 @@
+from dataclasses import dataclass
+from typing import NamedTuple
+
 import flask
 import pandas as pd
 from app import BaseConfig
 from dash import Input, Output, dcc, html
 
 conn = BaseConfig.SQLALCHEMY_DATABASE_URI
+
+
+@dataclass
+class Item(NamedTuple):
+    domain: str
+    name: str
+    servings: float
 
 
 def make_data_frame(uid) -> object:
@@ -20,39 +30,50 @@ def make_data_frame(uid) -> object:
     """
 
     rv = pd.read_sql_query(
-        F'SELECT DISTINCT foods.index, foods.ts, users.username, foods.domain, foods.name, foods.portion, units.v, foods.calories, foods.fat, foods.cholesterol, foods.sodium, foods.carbohydrate, foods.protein FROM foods LEFT JOIN users on foods.user_id = users.id LEFT JOIN units on foods.unit = units.k WHERE foods.user_id = {uid} ORDER BY foods.index', conn, index_col='index')
+        F'SELECT DISTINCT foods.index, foods.ts, users.username, foods.domain, foods.name, foods.portion, foods.unit, foods.calories, foods.fat, foods.cholesterol, foods.sodium, foods.carbohydrate, foods.protein FROM foods LEFT JOIN users on foods.user_id = users.id LEFT JOIN units on foods.unit = units.k WHERE foods.user_id = {uid} ORDER BY foods.index', conn, index_col='index')
     return rv
 
 
-def make_children(items, r=0) -> list:
+def make_children(items, r) -> list:
     children = []
-
-    for i, j in enumerate(items):
-        # ? https://github.com/plotly/dash-core-components/pull/185
-        # * for now a bug in Dash core components prevents the use of the  disabled and readOnly attributes
-        # if j[2]:
-        #     read_req = 'readonly'
-        # else:
-        #     read_req = 'required'
-        children.append(
-            html.Div(
-                id=F"row_{r}_col_{i}",
-                className="form-group col-2",
-                children=[
-                    html.Label(
-                        form="form-control-label",
-                        htmlFor=F"{j[0]}_input",
-                        children=[F"{j[0].capitalize()}:"]
-                    ),
-                    dcc.Input(
-                        # read_req,
-                        id=F"servings_{j[0]}_input",
-                        type=F"{j[1]}",
-                        value=j[3]
-                    ),
-                ]
-            ),
-        )
+    children.append(
+        html.Div(
+            id=F"domain_{r}",
+            className="form-group col-5",
+            children=[
+                dcc.Input(
+                    id=F"domain_{r}_input",
+                    value=items[r].domain,
+                )
+            ]
+        ),
+    )
+    children.append(
+        html.Div(
+            id=F"name_{r}",
+            className="form-group col-5",
+            children=[
+                dcc.Input(
+                    id=F"name_{r}_input",
+                    value=items[r].name,
+                )
+            ]
+        ),
+    )
+    children.append(
+        html.Div(
+            id=F"servings_{r}",
+            className="form-group col-2",
+            children=[
+                dcc.Input(
+                    id=F"servings_{r}_input",
+                    type="text",
+                    size="5",
+                    value=items[r].servings,
+                )
+            ]
+        ),
+    )
 
     return children
 
@@ -94,30 +115,39 @@ def register_callbacks(dashapp):
     @dashapp.callback(
         Output('servings_fieldset', 'children'),
         Input('filtered_foods', 'data'),
-        # Input('servings_table', 'derived_virtual_data'),
+        # todo Input('servings_table', 'derived_virtual_data'),
     )
     def update_table(filtered_foods):
-        items = [('domain', 'text', True, 'domain'), ('name', 'text', True, 'name'), ('servings', 'number', False, 1.0)]
+        item_count = 0
+
+        items = []
+        item = NamedTuple('Item', [('domain', str), ('name', str), ('servings', float)])
+        items.append(item(domain='Domain', name='Name', servings=1.0))
+
+        if len(filtered_foods) > 0:
+            items = []
+            df = pd.read_json(filtered_foods)
+            item_count = df.shape[0]
+            dfs = df[['domain', 'name', 'servings']]
+            for row in dfs.itertuples(index=False):
+                items.append(row)
 
         servings = []
         servings.append(dcc.Input(id="csrf_token", name="csrf_token", type="hidden", value="test_secret_key"),)
         servings.append(html.Legend(id="servings_fieldset_legend", className="border-bottom mb-4", children=["Meal"]),)
-        # start the loop here
-        for r in range(1):
+        servings.append(html.Div(id="label_row", className="form-group m-2 row", children=[
+            html.Div(className="form-control-label col-5", children=["Domain:"]),
+            html.Div(className="form-control-label col-5", children=["Name:"]),
+            html.Div(className="form-control-label col-2", children=["Servings:"]),
+        ]),)
+
+        for r in range(item_count):
             servings.append(
                 html.Div(
                     id=F"row_{r}",
                     className="form-group m-2 row",
-                    children=make_children(items)
+                    children=make_children(items, r)
                 ),
             )
-
-        # if len(filtered_foods) != 0:
-        #     df = pd.read_json(filtered_foods)
-
-        # try:
-        #     return make_field_set(zip(df.index, df['domain'], df['name'], df['servings']))
-        # except UnboundLocalError:
-        #     ...
 
         return servings

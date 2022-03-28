@@ -11,6 +11,7 @@ conn = BaseConfig.SQLALCHEMY_DATABASE_URI
 
 @dataclass
 class Item(NamedTuple):
+    index: int
     domain: str
     name: str
     servings: float
@@ -36,37 +37,53 @@ def make_data_frame(uid) -> object:
 
 def make_children(items, r) -> list:
     children = []
+
+    children.append(
+        html.Div(
+            id=F"index_{r}",
+            className="form-group col-1",
+            children=[
+                dcc.Input(
+                    id=F"index_{r}_input_{items[r].Index}",
+                    value=items[r].Index,
+                )
+            ]
+        ),
+    )
+
     children.append(
         html.Div(
             id=F"domain_{r}",
-            className="form-group col-5",
+            className="form-group col-3",
             children=[
                 dcc.Input(
-                    id=F"domain_{r}_input",
+                    id=F"domain_{r}_input_{items[r].Index}",
                     value=items[r].domain,
                 )
             ]
         ),
     )
+
     children.append(
         html.Div(
             id=F"name_{r}",
-            className="form-group col-5",
+            className="form-group col-6",
             children=[
                 dcc.Input(
-                    id=F"name_{r}_input",
+                    id=F"name_{r}_input_{items[r].Index}",
                     value=items[r].name,
                 )
             ]
         ),
     )
+
     children.append(
         html.Div(
             id=F"servings_{r}",
             className="form-group col-2",
             children=[
                 dcc.Input(
-                    id=F"servings_{r}_input",
+                    id=F"servings_{r}_input_{items[r].Index}",
                     type="text",
                     size="5",
                     value=items[r].servings,
@@ -129,15 +146,16 @@ def register_callbacks(dashapp):
             df = pd.read_json(filtered_foods)
             item_count = df.shape[0]
             dfs = df[['domain', 'name', 'servings']]
-            for row in dfs.itertuples(index=False):
+            for row in dfs.itertuples(index=True, name='Item'):
                 items.append(row)
 
         servings = []
         servings.append(dcc.Input(id="csrf_token", name="csrf_token", type="hidden", value="test_secret_key"),)
         servings.append(html.Legend(id="servings_fieldset_legend", className="border-bottom mb-4", children=["Meal"]),)
         servings.append(html.Div(id="label_row", className="form-group m-2 row", children=[
-            html.Div(className="form-control-label col-5", children=["Domain:"]),
-            html.Div(className="form-control-label col-5", children=["Name:"]),
+            html.Div(className="form-control-label col-1", children=["Index: "]),
+            html.Div(className="form-control-label col-3", children=["Domain:"]),
+            html.Div(className="form-control-label col-6", children=["Name:"]),
             html.Div(className="form-control-label col-2", children=["Servings:"]),
         ]),)
 

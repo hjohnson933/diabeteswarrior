@@ -1,6 +1,16 @@
 from dash import dcc, html, dash_table
 
 layout = html.Div(id="food-main", className="container-fluid", children=[
+    html.Div(
+        id="food-header-0",
+        className="row",
+        children=[]
+    ),
+    html.Div(
+        id="food-header-1",
+        className="row",
+        children=[]
+    ),
     html.Form(
         id="servings_form",
         title="Food Item Servings",

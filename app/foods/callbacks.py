@@ -138,9 +138,10 @@ def register_callbacks(dashapp):
         item_count = 0
 
         items = []
-        item = NamedTuple('Item', [('domain', str), ('name', str), ('servings', float)])
-        items.append(item(domain='Domain', name='Name', servings=1.0))
+        item = NamedTuple('Item', [('Index', int), ('domain', str), ('name', str), ('servings', float)])
+        items.append(item(Index=0, domain='Domain', name='Name', servings=1.0))
 
+        print(items)
         if len(filtered_foods) > 0:
             items = []
             df = pd.read_json(filtered_foods)
@@ -149,6 +150,7 @@ def register_callbacks(dashapp):
             for row in dfs.itertuples(index=True, name='Item'):
                 items.append(row)
 
+        print(items)
         servings = []
         servings.append(dcc.Input(id="csrf_token", name="csrf_token", type="hidden", value="test_secret_key"),)
         servings.append(html.Legend(id="servings_fieldset_legend", className="border-bottom mb-4", children=["Meal"]),)

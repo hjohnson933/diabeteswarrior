@@ -67,7 +67,7 @@ def login() -> object:
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
             error = 'Invalid email or password'
-            return render_template('login.html', error=error, form=form)
+            return render_template('login.html', title='Sign In', error=error, form=form)
 
         if login_user(user, remember=form.remember_me.data):
             return redirect(url_for('main.home', rid=0))

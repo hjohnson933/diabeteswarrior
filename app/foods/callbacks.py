@@ -1,3 +1,4 @@
+from collections import deque
 from dataclasses import dataclass
 from typing import NamedTuple
 
@@ -6,11 +7,26 @@ import pandas as pd
 from app import BaseConfig
 from dash import Input, Output, dcc, html
 
+
 conn = BaseConfig.SQLALCHEMY_DATABASE_URI
 
 
 @dataclass
 class Item(NamedTuple):
+    """ A subset of the FoodItem table that is displayed in the meal form.
+
+    Parameters:
+    -----------
+        index : int
+            The pandas dataframe index.
+        domain : str
+            The kitchen, chef, cook, manufacture or distributor of the food item.
+        name : str
+            The name of the food item.
+        servings : int
+            The number of servings you plan on or had of this food item.
+    """
+
     index: int
     domain: str
     name: str
@@ -32,10 +48,21 @@ def make_data_frame(uid) -> object:
 
     rv = pd.read_sql_query(
         F'SELECT DISTINCT foods.index, foods.ts, users.username, foods.domain, foods.name, foods.portion, foods.unit, foods.calories, foods.fat, foods.cholesterol, foods.sodium, foods.carbohydrate, foods.protein FROM foods LEFT JOIN users on foods.user_id = users.id LEFT JOIN units on foods.unit = units.k WHERE foods.user_id = {uid} ORDER BY foods.index', conn, index_col='index')
+
     return rv
 
 
-def make_children(items, r) -> list:
+def make_children(items: tuple, r: int) -> list[str]:
+    """Returns a list of html elements for the servings table.
+
+    Arguments:
+    ---------
+        items : tuple
+            A tuple of Item namedtuples.
+        r : int
+            The row number.
+    """
+
     children = []
 
     children.append(
@@ -136,38 +163,37 @@ def register_callbacks(dashapp):
     )
     def update_table(filtered_foods):
         item_count = 0
+        serving_each_item = []
+        items = deque()
 
-        items = []
+        # create and populate the default item to the items deque
         item = NamedTuple('Item', [('Index', int), ('domain', str), ('name', str), ('servings', float)])
         items.append(item(Index=0, domain='Domain', name='Name', servings=1.0))
 
-        print(items)
+        # if the user has selected a row, add the row to the items deque
         if len(filtered_foods) > 0:
-            items = []
             df = pd.read_json(filtered_foods)
             item_count = df.shape[0]
             dfs = df[['domain', 'name', 'servings']]
-            for row in dfs.itertuples(index=True, name='Item'):
-                items.append(row)
+            items.extend(dfs.itertuples(index=True, name='Item'))
 
-        print(items)
-        servings = []
-        servings.append(dcc.Input(id="csrf_token", name="csrf_token", type="hidden", value="test_secret_key"),)
-        servings.append(html.Legend(id="servings_fieldset_legend", className="border-bottom mb-4", children=["Meal"]),)
-        servings.append(html.Div(id="label_row", className="form-group m-2 row", children=[
+        # Start building the servings entry form by adding a hidden field setting the legend and displaying the header row.
+        serving_each_item.append(dcc.Input(id="csrf_token", name="csrf_token", type="hidden", value="test_secret_key"),)
+        serving_each_item.append(html.Legend(id="servings_fieldset_legend", className="border-bottom mb-4", children=["Meal"]),)
+        serving_each_item.append(html.Div(id="label_row", className="form-group m-2 row", children=[
             html.Div(className="form-control-label col-1", children=["Index: "]),
             html.Div(className="form-control-label col-3", children=["Domain:"]),
             html.Div(className="form-control-label col-6", children=["Name:"]),
             html.Div(className="form-control-label col-2", children=["Servings:"]),
         ]),)
 
-        for r in range(item_count):
-            servings.append(
-                html.Div(
-                    id=F"row_{r}",
-                    className="form-group m-2 row",
-                    children=make_children(items, r)
-                ),
-            )
+        # for r in range(item_count):
+        #     servings.append(
+        #         html.Div(
+        #             id=F"row_{r}",
+        #             className="form-group m-2 row",
+        #             children=make_children(items, r)
+        #         ),
+        #     )
 
-        return servings
+        return serving_each_item

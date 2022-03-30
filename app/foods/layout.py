@@ -2,6 +2,11 @@ from dash import dcc, html, dash_table
 
 layout = html.Div(id="food-main", className="container-fluid", children=[
     html.Div(
+        id="meal-accumulator",
+        className="row",
+        children="Meal Accumulator"
+    ),
+    html.Div(
         id="food-header-0",
         className="row",
         children=[]

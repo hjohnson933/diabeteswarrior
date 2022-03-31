@@ -34,7 +34,78 @@ layout = html.Div(id="food-main", className="container-fluid", children=[
             html.Fieldset(
                 id="servings_fieldset",
                 className="form-group",
-                form="servings_form"
+                form="servings_form",
+                children=[
+                    dcc.Input(
+                        id="csrf_token",
+                        name="csrf_token",
+                        type="hidden",
+                        value="test_secret_key"
+                    ),
+                    html.Legend(
+                        id="servings_fieldset_legend",
+                        className="border-bottom mb-4",
+                        children=["Meal"]
+                    ),
+                    html.Div(
+                        id="label_row",
+                        className="form-group m-2 row",
+                        children=[
+                            html.Div(className="form-control-label col-1", children=["Index: "]),
+                            html.Div(className="form-control-label col-3", children=["Domain:"]),
+                            html.Div(className="form-control-label col-6", children=["Name:"]),
+                            html.Div(className="form-control-label col-2", children=["Servings:"]),
+                        ]
+                    ),
+                    html.Div(
+                        id="data_row",
+                        className="form-group m-2 row",
+                        children=[
+                            html.Div(
+                                id="data_row_index",
+                                className="form-group col-1",
+                                children=[
+                                    dcc.Input(
+                                        id="index_input",
+                                        placeholder=0,
+                                    )
+                                ]
+                            ),
+                            html.Div(
+                                id="data_row_domain",
+                                className="form-group col-3",
+                                children=[
+                                    dcc.Input(
+                                        id="domain_input",
+                                        placeholder="Domian",
+                                    )
+                                ]
+                            ),
+                            html.Div(
+                                id="data_row_name",
+                                className="form-group col-6",
+                                children=[
+                                    dcc.Input(
+                                        id="name_input",
+                                        placeholder="Name",
+                                    )
+                                ]
+                            ),
+                            html.Div(
+                                id="data_row_servings",
+                                className="form-group col-2",
+                                children=[
+                                    dcc.Input(
+                                        id="servings_input",
+                                        type="number",
+                                        size="5",
+                                        placeholder="Servings"
+                                    )
+                                ]
+                            ),
+                        ],
+                    )
+                ]
             ),
             html.Button(
                 id="meal_submit_button",

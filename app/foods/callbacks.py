@@ -1,12 +1,12 @@
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass  # , asdict
+# from datetime import datetime
 from typing import NamedTuple
 
 import flask
 import pandas as pd
 from app import BaseConfig
 from dash import Input, Output, dcc, html
-
 
 conn = BaseConfig.SQLALCHEMY_DATABASE_URI
 
@@ -33,7 +33,7 @@ class Item(NamedTuple):
     servings: float
 
 
-def make_data_frame(uid) -> object:
+def make_foods_data_frame(uid) -> object:
     """ Makes the dictionary of data and returns a pandas data frame
 
         Parameters
@@ -133,7 +133,7 @@ def register_callbacks(dashapp):
     def update_output(derived_virtual_selected_rows):
         dff = ''
         uid = flask.request.cookies['userID']
-        df = make_data_frame(uid)
+        df = make_foods_data_frame(uid)
 
         data = df.to_dict('records')
         columns = [{'name': 'domain', 'id': 'domain'},
@@ -152,7 +152,7 @@ def register_callbacks(dashapp):
             df = df.iloc[derived_virtual_selected_rows]
             filtered_indexes = df.index
             dff = df.loc[filtered_indexes]
-            dff = dff.assign(servings=1.0).to_json()
+            dff = dff.assign(servings=0.0).to_json()
 
         return data, columns, filter_action, dff
 
@@ -187,12 +187,23 @@ def register_callbacks(dashapp):
         return serving_each_item
 
     @dashapp.callback(
-        Output('meal-accumulator', 'children'),
+        Output('meals-table', 'columns'),
+        Output('meals-table', 'data'),
         Input('filtered_foods', 'data'),
     )
     def process_servings_form(filtered_foods):
         items = deque()
         indices = set()
+        columns = [
+            {'name': 'calories', 'id': 'calories'},
+            {'name': 'fat', 'id': 'fat'},
+            {'name': 'cholesterol', 'id': 'cholesterol'},
+            {'name': 'sodium', 'id': 'sodium'},
+            {'name': 'carbohydrate', 'id': 'carbohydrate'},
+            {'name': 'protein', 'id': 'protein'},
+            {'name': 'serving', 'id': 'serving'},
+            {'name': 'indexes', 'id': 'indexes'}
+        ]
 
         # * if the user has selected a row, add the row to the items deque
         if len(filtered_foods) > 0:
@@ -200,19 +211,33 @@ def register_callbacks(dashapp):
             dfs = df[['domain', 'name', 'servings']]
             items.extend(dfs.itertuples(index=True, name='Item'))
 
+            while items:
+                print(items)
+                if items[0].Index not in indices:
+                    indices.add(items[0].Index)
+                else:
+                    items.popleft()
+
         # * In this callback, we process each item and add it to the accumulator
         # for r, child in enumerate(items):
         #     serving_each_item.append(
         #         html.Div(id=F"row_{r}", className="form-group m-2 row", children=make_children(child, r),)
         #     )
 
-        print(indices)
-        print(items)
-        while items:
-            if items[0].Index not in indices:
-                indices.add(items[0].Index)
-            else:
-                items.popleft()
-        print(indices)
-        print(items)
-        ...
+        meals_dict = {
+            'calories': [0.0],
+            'fat': [0.0],
+            'cholesterol': [0.0],
+            'sodium': [0.0],
+            'carbohydrate': [0.0],
+            'protein': [0.0],
+            'serving': [""],
+            'indexes': [str(indices)],
+        }
+        meals_df = pd.DataFrame(meals_dict)
+        data = meals_df.to_dict('records')
+
+        # print(indices)
+        # print(items)
+
+        return columns, data

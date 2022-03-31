@@ -1,11 +1,22 @@
 from dash import dcc, html, dash_table
 
 layout = html.Div(id="food-main", className="container-fluid", children=[
-    html.Div(
-        id="meal-accumulator",
-        className="row",
-        children="Meal Accumulator"
+    dash_table.DataTable(
+        id="meals-table",
+        style_table={'width': '100%'},
+        style_cell={
+            'backgroundColor': 'black',
+            'textAlign': 'left',
+            'font-size': '11px',
+            'maxWidth': '0',
+        },
+        style_data={
+            'whiteSpace': 'normal',
+            'height': 'auto',
+            'lineHeight': '15px',
+        },
     ),
+    html.Br(),
     html.Div(
         id="food-header-0",
         className="row",

@@ -24,7 +24,6 @@ layout = html.Div(id="food-main", className="container-fluid", children=[
     ),
     html.Div(
         id="food-header-1",
-        className="row",
         children=[]
     ),
     html.Form(
@@ -53,8 +52,8 @@ layout = html.Div(id="food-main", className="container-fluid", children=[
                         children=[
                             html.Div(className="form-control-label col-1", children=["Index: "]),
                             html.Div(className="form-control-label col-3", children=["Domain:"]),
-                            html.Div(className="form-control-label col-6", children=["Name:"]),
-                            html.Div(className="form-control-label col-2", children=["Servings:"]),
+                            html.Div(className="form-control-label col-4", children=["Name:"]),
+                            html.Div(className="form-control-label col-3", children=["Servings:"]),
                         ]
                     ),
                     html.Div(
@@ -83,7 +82,7 @@ layout = html.Div(id="food-main", className="container-fluid", children=[
                             ),
                             html.Div(
                                 id="data_row_name",
-                                className="form-group col-6",
+                                className="form-group col-4",
                                 children=[
                                     dcc.Input(
                                         id="name_input",
@@ -93,7 +92,7 @@ layout = html.Div(id="food-main", className="container-fluid", children=[
                             ),
                             html.Div(
                                 id="data_row_servings",
-                                className="form-group col-2",
+                                className="form-group col-1",
                                 children=[
                                     dcc.Input(
                                         id="servings_input",

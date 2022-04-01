@@ -9,7 +9,6 @@ import flask
 import pandas as pd
 from app import BaseConfig
 from dash import Input, Output, dcc, html
-from dash.exceptions import PreventUpdate
 
 conn = BaseConfig.SQLALCHEMY_DATABASE_URI
 
@@ -55,128 +54,70 @@ def make_foods_data_frame(uid) -> object:
     return rv
 
 
-def make_children(child: tuple, r: int, v: bool = False) -> list[str]:
+def make_children(child: tuple) -> list[str]:
     """Returns a list of html elements for the servings table.
 
     Arguments:
     ---------
         item : tuple
             A tuple of Item namedtuples.
-        r : int
-            The row number.
     """
 
     children = []
 
-    if v:
-        children.append(
-            html.Div(
-                id=F"index_{r}",
-                className="form-group col-1",
-                children=[
-                    dcc.Input(
-                        id=F"index_{r}_input_{child.Index}",
-                        value=child.Index,
-                    )
-                ]
-            ),
-        )
+    children.append(
+        html.Div(
+            id="data_row_index",
+            className="form-group col-1",
+            children=[
+                dcc.Input(
+                    id="index_input",
+                    placeholder=child.Index,
+                )
+            ]
+        ),
+    )
 
-        children.append(
-            html.Div(
-                id=F"domain_{r}",
-                className="form-group col-3",
-                children=[
-                    dcc.Input(
-                        id=F"domain_{r}_input_{child.Index}",
-                        value=child.domain,
-                    )
-                ]
-            ),
-        )
+    children.append(
+        html.Div(
+            id="data_row_domain",
+            className="form-group col-3",
+            children=[
+                dcc.Input(
+                    id="domain_input",
+                    placeholder=child.domain,
+                )
+            ]
+        ),
+    )
 
-        children.append(
-            html.Div(
-                id=F"name_{r}",
-                className="form-group col-6",
-                children=[
-                    dcc.Input(
-                        id=F"name_{r}_input_{child.Index}",
-                        value=child.name,
-                    )
-                ]
-            ),
-        )
+    children.append(
+        html.Div(
+            id="data_row_name_{r}",
+            className="form-group col-6",
+            children=[
+                dcc.Input(
+                    id="name_input",
+                    placeholder=child.name,
+                )
+            ]
+        ),
+    )
 
-        children.append(
-            html.Div(
-                id=F"servings_{r}",
-                className="form-group col-2",
-                children=[
-                    dcc.Input(
-                        id=F"servings_{r}_input_{child.Index}",
-                        type="text",
-                        size="5",
-                        value=child.servings,
-                    )
-                ]
-            ),
-        )
-
-    else:
-        children.append(
-            html.Div(
-                id=F"index_{r}",
-                className="form-group col-1",
-                children=[
-                    dcc.Input(
-                        id=F"index_{r}_input_{child.Index}",
-                        placeholder=child.Index,
-                    )
-                ]
-            ),
-        )
-
-        children.append(
-            html.Div(
-                id=F"domain_{r}",
-                className="form-group col-3",
-                children=[
-                    dcc.Input(
-                        id=F"domain_{r}_input_{child.Index}",
-                        placeholder=child.domain,
-                    )
-                ]
-            ),
-        )
-
-        children.append(
-            html.Div(
-                id=F"name_{r}",
-                className="form-group col-6",
-                children=[
-                    dcc.Input(
-                        id=F"name_{r}_input_{child.Index}",
-                        placeholder=child.name,
-                    )
-                ]
-            ),
-        )
-
-        children.append(
-            html.Div(
-                id=F"servings_{r}",
-                className="form-group col-2",
-                children=[
-                    dcc.Input(
-                        id=F"servings_{r}_input_{child.Index}",
-                        type="text",
-                        size="5",
-                        placeholder=child.servings,
-                    )
-                ]
-            ),
-        )
+    children.append(
+        html.Div(
+            id="data_row_servings",
+            className="form-group col-2",
+            children=[
+                dcc.Input(
+                    id="servings_input",
+                    type="text",
+                    size="5",
+                    placeholder=child.servings,
+                )
+            ]
+        ),
+    )
 
     return children
 
@@ -189,12 +130,20 @@ def register_callbacks(dashapp):
         Output('filtered_foods', 'data'),
         Input('foods_table', 'derived_virtual_selected_rows')
     )
-    def update_output(derived_virtual_selected_rows):
-        dff = ''
-        uid = flask.request.cookies['userID']
-        df = make_foods_data_frame(uid)
+    def make_filter_store_food_data(derived_virtual_selected_rows):
+        """_summary_
 
-        data = df.to_dict('records')
+        Args:
+            derived_virtual_selected_rows (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        filtered_foods_df = ''
+        login_user_id = flask.request.cookies['userID']
+        all_foods_df = make_foods_data_frame(login_user_id)
+
+        data = all_foods_df.to_dict('records')
         columns = [{'name': 'domain', 'id': 'domain'},
                    {'name': 'name', 'id': 'name'},
                    {'name': 'portion', 'id': 'portion'},
@@ -208,12 +157,12 @@ def register_callbacks(dashapp):
         filter_action = 'native'
 
         if derived_virtual_selected_rows is not None and len(derived_virtual_selected_rows) > 0:
-            df = df.iloc[derived_virtual_selected_rows]
-            filtered_indexes = df.index
-            dff = df.loc[filtered_indexes]
-            dff = dff.assign(servings=0.0).to_json()
+            all_foods_df = all_foods_df.iloc[derived_virtual_selected_rows]
+            filtered_indexes = all_foods_df.index
+            filtered_foods_df = all_foods_df.loc[filtered_indexes]
+            filtered_foods_df = filtered_foods_df.assign(servings=0.0).to_json()
 
-        return data, columns, filter_action, dff
+        return data, columns, filter_action, filtered_foods_df
 
     @dashapp.callback(
         Output('meals-table', 'columns'),
@@ -238,8 +187,10 @@ def register_callbacks(dashapp):
                 A list of integers representing the selected rows in the Foods table.
         """
 
-        # print(type(derived_virtual_selected_rows[0]))
         indices = {s for s in derived_virtual_selected_rows}
+        items = deque()
+        servings = deque()
+        # meals_table_data = deque()
 
         columns = [
             {'name': 'calories', 'id': 'calories'},
@@ -259,66 +210,38 @@ def register_callbacks(dashapp):
             'sodium': 0.0,
             'carbohydrate': 0.0,
             'protein': 0.0,
-            'serving': "",
+            'serving': str(servings),
             'indexes': str(indices)
         }
 
+        # Now add each of the filtered foods to the items deque
         try:
             d = json.loads(filtered_foods)
+            filtered_foods_df = pd.DataFrame(d)
+            data_row_df = filtered_foods_df[['domain', 'name', 'servings']]
+            items.extend(data_row_df.itertuples(index=True))
+
+            data = {
+                k: v for k, v in (
+                    ('calories', filtered_foods_df.calories.cumsum().values[0]),
+                    ('fat', filtered_foods_df.fat.cumsum().values[0]),
+                    ('cholesterol', filtered_foods_df.cholesterol.cumsum().values[0]),
+                    ('sodium', filtered_foods_df.sodium.cumsum().values[0]),
+                    ('carbohydrate', filtered_foods_df.carbohydrate.cumsum().values[0]),
+                    ('protein', filtered_foods_df.protein.cumsum().values[0]),
+                    # ('serving', filtered_foods_df.serving.cumsum().values[0]),
+                    # ('indexes', filtered_foods_df.indexes.cumsum().values[0])
+                )
+            }
+            # print(data)
         except json.decoder.JSONDecodeError:
             ...
 
-        try:
-            print(d['servings'])
-        except UnboundLocalError:
-            ...
-
-        # get the indexes in the derived_virtual_selected_rows and add them to the indices set
-        # indices.add(derived_virtual_selected_rows)
-
-    #     items = deque()
-
-    #     # * if the user has selected a row, add the row to the items deque
-    #     if len(filtered_foods) > 0:
-    #         df = pd.read_json(filtered_foods)
-    #         dfs = df[['domain', 'name', 'servings']]
-    #         items.extend(dfs.itertuples(index=True, name='Item'))
-
-    #     print(len(items))
-    #     while items:
-    #         print('While')
-    #         indices.add(items[0].Index)
-    #         items.popleft()
-    #     else:
-    #         print('else')
-    #         print(indices)
-    #     # while items:
-    #     #     print(items)
-    #         # if items[0].Index not in indices:
-    #         #     indices.add(items[0].Index)
-    #         # else:
-    #         #     items.popleft()
-
-    #     # * In this callback, we process each item and add it to the accumulator
-    #     # for r, child in enumerate(items):
-    #     #     serving_each_item.append(
-    #     #         html.Div(id=F"row_{r}", className="form-group m-2 row", children=make_children(child, r),)
-    #     #     )
-
-    #     meals_dict = {
-    #         'calories': [0.0],
-    #         'fat': [0.0],
-    #         'cholesterol': [0.0],
-    #         'sodium': [0.0],
-    #         'carbohydrate': [0.0],
-    #         'protein': [0.0],
-    #         'serving': [""],
-    #         'indexes': [str(indices)],
-    #     }
-    #     meals_df = pd.DataFrame(meals_dict)
-    #     data = meals_df.to_dict('records')
-
-    #     # print(indices)
-    #     # print(items)
+        if len(items) > 0:
+            item = items.popleft()
+            print(item.Index)
+            print(item.domain)
+            print(item.name)
+            print(item.servings)
 
         return columns, [data]

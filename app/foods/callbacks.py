@@ -8,7 +8,7 @@ from typing import NamedTuple
 import flask
 import pandas as pd
 from app import BaseConfig
-from dash import Input, Output, dcc, html
+from dash import Input, Output
 
 conn = BaseConfig.SQLALCHEMY_DATABASE_URI
 
@@ -54,74 +54,6 @@ def make_foods_data_frame(uid) -> object:
     return rv
 
 
-def make_children(child: tuple) -> list[str]:
-    """Returns a list of html elements for the servings table.
-
-    Arguments:
-    ---------
-        item : tuple
-            A tuple of Item namedtuples.
-    """
-
-    children = []
-
-    children.append(
-        html.Div(
-            id="data_row_index",
-            className="form-group col-1",
-            children=[
-                dcc.Input(
-                    id="index_input",
-                    placeholder=child.Index,
-                )
-            ]
-        ),
-    )
-
-    children.append(
-        html.Div(
-            id="data_row_domain",
-            className="form-group col-3",
-            children=[
-                dcc.Input(
-                    id="domain_input",
-                    placeholder=child.domain,
-                )
-            ]
-        ),
-    )
-
-    children.append(
-        html.Div(
-            id="data_row_name_{r}",
-            className="form-group col-6",
-            children=[
-                dcc.Input(
-                    id="name_input",
-                    placeholder=child.name,
-                )
-            ]
-        ),
-    )
-
-    children.append(
-        html.Div(
-            id="data_row_servings",
-            className="form-group col-2",
-            children=[
-                dcc.Input(
-                    id="servings_input",
-                    type="text",
-                    size="5",
-                    placeholder=child.servings,
-                )
-            ]
-        ),
-    )
-
-    return children
-
-
 def register_callbacks(dashapp):
     @dashapp.callback(
         Output('foods_table', 'data'),
@@ -130,21 +62,36 @@ def register_callbacks(dashapp):
         Output('filtered_foods', 'data'),
         Input('foods_table', 'derived_virtual_selected_rows')
     )
-    def make_filter_store_food_data(derived_virtual_selected_rows):
-        """_summary_
+    def get_filter_store_food_data(derived_virtual_selected_rows):
+        """Get the logged in user's id and retrive the foods from the database as a pandas dataframe.
+        Convert the dataframe to a dictionary and send it to the foods_table so it can be selected for the
+        current meal. The selected food items are stored in the `filtered_foods` store for use in the next
+        callback.
 
-        Args:
-            derived_virtual_selected_rows (_type_): _description_
+        Arguments:
+        ----------
+            derived_virtual_selected_rows dict:
+                The user selected rows from the foods_table.
 
         Returns:
-            _type_: _description_
-        """        
+            tuple:
+                food_table_data:
+                    pandas data frame as a dictionary
+                food_table_columns:
+                    column names of the food table
+                filter_action:
+                    type of filter the table uses, it should be noted that most of the table formattind and
+                    controls are set in the `layout.py` file.
+                filtered_foods_data:
+                    selected rows from the foods_table as a dictionary.
+        """
+
         filtered_foods_df = ''
         login_user_id = flask.request.cookies['userID']
         all_foods_df = make_foods_data_frame(login_user_id)
 
-        data = all_foods_df.to_dict('records')
-        columns = [{'name': 'domain', 'id': 'domain'},
+        food_table_data = all_foods_df.to_dict('records')
+        food_table_columns = [{'name': 'domain', 'id': 'domain'},
                    {'name': 'name', 'id': 'name'},
                    {'name': 'portion', 'id': 'portion'},
                    {'name': 'unit', 'id': 'unit'},
@@ -154,7 +101,7 @@ def register_callbacks(dashapp):
                    {'name': 'sodium', 'id': 'sodium'},
                    {'name': 'carbohydrate', 'id': 'carbohydrate'},
                    {'name': 'protein', 'id': 'protein'}]
-        filter_action = 'native'
+        food_table_filter_action = 'native'
 
         if derived_virtual_selected_rows is not None and len(derived_virtual_selected_rows) > 0:
             all_foods_df = all_foods_df.iloc[derived_virtual_selected_rows]
@@ -162,86 +109,48 @@ def register_callbacks(dashapp):
             filtered_foods_df = all_foods_df.loc[filtered_indexes]
             filtered_foods_df = filtered_foods_df.assign(servings=0.0).to_json()
 
-        return data, columns, filter_action, filtered_foods_df
+        return food_table_data, food_table_columns, food_table_filter_action, filtered_foods_df
 
     @dashapp.callback(
-        Output('meals-table', 'columns'),
-        Output('meals-table', 'data'),
+        Output('indexed_servings', 'data'),
+        Output('index_input', 'value'),
+        Output('domain_input', 'value'),
+        Output('name_input', 'value'),
+        Output('servings_input', 'value'),
         Input('filtered_foods', 'data'),
         Input('servings_input', 'value'),
         Input('foods_table', 'derived_virtual_selected_rows')
     )
-    def process_servings_form(filtered_foods, servings_input, derived_virtual_selected_rows):
-        """Display the domain and name for each selected food item in the Meal form. While the servings value is
-        None or 0 wait for the user to enter a value then multiply the other values in for the selected food items and
-        accumulate the totals in the meals table. When all food items have been entered with servings values and the
-        meal submit button is clicked, the meal is added to the database the form is rest.
-
-        Arguments:
-        ---------
-            filtered_foods str:
-                The Domain, Name and Servings for each selected food item.
-            servings_input float:
-                The number of servings for the selected food item in decimal.
-            derived_virtual_selected_rows list[int]:
-                A list of integers representing the selected rows in the Foods table.
+    def set_food_item_servings(filtered_foods, servings_input, derived_virtual_selected_rows):
+        """
         """
 
-        indices = {s for s in derived_virtual_selected_rows}
+        data = {}
         items = deque()
-        servings = deque()
-        # meals_table_data = deque()
+        index_input = None
+        domain_input = None
+        name_input = None
+        servings_input = None
 
-        columns = [
-            {'name': 'calories', 'id': 'calories'},
-            {'name': 'fat', 'id': 'fat'},
-            {'name': 'cholesterol', 'id': 'cholesterol'},
-            {'name': 'sodium', 'id': 'sodium'},
-            {'name': 'carbohydrate', 'id': 'carbohydrate'},
-            {'name': 'protein', 'id': 'protein'},
-            {'name': 'serving', 'id': 'serving'},
-            {'name': 'indexes', 'id': 'indexes'}
-        ]
-
-        data = {
-            'calories': 0.0,
-            'fat': 0.0,
-            'cholesterol': 0.0,
-            'sodium': 0.0,
-            'carbohydrate': 0.0,
-            'protein': 0.0,
-            'serving': str(servings),
-            'indexes': str(indices)
-        }
-
-        # Now add each of the filtered foods to the items deque
         try:
-            d = json.loads(filtered_foods)
-            filtered_foods_df = pd.DataFrame(d)
-            data_row_df = filtered_foods_df[['domain', 'name', 'servings']]
-            items.extend(data_row_df.itertuples(index=True))
+            records_list = set()
 
-            data = {
-                k: v for k, v in (
-                    ('calories', filtered_foods_df.calories.cumsum().values[0]),
-                    ('fat', filtered_foods_df.fat.cumsum().values[0]),
-                    ('cholesterol', filtered_foods_df.cholesterol.cumsum().values[0]),
-                    ('sodium', filtered_foods_df.sodium.cumsum().values[0]),
-                    ('carbohydrate', filtered_foods_df.carbohydrate.cumsum().values[0]),
-                    ('protein', filtered_foods_df.protein.cumsum().values[0]),
-                    # ('serving', filtered_foods_df.serving.cumsum().values[0]),
-                    # ('indexes', filtered_foods_df.indexes.cumsum().values[0])
-                )
-            }
-            # print(data)
+            filtered_foods_data = json.loads(filtered_foods)
+            filtered_foods_df = pd.DataFrame(filtered_foods_data)
+            records = filtered_foods_df[['domain', 'name', 'servings']].to_dict('index')
+            for k, v in records.items():
+                records_list.add((int(k) - 1, (v['domain'], v['name'], v['servings'])))
+            items.extend(records_list)
         except json.decoder.JSONDecodeError:
             ...
 
-        if len(items) > 0:
-            item = items.popleft()
-            print(item.Index)
-            print(item.domain)
-            print(item.name)
-            print(item.servings)
+        try:
+            print(items)
+        except IndexError:
+            ...
 
-        return columns, [data]
+        # for item in items:
+        #     index_input, value = item
+        #     domain_input, name_input, servings_input = value
+
+        return data, index_input, domain_input, name_input, servings_input

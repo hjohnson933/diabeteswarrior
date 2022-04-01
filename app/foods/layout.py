@@ -98,7 +98,8 @@ layout = html.Div(id="food-main", className="container-fluid", children=[
                                         id="servings_input",
                                         type="number",
                                         size="5",
-                                        placeholder="Servings"
+                                        placeholder="Servings",
+                                        debounce=True
                                     )
                                 ]
                             ),
@@ -112,7 +113,17 @@ layout = html.Div(id="food-main", className="container-fluid", children=[
                 name="meal_submit_button",
                 className="form-group btn btn-outline-info",
                 form="servings_form",
+                disabled=True,
                 children="Meal Submit"
+            ),
+            html.Button(
+                id="food_submit_button",
+                title="Food Submit Button",
+                name="food_submit_button",
+                className="form-group btn btn-outline-info",
+                form="servings_form",
+                disabled=True,
+                children="Food Submit"
             )
         ]
     ),
@@ -144,5 +155,6 @@ layout = html.Div(id="food-main", className="container-fluid", children=[
         sort_action='native',
         cell_selectable=True
     ),
-    dcc.Store(id='filtered_foods')
+    dcc.Store(id='filtered_foods'),
+    dcc.Store(id='indexed_servings')
 ])

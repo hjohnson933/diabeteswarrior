@@ -127,6 +127,7 @@ def register_callbacks(dashapp):
 
         data = {}
         items = deque()
+        item_set = set()
         index_input = None
         domain_input = None
         name_input = None
@@ -150,6 +151,7 @@ def register_callbacks(dashapp):
         except IndexError:
             ...
 
+        print(item_set)
         # for item in items:
         #     index_input, value = item
         #     domain_input, name_input, servings_input = value

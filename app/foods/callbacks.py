@@ -145,7 +145,8 @@ def register_callbacks(dashapp):
             ...
 
         try:
-            print(items)
+            item = items.popleft()
+            print(item)
         except IndexError:
             ...
 

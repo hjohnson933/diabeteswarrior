@@ -180,42 +180,6 @@ class HealthForm(FlaskForm):
     submit = SubmitField('Save Health')
 
 
-class MealForm(FlaskForm):
-    """ User Meal Form
-
-        Attributes:
-        -----------
-        submit: bool
-            Triggers the application to store the data in the data base and send you to the next page.
-        calories: float
-            Total calories in this meal.
-        fat: float
-            Total fat in this meal.
-        cholesterol: float
-            Total cholesterol in this meal.
-        sodium: float
-            Total sodium in this meal.
-        carbohydrate: float
-            Total carbohydrate in this meal.
-        protein: float
-            Total protein in this meal.
-        serving: list
-            Number of servings for each food item in this meal.
-        indices: list
-            Index of each food item in this meal.
-    """
-
-    calories = DecimalField('Calories', validators=[InputRequired('Calculated or entered it must have a value.')])
-    fat = DecimalField('Fat', validators=[InputRequired('Calculated or entered it must have a value.')])
-    cholesterol = DecimalField('Cholesterol', validators=[InputRequired('Calculated or entered it must have a value.')])
-    sodium = DecimalField('Sodium', validators=[InputRequired('Calculated or entered it must have a value.')])
-    carbohydrate = DecimalField('Carbohydrates', validators=[InputRequired('Calculated or entered it must have a value.')])
-    protein = DecimalField('Protein', validators=[InputRequired('Calculated or entered it must have')])
-    serving = TextAreaField('Serving', validators=[InputRequired('Semicolon seperated list of values.')])
-    indices = TextAreaField('Indices', validators=[InputRequired('Semicolon seperated list of values.')])
-    submit = SubmitField('Save Meal')
-
-
 class FoodForm(FlaskForm):
     """ User Food Form
 
@@ -256,3 +220,33 @@ class FoodForm(FlaskForm):
     carbohydrate = IntegerField('Carbohydrates', validators=[InputRequired('The number of carbohydrates is required.')])
     protein = IntegerField('Protein', validators=[InputRequired('The amount of protein is required.')])
     submit = SubmitField('Save Food',)
+
+
+class MealForm(FoodForm, FlaskForm):
+    """ User Meal Form
+
+        Attributes:
+        -----------
+        submit: bool
+            Triggers the application to store the data in the data base and send you to the next page.
+        calories: float
+            Total calories in this meal.
+        fat: float
+            Total fat in this meal.
+        cholesterol: float
+            Total cholesterol in this meal.
+        sodium: float
+            Total sodium in this meal.
+        carbohydrate: float
+            Total carbohydrate in this meal.
+        protein: float
+            Total protein in this meal.
+        serving: list
+            Number of servings for each food item in this meal.
+        indices: list
+            Index of each food item in this meal.
+    """
+
+    serving = TextAreaField('Serving', validators=[InputRequired('Semicolon seperated list of values.')])
+    indices = TextAreaField('Indices', validators=[InputRequired('Semicolon seperated list of values.')])
+    submit = SubmitField('Save Meal')

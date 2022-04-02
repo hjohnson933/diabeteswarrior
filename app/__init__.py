@@ -26,9 +26,9 @@ def create_app() -> object:
     from app.healths.layout import layout
     register_dashapps(server, 'Health', 'healths', layout, register_callbacks)
 
-    from app.foods.callbacks import register_callbacks
-    from app.foods.layout import layout
-    register_dashapps(server, 'Food', 'foods', layout, register_callbacks)
+    # from app.foods.callbacks import register_callbacks
+    # from app.foods.layout import layout
+    # register_dashapps(server, 'Food', 'foods', layout, register_callbacks)
 
     # # from app.meal.callbacks import register_callbacks
     # from app.meal.layout import layout

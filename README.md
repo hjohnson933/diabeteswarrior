@@ -17,9 +17,9 @@ export DATABASE_URL=sqlite:///${PWD}/instance/app2.db
 
 todo Food entry form unit input need to be a drop down
 
-Accept inline code suggestion — Tab
-Dismiss inline code suggestion — Esc
-Show next suggestion — Alt + ] or Option (⌥) + ]
-Show previous suggestion — Alt + [ or Option (⌥) + [
-Trigger suggestion — Alt + \ or Option (⌥) + \
-Open ten suggestions in a separate pane — Ctrl + Enter
++ Accept inline code suggestion — Tab
++ Dismiss inline code suggestion — Esc
++ Show next suggestion — Alt + ] or Option (⌥) + ]
++ Show previous suggestion — Alt + [ or Option (⌥) + [
++ Trigger suggestion — Alt + \ or Option (⌥) + \
++ Open ten suggestions in a separate pane — Ctrl + Enter

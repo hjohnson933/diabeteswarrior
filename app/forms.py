@@ -1,6 +1,6 @@
 """Create the forms used by the Flask server."""
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, IntegerField, DecimalField, TextAreaField, RadioField  # , SelectField
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, IntegerField, DecimalField, TextAreaField, RadioField, widgets
 from wtforms.validators import InputRequired, NumberRange, Length, Email, EqualTo
 
 
@@ -247,6 +247,14 @@ class MealForm(FoodForm, FlaskForm):
             Index of each food item in this meal.
     """
 
-    serving = TextAreaField('Serving', validators=[InputRequired('Semicolon seperated list of values.')])
-    indices = TextAreaField('Indices', validators=[InputRequired('Semicolon seperated list of values.')])
+    row_select = BooleanField('Select Row')
+    calories = IntegerField('Calories')
+    fat = IntegerField('Fat')
+    cholesterol = IntegerField('Cholesterol')
+    sodium = IntegerField('Sodium')
+    carbohydrate = IntegerField('Carbohydrates')
+    protein = IntegerField('Protein')
+    serving = TextAreaField('Serving')
+    indices = TextAreaField('Indices')
     submit = SubmitField('Save Meal')
+    widget = widgets.TableWidget(with_table_tag=True)

@@ -1,0 +1,20 @@
+<table class="cell-table">
+  <thead>
+    <tr>
+      <th class="expanded-row--empty-cell"></th>
+      {%for header in headings%}
+        <th class="header column-0" colspan="1" headers="{{header}}" scope="col">{{header}}</th>
+      {%endfor%}
+    </tr>
+  </thead>
+  <tbody>
+    {%for row in data%}
+    <tr>
+      <td class="select-cell"><input type="checkbox" name="row-select-foods_table" style="vertical-align: middle;"></td>
+      {%for cell in row%}
+        <td class="cell column-0" headers="{{cell}}">{{cell}}</td>
+      {%endfor%}
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>

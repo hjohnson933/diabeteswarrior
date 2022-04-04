@@ -243,33 +243,35 @@ def food_data() -> object:
 @login_required
 def meal_data() -> object:
     form = MealForm()
-    # fields = ['calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein', 'serving', 'indices']
+    fields = ['calories', 'fat', 'cholesterol', 'sodium', 'carbohydrate', 'protein', 'serving', 'indices']
 
-    # if form.validate_on_submit():
-    #     meal = Meals()
-    #     meal.ts = arrow.now().format("YYYY-MM-DD HH:mm")
-    #     meal.user_id = current_user.id
-    #     meal.calories = form.calories.data
-    #     meal.fat = form.fat.data
-    #     meal.cholesterol = form.cholesterol.data
-    #     meal.sodium = form.sodium.data
-    #     meal.carbohydrate = form.carbohydrate.data
-    #     meal.protein = form.protein.data
-    #     meal.serving = form.serving.data
-    #     meal.indices = form.indices.data
-    #     db.session.add(meal)
-    #     db.session.commit()
-    #     flash(f'Meal data saved for {current_user.username}!', 'success')
-    #     return redirect(url_for('main.home'))
+    if form.validate_on_submit():
+        meal = Meals()
+        meal.ts = arrow.now().format("YYYY-MM-DD HH:mm")
+        meal.user_id = current_user.id
+        meal.calories = form.calories.data
+        meal.fat = form.fat.data
+        meal.cholesterol = form.cholesterol.data
+        meal.sodium = form.sodium.data
+        meal.carbohydrate = form.carbohydrate.data
+        meal.protein = form.protein.data
+        meal.serving = form.serving.data
+        meal.indices = form.indices.data
+        db.session.add(meal)
+        db.session.commit()
+        flash(f'Meal data saved for {current_user.username}!', 'success')
+        return redirect(url_for('main.home'))
 
-    return render_template('learn.html', title='Meal', form=form)
+    return render_template('new.html', title='Meal', form=form, fields=fields)
 
 
 @server_bp.route('/table/', methods=['GET', 'POST'])
 def table() -> object:
-    headings = ["domain", "name", "portion", "unit", "calories", "fat", "cholesterol", "sodium", "carbohydrate", "protein"]
-    data = [
-        ("Aunt Aggie De's", "Praline", 57.0, "g", 60, 15, 5, 30, 33, 2),
-        ("HAJ", "Water", 0.0, "fl oz", 0, 0, 0, 0, 0, 0)
-    ]
-    return render_template('table.html', title='Table', headings=headings, data=data)
+    headers = ["domain", "name", "portion", "unit", "calories", "fat", "cholesterol", "sodium", "carbohydrate", "protein"]
+    data = [("Aunt Aggie De's", "Praline", 57.0, "g", 60, 15, 5, 30, 33, 2),
+            ("HAJ", "Water", 0.0, "fl oz", 0, 0, 0, 0, 0, 0),
+            ("HAJ", "Fast", 0.0, "g", 0, 0, 0, 0, 0, 0)]
+
+    flash('Testing Flash Messaging')
+
+    return render_template('table.html', title='Table', headers=headers, data=data)

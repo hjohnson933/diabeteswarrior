@@ -125,6 +125,50 @@ class Trends(db.Model):
         return F'<Trends {self.v}>'
 
 
+class Hypert(db.Model):
+    """Hypertension Key Value Pairs
+
+    Attributes:
+    ----------
+        id: int
+            Message id number
+        k: int
+            Hypertension key number
+        v: string
+            The hypertension level
+    """
+
+    id: int = db.Column(db.Integer, primary_key=True)
+    k: int = db.Column(db.Integer, index=True, nullable=False, unique=True)
+    v: str = db.Column(db.String(32), index=True, nullable=False)
+    hkv = db.relationship('Healths', backref='hypert_value', lazy=True)
+
+    def __repr__(self):
+        return F'<Hypertension {self.v}>'
+
+
+class Units(db.Model):
+    """Message Key Value Pairs
+
+    Attributes:
+    ----------
+        id: int
+            Message id number
+        k: int
+            Message key number
+        v: string
+            The message
+    """
+
+    id: int = db.Column(db.Integer, primary_key=True)
+    k: int = db.Column(db.String(32), index=True, nullable=False, unique=True)
+    v: str = db.Column(db.String(32), index=True, nullable=False)
+    ukv = db.relationship('Foods', backref='units_value', lazy=True)
+
+    def __repr__(self) -> str:
+        return F'<Message {self.v}>'
+
+
 class Scans(db.Model):
     """The Users Scans Models.
 
@@ -249,50 +293,6 @@ class Healths(db.Model):
         dt = arrow.get(self.ts).humanize()
 
         return F'<Health {self.index}, {dt}, {self.po_pulse}, {self.po_ox}, {self.weight}, {self.fat}, {self.bpc_pulse}, {self.bpc_systolic}, {self.bpc_diastolic}, {self.bpc_ihb}, {self.bpc_hypertension}, {self.temperature}>'
-
-
-class Hypert(db.Model):
-    """Hypertension Key Value Pairs
-
-    Attributes:
-    ----------
-        id: int
-            Message id number
-        k: int
-            Hypertension key number
-        v: string
-            The hypertension level
-    """
-
-    id: int = db.Column(db.Integer, primary_key=True)
-    k: int = db.Column(db.Integer, index=True, nullable=False, unique=True)
-    v: str = db.Column(db.String(32), index=True, nullable=False)
-    hkv = db.relationship('Healths', backref='hypert_value', lazy=True)
-
-    def __repr__(self):
-        return F'<Hypertension {self.v}>'
-
-
-class Units(db.Model):
-    """Message Key Value Pairs
-
-    Attributes:
-    ----------
-        id: int
-            Message id number
-        k: int
-            Message key number
-        v: string
-            The message
-    """
-
-    id: int = db.Column(db.Integer, primary_key=True)
-    k: int = db.Column(db.String(32), index=True, nullable=False, unique=True)
-    v: str = db.Column(db.String(32), index=True, nullable=False)
-    ukv = db.relationship('Foods', backref='units_value', lazy=True)
-
-    def __repr__(self) -> str:
-        return F'<Message {self.v}>'
 
 
 class Meals(db.Model):

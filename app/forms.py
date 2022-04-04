@@ -1,6 +1,6 @@
 """Create the forms used by the Flask server."""
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, IntegerField, DecimalField, TextAreaField, RadioField, widgets
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, IntegerField, DecimalField, TextAreaField, RadioField
 from wtforms.validators import InputRequired, NumberRange, Length, Email, EqualTo
 
 
@@ -209,6 +209,7 @@ class FoodForm(FlaskForm):
             The amount of protein in the portion, typically in grams.
     """
 
+    row_select = BooleanField('Select Row')
     domain = TextAreaField('Domain', validators=[InputRequired('The domain is required.')])
     name = TextAreaField('Name', validators=[InputRequired('The name of the food is required.')])
     portion = TextAreaField('Portion', validators=[InputRequired('The portion is required.')])
@@ -219,7 +220,7 @@ class FoodForm(FlaskForm):
     sodium = IntegerField('Sodium', validators=[InputRequired('The amount of sodium is required.')])
     carbohydrate = IntegerField('Carbohydrates', validators=[InputRequired('The number of carbohydrates is required.')])
     protein = IntegerField('Protein', validators=[InputRequired('The amount of protein is required.')])
-    submit = SubmitField('Save Food',)
+    submit = SubmitField('Save Food')
 
 
 class MealForm(FoodForm, FlaskForm):
@@ -247,7 +248,6 @@ class MealForm(FoodForm, FlaskForm):
             Index of each food item in this meal.
     """
 
-    row_select = BooleanField('Select Row')
     calories = IntegerField('Calories')
     fat = IntegerField('Fat')
     cholesterol = IntegerField('Cholesterol')
@@ -257,4 +257,3 @@ class MealForm(FoodForm, FlaskForm):
     serving = TextAreaField('Serving')
     indices = TextAreaField('Indices')
     submit = SubmitField('Save Meal')
-    widget = widgets.TableWidget(with_table_tag=True)

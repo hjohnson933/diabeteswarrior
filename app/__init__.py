@@ -1,5 +1,6 @@
 """Main Flask Application."""
 
+from typing import Callable, Any
 import dash
 from flask import Flask
 from flask.helpers import get_root_path
@@ -40,7 +41,7 @@ def create_app() -> object:
     return server
 
 
-def register_dashapps(app: str, title: str, base_pathname: str, layout: str, register_callbacks_func: str) -> None:
+def register_dashapps(app: Flask, title: str, base_pathname: str, layout: str, register_callbacks_func: Callable[[Any], Any]) -> None:
     """Register the Dash application in the flask server.
 
     Args:

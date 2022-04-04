@@ -1,9 +1,9 @@
 """Blueprint for Flask routes."""
 import os
 
-from typing import ByteString
 import arrow
 from flask import Blueprint, flash, make_response, redirect, render_template, send_from_directory, url_for  # , request
+from flask.wrappers import Response
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app.extensions import db
@@ -29,17 +29,17 @@ def main_css():
 
 
 @server_bp.route('/favicon.ico')
-def favicon() -> ByteString:
+def favicon() -> Response:
     """Add a route to the favicon for the application."""
     return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'favicon.icon', mime='image/vnd.microsoft.icon')
 
 
 @server_bp.route("/home/<int:rid>")
 @login_required
-def home(rid: int) -> str:
+def home(rid: int) -> Response:
     """Home page."""
     resp = make_response(render_template('home.html', title=current_user.username, id=current_user.id, rid=rid))
-    b = bytes(str(current_user.id), 'utf-8')
+    b = str(current_user.id)
 
     resp.set_cookie('userID', b)
     return resp
@@ -88,8 +88,8 @@ def register() -> object:
         user = Users()
         user.username = str(form.username.data)
         user.email = str(form.email.data)
-        user.password = user.set_password_hash(password=form.password.data)
         user.account_token = F"{user.username.lower()}_{user.email.lower()}"
+        user.set_password_hash(password=form.password.data)
         db.session.add(user)
         db.session.commit()
         flash(f'Account created for {form.username.data}!', 'success')

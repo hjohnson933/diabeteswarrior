@@ -27,7 +27,7 @@ def index() -> str:
 @errors_bp.app_errorhandler(HTTPException)
 def errors(error: HTTPException) -> Response:
     """Error handler."""
-    return render_template('errors/error.html', title='Error', error=error), error.code
+    return render_template('/error.html', title='Error', error=error), error.code
 
 
 @server_bp.route('/main.css')

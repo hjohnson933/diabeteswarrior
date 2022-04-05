@@ -9,17 +9,25 @@ from flask_login import current_user, login_required, login_user, logout_user
 from app.extensions import db
 from app.forms import FoodForm, HealthForm, LoginForm, MealForm, RegistrationForm, ScanForm, TargetForm
 from app.models import Foods, Healths, Meals, Scans, Targets, Users
+from werkzeug.exceptions import HTTPException
 
 # from werkzeug.urls import url_parse
 
 
 server_bp = Blueprint('main', __name__)
+errors_bp = Blueprint('errors', __name__)
 
 
 @server_bp.route('/')
 def index() -> str:
     """Landing page."""
     return render_template('base.html', title='Index')
+
+
+@errors_bp.app_errorhandler(HTTPException)
+def errors(error: HTTPException) -> Response:
+    """Error handler."""
+    return render_template('errors/error.html', title='Error', error=error), error.code
 
 
 @server_bp.route('/main.css')

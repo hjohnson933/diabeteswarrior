@@ -103,6 +103,7 @@ def register_blueprints(server: object) -> None:
     Args:
         server (object): The flask server instance.
     """
-    from app.webapp import server_bp
+    from app.webapp import server_bp, errors_bp
 
     server.register_blueprint(server_bp)
+    server.register_blueprint(errors_bp)

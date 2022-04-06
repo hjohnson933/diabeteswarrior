@@ -2,7 +2,7 @@
 import os
 
 import arrow
-from flask import Blueprint, flash, make_response, redirect, render_template, send_from_directory, url_for  # , request
+from flask import Blueprint, flash, make_response, redirect, render_template, send_from_directory, url_for
 from flask.wrappers import Response
 from flask_login import current_user, login_required, login_user, logout_user
 
@@ -11,23 +11,25 @@ from app.forms import FoodForm, HealthForm, LoginForm, MealForm, RegistrationFor
 from app.models import Foods, Healths, Meals, Scans, Targets, Users
 from werkzeug.exceptions import HTTPException
 
-# from werkzeug.urls import url_parse
-
-
-server_bp = Blueprint('main', __name__)
+# * The Errors Blueprint
 errors_bp = Blueprint('errors', __name__)
-
-
-@server_bp.route('/')
-def index() -> str:
-    """Landing page."""
-    return render_template('base.html', title='Index')
 
 
 @errors_bp.app_errorhandler(HTTPException)
 def errors(error: HTTPException) -> Response:
     """Error handler."""
     return render_template('/error.html', title='Error', error=error), error.code
+
+
+# * The Server Blueprint
+server_bp = Blueprint('main', __name__)
+
+
+# * Unsecured Routes
+@server_bp.route('/')
+def index() -> str:
+    """Landing page."""
+    return render_template('base.html', title='Index')
 
 
 @server_bp.route('/main.css')
@@ -40,26 +42,6 @@ def main_css():
 def favicon() -> Response:
     """Add a route to the favicon for the application."""
     return send_from_directory(os.path.join(server_bp.root_path, 'static'), 'favicon.icon', mime='image/vnd.microsoft.icon')
-
-
-@server_bp.route("/home/<int:rid>")
-@login_required
-def home(rid: int) -> Response:
-    """Home page."""
-    resp = make_response(render_template('home.html', title=current_user.username, id=current_user.id, rid=rid))
-    b = str(current_user.id)
-
-    resp.set_cookie('userID', b)
-    return resp
-
-
-@server_bp.route('/logout/')
-@login_required
-def logout() -> object:
-    """Logout route."""
-    logout_user()
-
-    return redirect(url_for('main.index'))
 
 
 @server_bp.route('/login/', methods=['GET', 'POST'])
@@ -104,6 +86,27 @@ def register() -> object:
         return redirect(url_for('main.target_data'))
 
     return render_template('register.html', title='Register', form=form, fields=fields)
+
+
+# * Secured Routes
+@server_bp.route("/home/<int:rid>")
+@login_required
+def home(rid: int) -> Response:
+    """Home page."""
+    resp = make_response(render_template('home.html', title=current_user.username, id=current_user.id, rid=rid))
+    b = str(current_user.id)
+
+    resp.set_cookie('userID', b)
+    return resp
+
+
+@server_bp.route('/logout/')
+@login_required
+def logout() -> object:
+    """Logout route."""
+    logout_user()
+
+    return redirect(url_for('main.index'))
 
 
 @server_bp.route('/target/', methods=['GET', 'POST'])

@@ -1,11 +1,35 @@
-{% extends "base.html" %}
+{%extends "base.html"%}
 
-{% block content %}
-  <h1>Register</h1>
-  <form action="", method="POST">
-    {{ form.hidden_tag() }}
-    <p>{{ form.username.label }}<br>{{ form.username(size=32) }}<br></p>
-    <p>{{ form.password.label }}<br>{{ form.password(size=32)}}<br></p>
-    <p>{{ form.submit() }}</p>
-  </form>
-{% endblock content %}
+{%block content%}
+<div class="content-section">
+    <h1>{{title}}</h1>
+    <form id="{{title.lower()}}-form" action="" method="POST">
+      {{form.hidden_tag()}}
+      <fieldset id="{{title.lower()}}-fields" class="form-group">
+        <legend id="{{title.lower()}}-legend" class="border-bottom mb-4">Register Now.</legend>
+        {%for each in fields%}
+          <div id="{{each}}-field" class="form-group row">
+            <div id="{{each}}-label" class="form-group col">{{form[each].label(class="form-control-sm")}}</div>
+            <div id="{{each}}-value" class="form-group col">
+              {%if form[each].errors%}
+                {{form[each](class="form-control form-control-sm is-invalid")}}
+                <div id="{{each}}-error" class="invalid-feedback">
+                  {%for error in form[each].errors%}
+                    <span>{{error}}</span>
+                  {%endfor%}
+                </div>
+              {%else%}
+                {{form[each](class="form-control form-control-sm")}}
+              {%endif%}
+            </div>
+          </div>
+        {%endfor%}
+      </fieldset>
+      <br>
+      <div id="{{title.lower()}}-submit" class="form-group">{{form.submit(class="btn btn-outline-info")}}</div>
+    </form>
+</div>
+<div id="{{title.lower()}}-footer" class="border-top pt-3">
+  <small class="text-muted">Already Registered?<a href="{{url_for('main.login')}}">Login Now.</a></small>
+</div>
+{%endblock content%}

@@ -1,0 +1,14 @@
+{%extends "base.html"%}
+
+{% block content %}
+  <h4>Error {{ error.code }}</h4>
+  {% if error.code in [401, 403, 405] %}
+    <p>You are not authorized to do this.</p>
+  {% elif error.code in [400, 404, 410] %}
+    <p>The page you are looking for was not found.</p>
+  {% elif error.code in [500, 501, 502, 503, 504] %}
+    <p>The server encountered an error.</p>
+  {% else %}
+    <p>Something went wrong.</p>
+  {% endif %}
+{% endblock %}

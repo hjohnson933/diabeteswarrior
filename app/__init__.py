@@ -1,10 +1,12 @@
 """Main Flask Application."""
+
+from typing import Callable, Any
 import dash
-import dash_bootstrap_components as dbc
-from config import BaseConfig
 from flask import Flask
 from flask.helpers import get_root_path
 from flask_login import login_required
+
+from config import BaseConfig
 
 
 def create_app() -> object:
@@ -13,24 +15,25 @@ def create_app() -> object:
     Returns:
         object: flask server instance.
     """
-    server = Flask(__name__)
+
+    server = Flask(__name__, instance_relative_config=True)
     server.config.from_object(BaseConfig)
 
-    from app.meal.callbacks import register_callbacks
-    from app.meal.layout import layout
-    register_dashapps(server, 'Meal', 'meal', layout, register_callbacks)
+    from app.scans.callbacks import register_callbacks
+    from app.scans.layout import layout
+    register_dashapps(server, 'Scan', 'scans', layout, register_callbacks)
 
-    from app.food.callbacks import register_callbacks
-    from app.food.layout import layout
-    register_dashapps(server, 'Food', 'food', layout, register_callbacks)
+    from app.healths.callbacks import register_callbacks
+    from app.healths.layout import layout
+    register_dashapps(server, 'Health', 'healths', layout, register_callbacks)
 
-    from app.health.callbacks import register_callbacks
-    from app.health.layout import layout
-    register_dashapps(server, 'Health', 'health', layout, register_callbacks)
+    from app.foods.callbacks import register_callbacks
+    from app.foods.layout import layout
+    register_dashapps(server, 'Food', 'foods', layout, register_callbacks)
 
-    from app.scan.callbacks import register_callbacks
-    from app.scan.layout import layout
-    register_dashapps(server, 'Scan', 'scan', layout, register_callbacks)
+    # # from app.meal.callbacks import register_callbacks
+    # from app.meal.layout import layout
+    # register_dashapps(server, 'Meal', 'meal', layout, register_callbacks)
 
     register_extensions(server)
     register_blueprints(server)
@@ -38,7 +41,7 @@ def create_app() -> object:
     return server
 
 
-def register_dashapps(app: str, title: str, base_pathname: str, layout: str, register_callbacks_func: str) -> None:
+def register_dashapps(app: Flask, title: str, base_pathname: str, layout: str, register_callbacks_func: Callable[[Any], Any]) -> None:
     """Register the Dash application in the flask server.
 
     Args:
@@ -50,12 +53,19 @@ def register_dashapps(app: str, title: str, base_pathname: str, layout: str, reg
     """
     meta_viewport = {"name": "viewport", "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
 
+    #    removed from my_dashapp for testing external_stylesheets=[dbc.themes.BOOTSTRAP])
     my_dashapp = dash.Dash(__name__,
                            server=app,
                            url_base_pathname=F'/{base_pathname}/',
                            assets_folder=get_root_path(__name__) + F'/{base_pathname}/assets/',
                            meta_tags=[meta_viewport],
-                           external_stylesheets=[dbc.themes.BOOTSTRAP])
+                           external_stylesheets=["https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"],
+                           external_scripts=[{"src": "https://kit.fontawesome.com/3aad6a615d.js", "crossorigin": "anonymous"},
+                               {"src": "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js", "integrity": "sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13", "crossorigin": "anonymous"},
+                               {"src": "https://code.jquery.com/jquery-3.6.0.min.js", "integrity": "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=", "crossorigin": "anonymous"},
+                               {"src": "https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.4/umd/popper.min.js", "integrity": "sha512-+Tn2V/oN9O/kiaJg/1o5bETqyS35pMDJzkhkf8uvCzxmRox69AsWkSpBSMEGEe4EZp07Nunw712J3Xvh5Tti0w==", "crossorigin": "anonymous", "referrerpolicy": "no-referrer"}],
+                           suppress_callback_exceptions=True
+                           )
     my_dashapp.enable_dev_tools()
 
     with app.app_context():
@@ -79,12 +89,12 @@ def register_extensions(server: object) -> None:
     Args:
         server (object): Flask server instance.
     """
-    from app.extensions import authenticate, login, migrate
+    from app.extensions import db, login, migrate
 
-    authenticate.init_app(server)
     login.init_app(server)
     login.login_view = 'main.login'
-    migrate.init_app(server, authenticate)
+    migrate.init_app(server, db)
+    db.init_app(server)
 
 
 def register_blueprints(server: object) -> None:
@@ -93,6 +103,7 @@ def register_blueprints(server: object) -> None:
     Args:
         server (object): The flask server instance.
     """
-    from app.webapp import server_bp
+    from app.webapp import server_bp, errors_bp
 
     server.register_blueprint(server_bp)
+    server.register_blueprint(errors_bp)

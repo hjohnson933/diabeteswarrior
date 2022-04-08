@@ -2,14 +2,16 @@
 import os
 
 import arrow
-from flask import Blueprint, flash, make_response, redirect, render_template, send_from_directory, url_for
+from flask import (Blueprint, flash, make_response, redirect, render_template,
+                   send_from_directory, url_for)
 from flask.wrappers import Response
 from flask_login import current_user, login_required, login_user, logout_user
+from werkzeug.exceptions import HTTPException
 
 from app.extensions import db
-from app.forms import FoodForm, HealthForm, LoginForm, MealForm, RegistrationForm, ScanForm, TargetForm
+from app.forms import (FoodForm, HealthForm, LoginForm, MealForm, RegistrationForm, ScanForm, TargetForm)
 from app.models import Foods, Healths, Meals, Scans, Targets, Users
-from werkzeug.exceptions import HTTPException
+
 
 # * The Errors Blueprint
 errors_bp = Blueprint('errors', __name__)
@@ -274,15 +276,3 @@ def meal_data() -> object:
         return redirect(url_for('main.home'))
 
     return render_template('new.html', title='Meal', form=form, fields=fields)
-
-
-@server_bp.route('/table/', methods=['GET', 'POST'])
-def table() -> object:
-    headers = ["domain", "name", "portion", "unit", "calories", "fat", "cholesterol", "sodium", "carbohydrate", "protein"]
-    data = [("Aunt Aggie De's", "Praline", 57.0, "g", 60, 15, 5, 30, 33, 2),
-            ("HAJ", "Water", 0.0, "fl oz", 0, 0, 0, 0, 0, 0),
-            ("HAJ", "Fast", 0.0, "g", 0, 0, 0, 0, 0, 0)]
-
-    flash('Testing Flash Messaging')
-
-    return render_template('table.html', title='Table', headers=headers, data=data)

@@ -1,8 +1,4 @@
-import json
-
-from collections import deque
-from dataclasses import dataclass  # , asdict
-# from datetime import datetime
+from dataclasses import dataclass
 from typing import NamedTuple
 
 import flask
@@ -110,50 +106,3 @@ def register_callbacks(dashapp):
             filtered_foods_df = filtered_foods_df.assign(servings=0.0).to_json()
 
         return food_table_data, food_table_columns, food_table_filter_action, filtered_foods_df
-
-    @dashapp.callback(
-        Output('indexed_servings', 'data'),
-        Output('index_input', 'value'),
-        Output('domain_input', 'value'),
-        Output('name_input', 'value'),
-        Output('servings_input', 'value'),
-        Input('filtered_foods', 'data'),
-        Input('servings_input', 'value'),
-        Input('foods_table', 'derived_virtual_selected_rows')
-    )
-    def set_food_item_servings(filtered_foods, servings_input, derived_virtual_selected_rows):
-        """
-        """
-
-        data = {}
-        items = deque()
-        item_set = set()
-        index_input = None
-        domain_input = None
-        name_input = None
-        servings_input = None
-
-        try:
-            records_list = set()
-
-            filtered_foods_data = json.loads(filtered_foods)
-            filtered_foods_df = pd.DataFrame(filtered_foods_data)
-            records = filtered_foods_df[['domain', 'name', 'servings']].to_dict('index')
-            for k, v in records.items():
-                records_list.add((int(k) - 1, (v['domain'], v['name'], v['servings'])))
-            items.extend(records_list)
-        except json.decoder.JSONDecodeError:
-            ...
-
-        try:
-            item = items.popleft()
-            print(item)
-        except IndexError:
-            ...
-
-        print(item_set)
-        # for item in items:
-        #     index_input, value = item
-        #     domain_input, name_input, servings_input = value
-
-        return data, index_input, domain_input, name_input, servings_input

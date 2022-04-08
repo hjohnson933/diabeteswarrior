@@ -1,7 +1,9 @@
 """Create the forms used by the Flask server."""
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, IntegerField, DecimalField, TextAreaField, RadioField
-from wtforms.validators import InputRequired, NumberRange, Length, Email, EqualTo
+from wtforms import (BooleanField, DecimalField, IntegerField, PasswordField,
+                     RadioField, StringField, SubmitField, TextAreaField)
+from wtforms.validators import (Email, EqualTo, InputRequired, Length,
+                                NumberRange)
 
 
 class LoginForm(FlaskForm):
@@ -17,18 +19,8 @@ class LoginForm(FlaskForm):
             Triggers the application to verify your credentials and allow access to your information.
     """
 
-    email = StringField(
-        'Email',
-        validators=[
-            InputRequired('You must provide your email address.')
-        ]
-    )
-    password = PasswordField(
-        'Password',
-        validators=[
-            InputRequired('You must provide your password.')
-        ]
-    )
+    email = StringField('Email', validators=[InputRequired('You must provide your email address.')])
+    password = PasswordField('Password', validators=[InputRequired('You must provide your password.')])
     submit = SubmitField('Login')
     remember_me = BooleanField('Remember Me')
 
@@ -51,42 +43,10 @@ class RegistrationForm(FlaskForm):
             Triggers the application to store the data in the data base and send you to the next page.
     """
 
-    username = StringField(
-        'Username',
-        validators=[
-            InputRequired(),
-            Length(
-                min=3,
-                max=32,
-                message='Username is required! and must be between 3 and 32 characters long'
-            )
-        ]
-    )
-    password = PasswordField(
-        'Password',
-        validators=[
-            InputRequired('Password is required!')
-        ]
-    )
-    confirm = PasswordField(
-        'Confirm Password',
-        validators=[
-            InputRequired('Password is required!'),
-            EqualTo('password')
-        ]
-    )
-    email = StringField(
-        'Email Address',
-        validators=[
-            InputRequired(),
-            Email(),
-            Length(
-                min=6,
-                max=128,
-                message='Email address is required! and must be between 6 and 128 characters long'
-            )
-        ]
-    )
+    username = StringField('Username', validators=[InputRequired(), Length(min=3, max=32, message='Username is required! and must be between 3 and 32 characters long')])
+    password = PasswordField('Password', validators=[InputRequired('Password is required!')])
+    confirm = PasswordField('Confirm Password', validators=[InputRequired('Password is required!'), EqualTo('password')])
+    email = StringField('Email Address', validators=[InputRequired(), Email(), Length(min=6, max=128, message='Email address is required! and must be between 6 and 128 characters long')])
     submit = SubmitField('Register')
 
 
@@ -125,84 +85,17 @@ class TargetForm(FlaskForm):
             Triggers the application to store the data in the data base and send you to the next page.
     """
 
-    chart_min = IntegerField(
-        'Chart Low',
-        default=40,
-        validators=[
-            NumberRange(
-                min=10,
-                max=2656
-            )
-        ]
-    )
-    chart_max = IntegerField(
-        'Chart High',
-        default=400,
-        validators=[
-            NumberRange(
-                min=10,
-                max=2656
-            )
-        ]
-    )
-    limit_min = IntegerField(
-        'Acceptable Low',
-        default=55,
-        validators=[
-            NumberRange(
-                min=21,
-                max=70
-            )
-        ]
-    )
-    limit_max = IntegerField(
-        'Acceptable High',
-        default=250,
-        validators=[
-            NumberRange(
-                min=180,
-                max=250
-            )
-        ]
-    )
-    target_min = IntegerField(
-        'Target Low',
-        default=70
-    )
-    target_max = IntegerField(
-        'Target High',
-        default=180
-    )
-    my_target_min = IntegerField(
-        'Fasting Target Low',
-        validators=[
-            NumberRange(
-                min=70,
-                max=180
-            )
-        ]
-    )
-    my_target_max = IntegerField(
-        'Fasting Target High',
-        validators=[
-            NumberRange(
-                min=70,
-                max=180
-            )
-        ]
-    )
-    meal_ideal = IntegerField(
-        'IDEAL Meal Glucose',
-        default=180
-    )
-    meal_good = IntegerField(
-        'OK Meal Glucose',
-        default=250
-    )
-    meal_bad = IntegerField(
-        'BAD Meal Glucose',
-        default=270
-    )
+    chart_min = IntegerField('Chart Low', default=40, validators=[NumberRange(min=10, max=2656)])
+    chart_max = IntegerField('Chart High', default=400, validators=[NumberRange(min=10, max=2656)])
+    limit_min = IntegerField('Acceptable Low', default=55, validators=[NumberRange(min=21, max=70)])
+    limit_max = IntegerField('Acceptable High', default=250, validators=[NumberRange(min=180, max=250)])
+    target_min = IntegerField('Target Low', default=70)
+    target_max = IntegerField('Target High', default=180)
+    my_target_min = IntegerField('Fasting Target Low', validators=[NumberRange(min=70, max=180)])
+    my_target_max = IntegerField('Fasting Target High', validators=[NumberRange(min=70, max=180)])
+    meal_ideal = IntegerField('IDEAL Meal Glucose', default=180)
+    meal_good = IntegerField('OK Meal Glucose', default=250)
+    meal_bad = IntegerField('BAD Meal Glucose', default=270)
     my_target_weight = DecimalField('Target Body Weight')
     my_target_bmi = DecimalField('Target Body Mass Index')
     submit = SubmitField('Save Targets')
@@ -235,48 +128,13 @@ class ScanForm(FlaskForm):
             Triggers the application to store the data in the data base and send you to the next page.
     """
 
-    message = RadioField(
-        'Message',
-        default=0,
-        choices=[
-            (3, 'Glucose High'),
-            (2, 'Glucose Going High'),
-            (1, 'My High Glucose Alert'),
-            (0, 'None'),
-            (-1, 'My Low Glucose Alert'),
-            (-2, 'Glucose Going Low'),
-            (-3, 'Glucose Low')
-        ]
-    )
+    message = RadioField('Message', default=0, choices=[(3, 'Glucose High'), (2, 'Glucose Going High'), (1, 'My High Glucose Alert'), (0, 'None'), (-1, 'My Low Glucose Alert'), (-2, 'Glucose Going Low'), (-3, 'Glucose Low')])
     notes = TextAreaField('Notes')
-    glucose = IntegerField(
-        'Glucose', validators=[
-            InputRequired('A glucose value is required.')
-        ]
-    )
-    trend = RadioField(
-        'Trend',
-        default=0,
-        choices=[
-            (2, 'Up'),
-            (1, 'Up and right'),
-            (0, 'Right'),
-            (-1, 'Down and right'),
-            (2, 'Down')
-        ]
-    )
-    bolus_u = IntegerField(
-        'Bolus IU',
-        default=0
-    )
-    basal_u = IntegerField(
-        'Basal IU',
-        default=0
-    )
-    carbohydrates = IntegerField(
-        'Carbohydrates',
-        default=0
-    )
+    glucose = IntegerField('Glucose', validators=[InputRequired('A glucose value is required.')])
+    trend = RadioField('Trend', default=0, choices=[(2, 'Up'), (1, 'Up and right'), (0, 'Right'), (-1, 'Down and right'), (2, 'Down')])
+    bolus_u = IntegerField('Bolus IU', default=0)
+    basal_u = IntegerField('Basal IU', default=0)
+    carbohydrates = IntegerField('Carbohydrates', default=0)
     medication = BooleanField('Medication')
     exercise = BooleanField('Execrise')
     submit = SubmitField('Save Scan')
@@ -311,68 +169,16 @@ class HealthForm(FlaskForm):
             Body temperature
     """
 
-    po_pulse = IntegerField(
-        'Pulse',
-        validators=[
-            InputRequired('Pulse rate is required.')
-        ]
-    )
-    po_ox = IntegerField(
-        'Oxygen',
-        validators=[
-            InputRequired('Oxygen level is required.')
-        ]
-    )
-    weight = DecimalField(
-        'Weight',
-        validators=[
-            InputRequired('Weight is required.')
-        ]
-    )
-    fat = DecimalField(
-        'Body Mass Index',
-        validators=[
-            InputRequired('Body Mass Index is required.')
-        ]
-    )
-    bpc_pulse = IntegerField(
-        'Pulse',
-        validators=[
-            InputRequired('Pulse rate is required.')
-        ]
-    )
-    bpc_systolic = IntegerField(
-        'Systolic',
-        validators=[
-            InputRequired('Systolic pressure is required.')
-        ]
-    )
-    bpc_diastolic = IntegerField(
-        'Diastolic',
-        validators=[
-            InputRequired('Diastolic pressure is required.')
-        ]
-    )
-    bpc_ihb = BooleanField(
-        'Irregular Heart Beat',
-        default=False
-    )
-    bpc_hypertension = RadioField(
-        'Hypertension',
-        default=0,
-        choices=[
-            (0, 'None'),
-            (1, 'Pre-Hypertension'),
-            (2, 'Stage I'),
-            (3, 'Stage II')
-        ]
-    )
-    temperature = DecimalField(
-        'Temperature',
-        validators=[
-            InputRequired('Temperature is required.')
-        ]
-    )
+    po_pulse = IntegerField('Pulse', validators=[InputRequired('Pulse rate is required.')])
+    po_ox = IntegerField('Oxygen', validators=[InputRequired('Oxygen level is required.')])
+    weight = DecimalField('Weight', validators=[InputRequired('Weight is required.')])
+    fat = DecimalField('Body Mass Index', validators=[InputRequired('Body Mass Index is required.')])
+    bpc_pulse = IntegerField('Pulse', validators=[InputRequired('Pulse rate is required.')])
+    bpc_systolic = IntegerField('Systolic', validators=[InputRequired('Systolic pressure is required.')])
+    bpc_diastolic = IntegerField('Diastolic', validators=[InputRequired('Diastolic pressure is required.')])
+    bpc_ihb = BooleanField('Irregular Heart Beat', default=False)
+    bpc_hypertension = RadioField('Hypertension', default=0, choices=[(0, 'None'), (1, 'Pre-Hypertension'), (2, 'Stage I'), (3, 'Stage II')])
+    temperature = DecimalField('Temperature', validators=[InputRequired('Temperature is required.')])
     submit = SubmitField('Save Health')
 
 
@@ -405,71 +211,20 @@ class FoodForm(FlaskForm):
             The amount of protein in the portion, typically in grams.
     """
 
-    row_select = BooleanField('Select Row')
-    domain = TextAreaField(
-        'Domain',
-        validators=[
-            InputRequired('The domain is required.')
-        ]
-    )
-    name = TextAreaField(
-        'Name',
-        validators=[
-            InputRequired('The name of the food is required.')
-        ]
-    )
-    portion = TextAreaField(
-        'Portion',
-        validators=[
-            InputRequired('The portion is required.')
-        ]
-    )
-    unit = TextAreaField(
-        'Unit',
-        validators=[
-            InputRequired('The portion units is required.')
-        ]
-    )
-    calories = IntegerField(
-        'Calories',
-        validators=[
-            InputRequired('The number of calories is required.')
-        ]
-    )
-    fat = IntegerField(
-        'Fat',
-        validators=[
-            InputRequired('The amount of fat is required.')
-        ]
-    )
-    cholesterol = IntegerField(
-        'Cholesterol',
-        validators=[
-            InputRequired('The amount of cholesterol is required.')
-        ]
-    )
-    sodium = IntegerField(
-        'Sodium',
-        validators=[
-            InputRequired('The amount of sodium is required.')
-        ]
-    )
-    carbohydrate = IntegerField(
-        'Carbohydrates',
-        validators=[
-            InputRequired('The number of carbohydrates is required.')
-        ]
-    )
-    protein = IntegerField(
-        'Protein',
-        validators=[
-            InputRequired('The amount of protein is required.')
-        ]
-    )
+    domain = TextAreaField('Domain', validators=[InputRequired('The domain is required.')])
+    name = TextAreaField('Name', validators=[InputRequired('The name of the food is required.')])
+    portion = TextAreaField('Portion', validators=[InputRequired('The portion is required.')])
+    unit = TextAreaField('Unit', validators=[InputRequired('The portion units is required.')])
+    calories = IntegerField('Calories', validators=[InputRequired('The number of calories is required.')])
+    fat = IntegerField('Fat', validators=[InputRequired('The amount of fat is required.')])
+    cholesterol = IntegerField('Cholesterol', validators=[InputRequired('The amount of cholesterol is required.')])
+    sodium = IntegerField('Sodium', validators=[InputRequired('The amount of sodium is required.')])
+    carbohydrate = IntegerField('Carbohydrates', validators=[InputRequired('The number of carbohydrates is required.')])
+    protein = IntegerField('Protein', validators=[InputRequired('The amount of protein is required.')])
     submit = SubmitField('Save Food')
 
 
-class MealForm(FoodForm, FlaskForm):
+class MealForm(FlaskForm):
     """ User Meal Form
 
         Attributes:
@@ -494,6 +249,12 @@ class MealForm(FoodForm, FlaskForm):
             Index of each food item in this meal.
     """
 
+    calories = IntegerField('Calories')
+    fat = IntegerField('Fat')
+    cholesterol = IntegerField('Cholesterol')
+    sodium = IntegerField('Sodium')
+    carbohydrate = IntegerField('Carbohydrates')
+    protein = IntegerField('Protein')
     serving = TextAreaField('Serving')
     indices = TextAreaField('Indices')
     submit = SubmitField('Save Meal')

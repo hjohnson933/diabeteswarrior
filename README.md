@@ -1,4 +1,4 @@
-# First time
+# To start using DiabetesWarrior
 
 cd into the Diabetes Warrior directory.
 `source .env` to set the environment variables.
@@ -13,6 +13,19 @@ In your web browser go to `http://127.0.0.1:5000/` and start using Diabetes Warr
 
 export DATABASE_URL=sqlite:///${PWD}/instance/app2.db
 
+## Themes
+
+### top tier
+
+"https://bootswatch.com/solar/"
+
+### Second tier
+
+"https://bootswatch.com/darkly/"
+"https://bootswatch.com/cyborg/"
+"https://bootswatch.com/slate/"
+"https://bootswatch.com/superhero/"
+
 ## Dev Notes
 
 todo Food entry form unit input need to be a drop down
@@ -23,3 +36,6 @@ todo Food entry form unit input need to be a drop down
 + Show previous suggestion — Alt + [ or Option (⌥) + [
 + Trigger suggestion — Alt + \ or Option (⌥) + \
 + Open ten suggestions in a separate pane — Ctrl + Enter
+
+## Attribution Statements
+

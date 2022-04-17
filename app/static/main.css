@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: #000;
+    color: #fff;
+    margin-top: 2rem;
+}
+
+textarea {
+    background-color: black;
+    color: #fff;
+}
+
+input {
+    background-color: black;
+    color: #fff;
+}
+
+.dropdown-item {
+    background-color: black;
+    color: #fff;
+}
+
+.dropdown-menu {
+    background-color: black;
+    color: #fff;
+}
+
+.meal-input {
+    background-color: black;
+    color: #fff;
+    font-size: 12px;
+}
+
+.meal-label {
+    background-color: black;
+    color: #fff;
+    font-size: 12px;
+}
+
+.current-page {
+    background-color: black;
+    color: #fff;
+}
+
+.current-page-container {
+    background-color: black;
+    color: #fff;
+}
+
+.current-page {
+    background-color: black;
+    color: #fff;
+}
+
+.form-control {
+    background-color: black;
+    color: #fff;
+}
+
+.page-number {
+    background-color: black;
+    color: #fff;
+}

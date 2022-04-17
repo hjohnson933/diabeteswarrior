@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "diabeteswarrior"
+version = "0.1.0"
+description = "Diabetes Management Application"
+authors = ["Harrison Johnson <hjohnson933@cox.net>"]
+license = "OSLv3"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.0.3"
+Flask-Login = "^0.5.0"
+Flask-SQLAlchemy = "^2.5.1"
+Flask-Migrate = "^3.1.0"
+Flask-WTF = "^1.0.0"
+dash = "^2.2.0"
+pandas-datareader = "^0.10.0"
+gunicorn = "^20.1.0"
+python-dotenv = "^0.19.2"
+arrow = "^1.2.2"
+prompt-toolkit = "^3.0.28"
+dash-bootstrap-components = "^1.0.3"
+SQLAlchemy = "^1.4.31"
+xonsh = "^0.11.0"
+numpy = "^1.22.3"
+email-validator = "^1.1.3"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+isort = "^5.10.1"
+pytest = "^7.0.1"
+coverage = "^6.3.1"
+pylint = "^2.12.2"
+autopep8 = "^1.6.0"
+mypy = "^0.931"
+bandit = "^1.7.3"
+prospector = "^1.7.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+    ],
+    "settings": {
+        "sqltools.connections": [
+            {
+                "previewLimit": 50,
+                "server": "git.house.lan",
+                "port": 5432,
+                "driver": "PostgreSQL",
+                "name": "dwarrior",
+                "database": "dwarrior",
+                "username": "dwarrior",
+                "password": "__46_LITTLE_barbados_LATE_76__"
+            }
+        ]
+    }
+}

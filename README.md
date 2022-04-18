@@ -38,4 +38,3 @@ todo Food entry form unit input need to be a drop down
 + Open ten suggestions in a separate pane — Ctrl + Enter
 
 ## Attribution Statements
-
